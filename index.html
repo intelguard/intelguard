@@ -1,9 +1,65 @@
-<!DOCTYPE html>
+<div class="contact-form animate-on-scroll">
+                        <form>
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="incident">Incident Type</label>
+                                <input type="text" id="incident" name="incident" placeholder="e.g., Identity theft, financial fraud">
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Describe Your Situation</label>
+                                <textarea id="message" name="message" placeholder="Please provide details about what happened..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Report</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="contact-cards animate-on-scroll">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fab fa-telegram-plane"></i>
+                        </div>
+                        <h3>Telegram Channel</h3>
+                        <p>Join our official channel for updates and announcements</p>
+                        <a href="https://t.me/intelguard" class="contact-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i>
+                            @intelguard
+                        </a>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fab fa-telegram-plane"></i>
+                        </div>
+                        <h3>Direct Contact</h3>
+                        <p>Reach out directly to our investigation team</p>
+                        <a href="https://t.me/bo_sint" class="contact-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i>
+                            @bo_sint
+                        </a>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>Email Support</h3>
+                        <p>Send us detailed information about your case</p>
+                        <a href="mailto:blake<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IntelGuard - Cybercrime Investigation & Victim Support</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,7 +69,7 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -29,11 +85,12 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(20px);
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(69, 90, 181, 0.3);
             animation: slideDown 0.8s ease-out;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
 
         nav {
@@ -41,14 +98,19 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem 2rem;
+            position: relative;
         }
 
         .logo {
             font-size: 1.8rem;
             font-weight: 800;
-            color: #2d3748;
+            color: #ffffff;
             text-decoration: none;
             position: relative;
+            background: linear-gradient(135deg, #00f5ff, #455ab5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .logo::after {
@@ -58,7 +120,7 @@
             left: 0;
             width: 100%;
             height: 3px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(90deg, #00f5ff, #455ab5);
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.3s ease;
@@ -72,18 +134,22 @@
             display: flex;
             list-style: none;
             gap: 2rem;
+            transition: all 0.3s ease;
         }
 
         .nav-menu a {
             text-decoration: none;
-            color: #4a5568;
+            color: rgba(255, 255, 255, 0.9);
             font-weight: 500;
             transition: all 0.3s ease;
             position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
         }
 
         .nav-menu a:hover {
-            color: #667eea;
+            color: #00f5ff;
+            background: rgba(69, 90, 181, 0.2);
             transform: translateY(-2px);
         }
 
@@ -92,13 +158,27 @@
             flex-direction: column;
             cursor: pointer;
             gap: 4px;
+            z-index: 1001;
         }
 
         .menu-toggle span {
             width: 25px;
             height: 3px;
-            background: #2d3748;
+            background: #ffffff;
             transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
         }
 
         /* Hero Section */
@@ -116,7 +196,10 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 245, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(69, 90, 181, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(0, 245, 255, 0.1) 0%, transparent 50%);
             animation: float 20s ease-in-out infinite;
         }
 
@@ -165,25 +248,27 @@
         }
 
         .btn-primary {
-            background: white;
-            color: #667eea;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, #00f5ff 0%, #455ab5 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(0, 245, 255, 0.3);
+            border: none;
         }
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 12px 35px rgba(0, 245, 255, 0.4);
         }
 
         .btn-secondary {
             background: transparent;
             color: white;
-            border: 2px solid white;
+            border: 2px solid rgba(0, 245, 255, 0.5);
+            backdrop-filter: blur(10px);
         }
 
         .btn-secondary:hover {
-            background: white;
-            color: #667eea;
+            background: rgba(0, 245, 255, 0.1);
+            border-color: #00f5ff;
             transform: translateY(-3px);
         }
 
@@ -234,12 +319,13 @@
         }
 
         .feature-card {
-            background: white;
+            background: rgba(15, 15, 35, 0.8);
+            backdrop-filter: blur(20px);
             padding: 2.5rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(69, 90, 181, 0.3);
             position: relative;
             overflow: hidden;
         }
@@ -251,7 +337,7 @@
             left: -100%;
             width: 100%;
             height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(90deg, #00f5ff, #455ab5);
             transition: left 0.3s ease;
         }
 
@@ -261,31 +347,33 @@
 
         .feature-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 20px 60px rgba(0, 245, 255, 0.2);
+            border-color: rgba(0, 245, 255, 0.5);
         }
 
         .feature-icon {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
+            background: linear-gradient(135deg, #00f5ff 0%, #455ab5 100%);
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1.5rem;
             color: white;
             font-size: 1.5rem;
+            box-shadow: 0 8px 25px rgba(0, 245, 255, 0.3);
         }
 
         .feature-card h3 {
             font-size: 1.3rem;
             font-weight: 600;
-            color: #2d3748;
+            color: #ffffff;
             margin-bottom: 1rem;
         }
 
         .feature-card p {
-            color: #718096;
+            color: rgba(255, 255, 255, 0.7);
             line-height: 1.6;
         }
 
@@ -423,7 +511,37 @@
         /* Responsive */
         @media (max-width: 768px) {
             .nav-menu {
-                display: none;
+                position: fixed;
+                left: 0;
+                top: 80px;
+                flex-direction: column;
+                background: rgba(15, 15, 35, 0.98);
+                backdrop-filter: blur(20px);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 27px rgba(0, 0, 0, 0.3);
+                border-bottom: 1px solid rgba(69, 90, 181, 0.3);
+                padding: 2rem 0;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            .nav-menu.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .nav-menu li {
+                margin: 1rem 0;
+            }
+
+            .nav-menu a {
+                font-size: 1.1rem;
+                padding: 1rem;
+                display: block;
             }
 
             .menu-toggle {
@@ -684,4 +802,4 @@
         });
     </script>
 </body>
-    </html>
+                    </html>
