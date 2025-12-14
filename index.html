@@ -1,166 +1,530 @@
-/* Base Reset and Typography */
-:root {
-    --color-dark-bg: #101010;
-    --color-text-light: #ffffff;
-    --color-text-muted: #aaaaaa;
-    --color-primary: #ff9900;
-    --color-secondary: #222222;
-    --color-dot-green: #4caf50;
-    --font-family: 'Poppins', sans-serif;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop Extortion | Report Exploitation</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load EmailJS SDK for actual email sending -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+    <!-- Use Inter font family -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Define base view classes */
+        .view {
+            padding: 2rem 0;
+            animation: fadeIn 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; /* Smoother animation curve */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Custom class for the card container (now relies on Canvas for background) */
+        .profile-card-bg {
+            background: #000000; /* Fallback/base color */
+            box-shadow: 0 10px 30px rgba(109, 40, 217, 0.2);
+            transition: all 0.5s ease;
+            position: relative; /* Important for canvas positioning */
+        }
+        .profile-card-bg:hover {
+            box-shadow: 0 15px 40px rgba(162, 28, 253, 0.3);
+            transform: translateY(-2px);
+        }
+        /* Style for the Matrix background canvas */
+        #matrix-background {
+            filter: blur(0.5px);
+        }
+    </style>
+</head>
+<body class="bg-black text-white p-4">
 
-body {
-    font-family: var(--font-family);
-    background-color: var(--color-dark-bg);
-    color: var(--color-text-light);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    text-align: center;
-    padding: 20px;
-}
+    <!-- Main App Container - Centered Content -->
+    <div id="app" class="max-w-5xl w-full text-center">
 
-/* Header Tag */
-.header-tag {
-    background-color: var(--color-secondary);
-    color: var(--color-text-muted);
-    font-size: 0.9em;
-    padding: 8px 15px;
-    border-radius: 20px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 50px;
-    font-weight: 600;
-}
+        <!-- HOME VIEW (Default Landing Content) -->
+        <div id="home-view" class="view">
+            <!-- Reporting Badge -->
+            <div class="mb-8">
+                <span class="inline-block px-5 py-2 text-sm text-fuchsia-300 bg-gray-900 rounded-full shadow-inner border border-fuchsia-800/50">
+                    CYBERCRIME PREVENTION INITIATIVE
+                </span>
+            </div>
 
-/* Hero Section (Main Content) */
-.hero-section {
-    max-width: 800px;
-    width: 100%;
-}
+            <!-- Main Headline (Updated to Purple Gradient) -->
+            <h1 class="text-6xl sm:text-7xl md:text-8xl font-black leading-tight mb-6">
+                STOP <span class="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-fuchsia-600 tracking-wide">EXTORTION</span>
+                <br>
+                REPORT EXPLOITATION
+            </h1>
 
-.main-title {
-    font-size: 4em; /* Large, impactful font size */
-    font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: 20px;
-}
+            <!-- Subheading/Description -->
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-12 font-light">
+                Securely report threats, blackmail, and abuse. We leverage advanced digital forensics and global collaboration to protect victims and ensure justice.
+            </p>
 
-.main-title:first-child {
-    color: var(--color-primary); /* Apply yellow to the first line */
-}
+            <!-- Call-to-Action Buttons -->
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-16">
+                <!-- Primary Button (Submit Report) - Added strong glow/shadow -->
+                <button onclick="showView('report')" class="flex items-center justify-center space-x-2 px-10 py-4 text-lg font-bold text-white rounded-xl shadow-xl transition duration-300 ease-in-out transform hover:scale-[1.03] hover:shadow-fuchsia-600/50
+                               bg-gradient-to-r from-fuchsia-600 to-purple-800 border-b-4 border-fuchsia-900 active:border-b-0">
+                    <span>SUBMIT CONFIDENTIAL REPORT</span>
+                    <!-- Right Arrow SVG -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
 
-.mission-statement {
-    font-size: 1.2em;
-    font-weight: 400;
-    color: var(--color-text-muted);
-    margin-bottom: 40px;
-    line-height: 1.5;
-}
+                <!-- Secondary Button (Meet Our Team) -->
+                <button onclick="showView('team')" class="px-10 py-4 text-lg font-semibold text-fuchsia-300 rounded-xl shadow-lg transition duration-300 ease-in-out transform hover:scale-[1.03]
+                               bg-gray-900 border border-gray-700 hover:bg-gray-800 hover:border-fuchsia-600/50">
+                    MEET THE INVESTIGATOR
+                </button>
+            </div>
 
-/* Call-to-Action Buttons */
-.cta-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 80px;
-}
+            <!-- Detailed Features/Benefits List (Enhanced structure) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm md:text-base text-gray-400 max-w-4xl mx-auto">
+                <div class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-950/50 border border-gray-800">
+                    <span class="text-lg font-bold text-fuchsia-500 mb-1">24/7 Availability</span>
+                    <span class="text-sm">Global coverage for immediate response.</span>
+                </div>
+                <div class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-950/50 border border-gray-800">
+                    <span class="text-lg font-bold text-fuchsia-500 mb-1">Total Anonymity</span>
+                    <span class="text-sm">Secure, encrypted, and untraceable submissions.</span>
+                </div>
+                <div class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-950/50 border border-gray-800">
+                    <span class="text-lg font-bold text-fuchsia-500 mb-1">Expert Investigation</span>
+                    <span class="text-sm">Leveraging deep OSINT and cybercrime expertise.</span>
+                </div>
+            </div>
+        </div>
+        <!-- END HOME VIEW -->
 
-.cta-buttons a {
-    text-decoration: none;
-    padding: 15px 30px;
-    border-radius: 8px;
-    font-size: 1.1em;
-    font-weight: 600;
-    transition: background-color 0.3s, color 0.3s;
-    display: inline-flex;
-    align-items: center;
-}
 
-.cta-primary {
-    background-color: var(--color-primary);
-    color: var(--color-dark-bg);
-    border: none;
-}
+        <!-- TEAM VIEW (Professional Profile Card) -->
+        <div id="team-view" class="view hidden">
+            <h2 class="text-5xl font-extrabold mb-8 text-fuchsia-400">Investigator Profile</h2>
+            
+            <!-- Back Button -->
+            <button onclick="showView('home')" class="mb-12 flex items-center justify-center mx-auto space-x-2 px-8 py-3 text-sm text-white bg-gray-800 rounded-lg hover:bg-gray-700 transition duration-300">
+                <!-- Back Arrow SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Return to Dashboard</span>
+            </button>
 
-.cta-primary:hover {
-    background-color: #ffb84d; /* Lighter shade on hover */
-}
+            <!-- Single User Profile Card (Highly Detailed and Professional) -->
+            <div class="flex justify-center w-full">
+                <!-- Card Container: Professional Background, Clean structure -->
+                <div id="profile-card" class="p-10 rounded-3xl profile-card-bg max-w-lg w-full relative overflow-hidden">
+                    
+                    <!-- Matrix Canvas Background (Positioned absolutely behind content) -->
+                    <canvas id="matrix-background" class="absolute inset-0 z-0"></canvas>
+                    
+                    <!-- Content (z-index 10) -->
+                    <div class="relative z-10">
+                        <!-- Profile Monogram/Image -->
+                        <div class="relative mb-8">
+                            <!-- Monogram Ring and Shadow -->
+                            <div class="w-40 h-40 mx-auto rounded-full p-1 bg-gradient-to-tr from-fuchsia-500 to-purple-600 shadow-xl ring-4 ring-black/50">
+                                <!-- PFP: Updated to use the new uploaded image file -->
+                                <img src="image_be4381.jpg" alt="Profile Picture" class="rounded-full w-full h-full object-cover border-4 border-gray-950" onerror="this.onerror=null; this.src='https://placehold.co/160x160/0a0a0a/ffffff?text=L';">
+                            </div>
+                        </div>
 
-.cta-secondary {
-    background-color: var(--color-secondary);
-    color: var(--color-text-light);
-    border: 1px solid var(--color-secondary); /* Border to match the background */
-}
+                        <!-- Name and Status -->
+                        <h3 class="text-5xl font-extrabold text-white mb-4 tracking-wider uppercase">luabytes</h3>
 
-.cta-secondary:hover {
-    background-color: #333333;
-    color: var(--color-primary);
-}
+                        <!-- Professional Status -->
+                        <p class="text-xl font-semibold text-fuchsia-300 mb-10 border-b border-gray-800 pb-4">Certified Cybercrime Investigator</p>
+                        
+                        <!-- Professional Skills/Roles List -->
+                        <div class="text-left text-gray-300 space-y-4 pt-6">
+                            <h4 class="text-lg font-bold text-fuchsia-200 uppercase mb-4 tracking-wider">Core Proficiencies</h4>
 
-.arrow {
-    margin-left: 10px;
-    font-size: 1.3em;
-    line-height: 1;
-}
+                            <!-- Skill 1: Non-Profit Organizer -->
+                            <div class="flex items-start space-x-4">
+                                <span class="text-fuchsia-400 pt-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4v7h7"/><path d="M13 13l9 9"/></svg>
+                                </span>
+                                <div>
+                                    <p class="font-semibold text-white">Verified Non-Profit Organizer</p>
+                                    <p class="text-sm text-gray-400">Experience in structured advocacy and resource management for public good.</p>
+                                </div>
+                            </div>
 
-/* Footer Mission Points */
-.mission-points {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
-    font-size: 0.95em;
-    color: var(--color-text-muted);
-    margin-top: auto; /* Push to the bottom */
-}
+                            <!-- Skill 2: Anti-Extortion Enthusiast -->
+                            <div class="flex items-start space-x-4">
+                                <span class="text-fuchsia-400 pt-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                </span>
+                                <div>
+                                    <p class="font-semibold text-white">Anti-Extortion Specialist</p>
+                                    <p class="text-sm text-gray-400">Dedicated to threat assessment, negotiation strategy, and digital defense.</p>
+                                </div>
+                            </div>
 
-.point-item {
-    display: flex;
-    align-items: center;
-}
+                            <!-- Skill 3: Public & Private Sector Employee -->
+                            <div class="flex items-start space-x-4">
+                                <span class="text-fuchsia-400 pt-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5L12 2z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                                </span>
+                                <div>
+                                    <p class="font-semibold text-white">Public & Private Sector Experience</p>
+                                    <p class="text-sm text-gray-400">Bridging the gap between government security protocols and corporate threat landscapes.</p>
+                                </div>
+                            </div>
 
-.dot {
-    height: 8px;
-    width: 8px;
-    background-color: var(--color-dot-green);
-    border-radius: 50%;
-    margin-right: 8px;
-    display: inline-block;
-}
+                            <!-- Skill 4: OSINT Enthusiast -->
+                            <div class="flex items-start space-x-4">
+                                <span class="text-fuchsia-400 pt-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                </span>
+                                <div>
+                                    <p class="font-semibold text-white">Advanced OSINT Practitioner</p>
+                                    <p class="text-sm text-gray-400">Mastery of open-source intelligence gathering for threat identification and tracing.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <!-- END TEAM VIEW -->
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .main-title {
-        font-size: 3em;
-    }
+        <!-- REPORT FORM VIEW -->
+        <div id="report-view" class="view hidden">
+             <h2 class="text-5xl font-extrabold mb-8 text-fuchsia-400">Submit an Exploitation Report</h2>
+             
+             <!-- Back Button -->
+            <button onclick="showView('home')" class="mb-12 flex items-center justify-center mx-auto space-x-2 px-8 py-3 text-sm text-white bg-gray-800 rounded-lg hover:bg-gray-700 transition duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Return to Dashboard</span>
+            </button>
 
-    .mission-statement {
-        font-size: 1em;
-        padding: 0 10px;
-    }
+            <!-- Report Form Container -->
+            <!-- Adding a loader to handle the async email request -->
+            <div id="report-form-container" class="bg-gray-900 p-8 md:p-12 rounded-xl max-w-2xl mx-auto shadow-2xl border border-fuchsia-800/50 text-left relative">
+                <form id="report-form" onsubmit="handleSubmitReport(event)">
+                    
+                    <p class="text-2xl font-bold text-fuchsia-300 mb-2">CONFIDENTIAL REPORTING INTERFACE</p>
+                    <p class="text-md text-gray-400 mb-8">All submissions are end-to-end encrypted and anonymous.</p>
 
-    .cta-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
+                    <!-- NEW INPUT GROUP: Crime Type Dropdown -->
+                    <div class="mb-6">
+                        <label for="crimeType" class="block text-sm font-medium text-gray-300 mb-2">Type of Cybercrime (Required)</label>
+                        <select id="crimeType" name="crimeType" required
+                                class="w-full p-3 rounded-lg bg-gray-950 border border-gray-700 focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 text-white transition duration-200 appearance-none">
+                            <option value="" disabled selected>Select the type of incident</option>
+                            <option value="Blackmail / Extortion / Exploitation">Blackmail / Extortion / Exploitation</option>
+                            <option value="CSAM / CP / Child Sexual Exploitation">CSAM / CP / Child Sexual Exploitation</option>
+                            <option value="Scam / Fraud / Financial Dispute">Scam / Fraud / Financial Dispute</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <!-- END NEW INPUT GROUP -->
 
-    .cta-buttons a {
-        width: 80%;
-        max-width: 300px;
-    }
+                    <!-- Input Group: Threat Actor Alias -->
+                    <div class="mb-6">
+                        <label for="actorAlias" class="block text-sm font-medium text-gray-300 mb-2">Threat Actor's Username/Alias (Required)</label>
+                        <input type="text" id="actorAlias" name="actorAlias" required placeholder="e.g., @cyberbully404, TheHackerGroup"
+                               class="w-full p-3 rounded-lg bg-gray-950 border border-gray-700 focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 text-white transition duration-200">
+                    </div>
 
-    .mission-points {
-        gap: 15px;
-        flex-direction: column;
-        margin-top: 40px;
-    }
-}
+                    <!-- Input Group: What They Did (Details) -->
+                    <div class="mb-6">
+                        <label for="details" class="block text-sm font-medium text-gray-300 mb-2">Incident Details: Describe what they did (Required)</label>
+                        <textarea id="details" name="details" rows="6" required placeholder="Provide a detailed, chronological description of the threat, blackmail, or exploitation."
+                                  class="w-full p-3 rounded-lg bg-gray-950 border border-gray-700 focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 text-white transition duration-200"></textarea>
+                    </div>
+
+                    <!-- Input Group: Evidence Attachment -->
+                    <div class="mb-6">
+                        <label for="evidence" class="block text-sm font-medium text-gray-300 mb-2">Evidence (Screenshots, Video, etc.)</label>
+                        <!-- Note: The file input is here for completeness. EmailJS and standard email protocols are not designed for large file attachments. -->
+                        <input type="file" id="evidence" name="evidence" multiple accept="image/*,video/*"
+                               class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-fuchsia-900/50 file:text-fuchsia-300 hover:file:bg-fuchsia-800/70 cursor-pointer transition duration-200">
+                        <p class="text-xs text-gray-500 mt-1">Note: Attachments are logged but not sent via EmailJS due to size limitations. You will be contacted for transfer.</p>
+                    </div>
+                    
+                    <!-- Input Group: Reporter Email -->
+                    <div class="mb-8">
+                        <label for="reporterEmail" class="block text-sm font-medium text-gray-300 mb-2">Your Contact Email (Required for case ID)</label>
+                        <input type="email" id="reporterEmail" name="reporterEmail" required placeholder="your.email@example.com"
+                               class="w-full p-3 rounded-lg bg-gray-950 border border-gray-700 focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 text-white transition duration-200">
+                        <p class="text-xs text-gray-500 mt-1">This email will receive your case ID and is kept strictly confidential.</p>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="submit-btn" class="w-full py-3 text-lg font-bold text-white rounded-xl shadow-xl transition duration-300 ease-in-out transform hover:scale-[1.005]
+                                   bg-gradient-to-r from-fuchsia-600 to-purple-800 border-b-4 border-fuchsia-900 active:border-b-0">
+                        SUBMIT CONFIDENTIAL REPORT
+                    </button>
+                </form>
+                 <!-- Loader Overlay -->
+                <div id="loader" class="absolute inset-0 bg-gray-900/80 backdrop-blur-sm flex items-center justify-center rounded-xl hidden">
+                    <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-fuchsia-500"></div>
+                </div>
+            </div>
+            <!-- END Report Form Container -->
+        </div>
+        <!-- END REPORT VIEW -->
+
+    </div>
+
+    <script>
+        // --- EmailJS Configuration ---
+        // PUBLIC KEY is used for all client-side operations (initialization and sending).
+        // The Private Key (Access Token) is NOT included here for security purposes.
+        const SERVICE_ID = 'service_15g2vjg'; 
+        const TEMPLATE_ID_REPORTER = 'template_69qt202'; 
+        const TEMPLATE_ID_INVESTIGATOR = 'template_69qt202'; 
+        const PUBLIC_KEY = 'wl725MgdSJtyc1Fen'; 
+        
+        const INVESTIGATOR_EMAIL = "intelguard@fbi.one"; // Target investigator email
+
+        // Initialize EmailJS (call this once on load)
+        emailjs.init(PUBLIC_KEY);
+
+        // --- Utility Functions ---
+
+        // Generates a random alphanumeric case number
+        function generateCaseNumber() {
+            const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let result = '';
+            for (let i = 0; i < 6; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return `CYBER-RPT-${result}`;
+        }
+        
+        // Displays a message in the report form container (success or failure)
+        function displayMessage(isSuccess, caseNumber, reporterEmail, errorMessage) {
+            const formContainer = document.getElementById('report-form-container');
+            const icon = isSuccess 
+                ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-green-400 mb-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>'
+                : '<svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-500 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+
+            const title = isSuccess ? 'Report Submitted Successfully!' : 'Submission Failed';
+            const primaryText = isSuccess 
+                ? 'Your confidential report has been securely logged and is pending review.'
+                : 'There was an error sending the report. Please try again.';
+            
+            const caseBlock = isSuccess ? `
+                <div class="inline-block p-4 bg-gray-800 rounded-xl mb-6 shadow-lg">
+                    <p class="text-sm text-fuchsia-400 font-semibold mb-1 uppercase">Your Secure Case Number</p>
+                    <code class="text-3xl font-mono text-white tracking-widest">${caseNumber}</code>
+                </div>
+                <p class="text-gray-400 mb-4">A confirmation email with this ID was sent to: <span class="text-white font-semibold">${reporterEmail}</span></p>
+            ` : `<p class="text-red-300 font-mono text-sm break-words mt-4">${errorMessage}</p>`;
+
+            // Store original HTML before replacing it for submission confirmation
+            if (!formContainer.dataset.originalHtml) {
+                formContainer.dataset.originalHtml = formContainer.innerHTML;
+            }
+            
+            formContainer.innerHTML = `
+                <div class="p-8 text-center">
+                    ${icon}
+                    <h3 class="text-3xl font-bold ${isSuccess ? 'text-fuchsia-300' : 'text-red-400'} mb-4">${title}</h3>
+                    <p class="text-gray-400 mb-6">${primaryText}</p>
+                    ${caseBlock}
+                    <button onclick="showView('home')" class="mt-8 px-8 py-3 bg-fuchsia-700 rounded-lg font-bold text-white hover:bg-fuchsia-600 transition duration-300">Return to Home</button>
+                </div>
+            `;
+        }
+
+        // Toggles the visibility of the loader overlay
+        function toggleLoader(show) {
+            document.getElementById('loader').classList.toggle('hidden', !show);
+            document.getElementById('submit-btn').disabled = show;
+        }
+
+
+        // --- Report Form Submission Handler ---
+        async function handleSubmitReport(event) {
+            event.preventDefault(); 
+            
+            const form = document.getElementById('report-form');
+            const formData = new FormData(form);
+            
+            const reporterEmail = formData.get('reporterEmail');
+
+            if (!reporterEmail) {
+                console.error("Validation Error: Reporter email field is empty.");
+                // Use the updated displayMessage with an explicit error
+                return displayMessage(false, null, null, 'The reporter email field must be filled out to submit the report.');
+            }
+            
+            const caseNumber = generateCaseNumber();
+
+            // 1. Create a base set of parameters (template data fields).
+            const templateParams = {
+                case_number: caseNumber,
+                reporter_contact_email: reporterEmail, // For display in email body
+                actor_alias: formData.get('actorAlias') || 'N/A',
+                crime_type: formData.get('crimeType') || 'N/A',
+                incident_details: formData.get('details') || '',
+                investigator_target_email: INVESTIGATOR_EMAIL // For display in email body
+            };
+
+            // Start loading state
+            toggleLoader(true);
+
+            try {
+                // 1. Send confirmation email TO THE REPORTER
+                // Use the dedicated 'to' parameter for dynamic recipient
+                const reporterEmailSendObject = {
+                    ...templateParams,
+                    to: reporterEmail 
+                };
+                
+                console.log("Attempting to send confirmation to reporter with params:", reporterEmailSendObject);
+                await emailjs.send(SERVICE_ID, TEMPLATE_ID_REPORTER, reporterEmailSendObject, PUBLIC_KEY);
+                console.log(`Confirmation email successfully sent to reporter: ${reporterEmail}`);
+
+                // 2. Send full report email TO THE INVESTIGATOR
+                // Use the dedicated 'to' parameter for the static investigator email
+                const investigatorEmailSendObject = {
+                    ...templateParams,
+                    to: INVESTIGATOR_EMAIL
+                };
+                
+                console.log("Attempting to send report to investigator with params:", investigatorEmailSendObject);
+                await emailjs.send(SERVICE_ID, TEMPLATE_ID_INVESTIGATOR, investigatorEmailSendObject, PUBLIC_KEY);
+                console.log(`Report successfully sent to investigator: ${INVESTIGATOR_EMAIL}`);
+
+
+                // SUCCESS: Display confirmation
+                displayMessage(true, caseNumber, reporterEmail);
+
+            } catch (error) {
+                // FAILURE: Display error message
+                console.error("Email Sending Failed:", error);
+
+                // Provide helpful error messages based on status code
+                let userFriendlyError = "Could not connect to the reporting service. Please check console for details.";
+                if (error.status === 400) {
+                     userFriendlyError = "Configuration Error: Check your EmailJS Service ID, Template ID, and Public Key for typos.";
+                } else if (error.status === 422) {
+                     userFriendlyError = "Email Routing Error: Recipient email is missing. Double-check your EmailJS template settings, although the code now provides explicit recipients.";
+                }
+
+                displayMessage(false, caseNumber, reporterEmail, userFriendlyError);
+
+            } finally {
+                // Stop loading state
+                toggleLoader(false);
+            }
+        }
+
+        // --- View Management and Matrix Animation (Remaining unchanged) ---
+        function showView(viewId) {
+            const views = document.querySelectorAll('.view');
+            views.forEach(view => {
+                view.classList.add('hidden');
+                view.style.opacity = 0;
+            });
+
+            const targetView = document.getElementById(viewId + '-view');
+            if (targetView) {
+                targetView.classList.remove('hidden');
+                void targetView.offsetWidth; 
+                targetView.style.opacity = 1;
+                window.scrollTo(0, 0);
+
+                if (viewId === 'team') {
+                    startMatrixAnimation();
+                } else if (viewId === 'report') {
+                    const formContainer = document.getElementById('report-form-container');
+                    if (formContainer && formContainer.dataset.originalHtml) {
+                         formContainer.innerHTML = formContainer.dataset.originalHtml;
+                    }
+                }
+            }
+        }
+
+        let canvas, ctx, matrix, columns, dropY;
+        const font_size = 18;
+        const char_set = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+{}[]\\|:;\"'<>,.?/~`";
+        const char_array = char_set.split("");
+
+        function setupMatrix() {
+            const card = document.getElementById('profile-card');
+            canvas = document.getElementById('matrix-background');
+            
+            if (!card || !canvas) return;
+
+            canvas.width = card.offsetWidth;
+            canvas.height = card.offsetHeight;
+            
+            ctx = canvas.getContext('2d');
+            columns = canvas.width / font_size;
+            
+            dropY = [];
+            for(let i = 0; i < columns; i++) {
+                dropY[i] = 1;
+            }
+
+            if (!matrix) {
+                matrix = setInterval(drawMatrix, 50);
+            }
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#a855f7';
+            ctx.font = font_size + 'px monospace';
+
+            for(let i = 0; i < dropY.length; i++) {
+                const text = char_array[Math.floor(Math.random() * char_array.length)];
+                const x = i * font_size;
+                const y = dropY[i] * font_size;
+
+                ctx.fillText(text, x, y);
+
+                if (y > canvas.height && Math.random() > 0.975) {
+                    dropY[i] = 0;
+                }
+                
+                dropY[i]++;
+            }
+        }
+        
+        function startMatrixAnimation() {
+            if (matrix) {
+                clearInterval(matrix);
+                matrix = null;
+            }
+            setTimeout(setupMatrix, 100); 
+        }
+
+        window.addEventListener('resize', () => {
+            if (document.getElementById('team-view') && !document.getElementById('team-view').classList.contains('hidden')) {
+                 startMatrixAnimation();
+            }
+        });
+
+
+        // Initialize the app to show the home view on load
+        window.onload = () => {
+             showView('home');
+        };
+    </script>
+
+</body>
+</html>
