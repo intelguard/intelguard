@@ -6,8 +6,6 @@
     <title>Stop Extortion | Report Exploitation</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load EmailJS SDK for actual email sending -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
     <!-- Use Inter font family -->
     <style>
@@ -28,7 +26,7 @@
             from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* Custom class for the card container (now relies on Canvas for background) */
+        /* Custom class for the card container */
         .profile-card-bg {
             background: #000000; /* Fallback/base color */
             box-shadow: 0 10px 30px rgba(109, 40, 217, 0.2);
@@ -40,7 +38,7 @@
             transform: translateY(-2px);
         }
         /* Style for the Matrix background canvas */
-        #matrix-background {
+        .matrix-canvas {
             filter: blur(0.5px);
         }
     </style>
@@ -73,8 +71,8 @@
 
             <!-- Call-to-Action Buttons -->
             <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-16">
-                <!-- Primary Button (Submit Report) - Added strong glow/shadow -->
-                <button onclick="showView('report')" class="flex items-center justify-center space-x-2 px-10 py-4 text-lg font-bold text-white rounded-xl shadow-xl transition duration-300 ease-in-out transform hover:scale-[1.03] hover:shadow-fuchsia-600/50
+                <!-- Primary Button (Submit Report) - NOW redirects to Instructions View -->
+                <button onclick="showView('instructions')" class="flex items-center justify-center space-x-2 px-10 py-4 text-lg font-bold text-white rounded-xl shadow-xl transition duration-300 ease-in-out transform hover:scale-[1.03] hover:shadow-fuchsia-600/50
                                bg-gradient-to-r from-fuchsia-600 to-purple-800 border-b-4 border-fuchsia-900 active:border-b-0">
                     <span>SUBMIT CONFIDENTIAL REPORT</span>
                     <!-- Right Arrow SVG -->
@@ -108,6 +106,82 @@
         </div>
         <!-- END HOME VIEW -->
 
+        <!-- INSTRUCTIONS VIEW (New View) -->
+        <div id="instructions-view" class="view hidden">
+            <h2 class="text-5xl font-extrabold mb-4 text-fuchsia-400">Secure Reporting Guidelines</h2>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-10 font-light">
+                Follow these critical steps to ensure your report is handled quickly and effectively by the cybercrime response team.
+            </p>
+
+             <!-- Back Button -->
+            <button onclick="showView('home')" class="mb-12 flex items-center justify-center mx-auto space-x-2 px-8 py-3 text-sm text-white bg-gray-800 rounded-lg hover:bg-gray-700 transition duration-300">
+                <!-- Back Arrow SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Return to Dashboard</span>
+            </button>
+
+
+            <!-- Report Card Container -->
+            <div id="report-card" class="max-w-3xl mx-auto profile-card-bg rounded-3xl p-8 md:p-10 relative overflow-hidden text-left">
+                
+                <!-- Matrix Canvas Background for Instructions -->
+                <canvas id="matrix-background-instructions" class="absolute inset-0 z-0 matrix-canvas"></canvas>
+
+                <!-- Content (z-index 10) -->
+                <div class="relative z-10 space-y-6">
+                
+                    <h3 class="text-3xl font-bold text-fuchsia-300 border-b border-fuchsia-900/50 pb-4">MANDATORY REPORT FORMAT</h3>
+
+                    <!-- Instruction 1: Actor Alias -->
+                    <div class="border-l-4 border-fuchsia-600 pl-4 p-3 rounded-tr-xl rounded-br-xl bg-black/50 transition duration-300 hover:bg-black/70">
+                        <p class="text-xl font-semibold text-white mb-1">1. Threat Actor's Usernames/Aliases</p>
+                        <p class="text-gray-400">List <span class="font-bold italic text-fuchsia-300">all</span> names, handles, IDs, or accounts used by the threat actor (e.g., Discord ID, Instagram Handle, Telegram Username, email address).</p>
+                        <code class="block mt-3 p-2 bg-gray-950/70 text-fuchsia-300 rounded-lg text-sm">Example: @dark_user, TheHackerGroup, JohnDoe@protonmail.com</code>
+                    </div>
+
+                    <!-- Instruction 2: Incident Summary (What) -->
+                    <div class="border-l-4 border-fuchsia-600 pl-4 p-3 rounded-tr-xl rounded-br-xl bg-black/50 transition duration-300 hover:bg-black/70">
+                        <p class="text-xl font-semibold text-white mb-1">2. Incident Summary (The Core Action)</p>
+                        <p class="text-gray-400">Provide a concise, single-sentence summary of the incident. <span class="font-bold italic text-fuchsia-300">Do not</span> elaborate here.</p>
+                        <code class="block mt-3 p-2 bg-gray-950/70 text-fuchsia-300 rounded-lg text-sm">Example: Actor is threatening to release private photos unless $500 in crypto is sent.</code>
+                    </div>
+
+                    <!-- Instruction 3: Detailed Explanation (Why, When, How) -->
+                    <div class="border-l-4 border-fuchsia-600 pl-4 p-3 rounded-tr-xl rounded-br-xl bg-black/50 transition duration-300 hover:bg-black/70">
+                        <p class="text-xl font-semibold text-white mb-1">3. Detailed Explanation & Chronology</p>
+                        <p class="text-gray-400">Provide a chronological, in-depth account. Explain what happened, when it started, how they contacted you, the method of exploitation, and <span class="font-bold italic text-fuchsia-300">why</span> you believe they targeted you or how they obtained the compromising material.</p>
+                    </div>
+
+                    <!-- Instruction 4: Evidence Attachment -->
+                    <div class="border-l-4 border-fuchsia-600 pl-4 p-3 rounded-tr-xl rounded-br-xl bg-black/50 transition duration-300 hover:bg-black/70">
+                        <p class="text-xl font-semibold text-white mb-1">4. Secure Evidence Attachment (CRITICAL)</p>
+                        <p class="text-gray-300"><span class="font-bold italic text-fuchsia-300">You MUST attach all evidence directly to the email.</span></p>
+                        <ul class="list-disc list-inside text-gray-400 ml-4 mt-3 space-y-1">
+                            <li>Screenshots of chat logs and threats.</li>
+                            <li>Video clips (if applicable).</li>
+                            <li>Transaction IDs (if payment was attempted).</li>
+                            <li>Ensure screenshots show dates/times and platform usernames.</li>
+                        </ul>
+                    </div>
+                    
+                    <hr class="border-fuchsia-900/50 mt-8">
+
+                    <div class="text-center pt-4">
+                        <p class="text-lg text-fuchsia-300 font-bold mb-4">Ready to Submit?</p>
+                        <!-- Final Button - Calls the mailto link in a new window/tab, text updated -->
+                        <button onclick="openMailClient()" class="w-full py-4 text-xl font-bold text-white rounded-xl shadow-xl transition duration-300 ease-in-out transform hover:scale-[1.01] hover:shadow-fuchsia-600/50
+                                    bg-gradient-to-r from-fuchsia-600 to-purple-800 border-b-4 border-fuchsia-900 active:border-b-0 flex items-center justify-center space-x-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                            <span>LAUNCH EMAIL CLIENT</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- END INSTRUCTIONS VIEW -->
 
         <!-- TEAM VIEW (Professional Profile Card) -->
         <div id="team-view" class="view hidden">
@@ -128,7 +202,7 @@
                 <div id="profile-card" class="p-10 rounded-3xl profile-card-bg max-w-lg w-full relative overflow-hidden">
                     
                     <!-- Matrix Canvas Background (Positioned absolutely behind content) -->
-                    <canvas id="matrix-background" class="absolute inset-0 z-0"></canvas>
+                    <canvas id="matrix-background-team" class="absolute inset-0 z-0 matrix-canvas"></canvas>
                     
                     <!-- Content (z-index 10) -->
                     <div class="relative z-10">
@@ -179,8 +253,8 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5L12 2z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
                                 </span>
                                 <div>
-                                    <p class="font-semibold text-white">Public & Private Sector Employee</p>
-                                    <p class="text-sm text-gray-400">Bridging the gap between government security protocols and corporate threat landscapes working for the government.</p>
+                                    <p class="font-semibold text-white">Public & Private Sector Experience</p>
+                                    <p class="text-sm text-gray-400">Bridging the gap between government security protocols and corporate threat landscapes.</p>
                                 </div>
                             </div>
 
@@ -190,7 +264,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                                 </span>
                                 <div>
-                                    <p class="font-semibold text-white">Advanced OSINT Enthusiast</p>
+                                    <p class="font-semibold text-white">Advanced OSINT Practitioner</p>
                                     <p class="text-sm text-gray-400">Mastery of open-source intelligence gathering for threat identification and tracing.</p>
                                 </div>
                             </div>
@@ -201,236 +275,113 @@
             
         </div>
         <!-- END TEAM VIEW -->
-
-        <!-- REPORT FORM VIEW -->
-        <div id="report-view" class="view hidden">
-             <h2 class="text-5xl font-extrabold mb-8 text-fuchsia-400">Submit an Exploitation Report</h2>
-             
-             <!-- Back Button -->
-            <button onclick="showView('home')" class="mb-12 flex items-center justify-center mx-auto space-x-2 px-8 py-3 text-sm text-white bg-gray-800 rounded-lg hover:bg-gray-700 transition duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                <span>Return to Dashboard</span>
-            </button>
-
-            <!-- Report Form Container -->
-            <!-- Adding a loader to handle the async email request -->
-            <div id="report-form-container" class="bg-gray-900 p-8 md:p-12 rounded-xl max-w-2xl mx-auto shadow-2xl border border-fuchsia-800/50 text-left relative">
-                <form id="report-form" onsubmit="handleSubmitReport(event)">
-                    
-                    <p class="text-2xl font-bold text-fuchsia-300 mb-2">CONFIDENTIAL REPORTING INTERFACE</p>
-                    <p class="text-md text-gray-400 mb-8">All submissions are end-to-end encrypted and anonymous.</p>
-
-                    <!-- NEW INPUT GROUP: Crime Type Dropdown -->
-                    <div class="mb-6">
-                        <label for="crimeType" class="block text-sm font-medium text-gray-300 mb-2">Type of Cybercrime (Required)</label>
-                        <select id="crimeType" name="crimeType" required
-                                class="w-full p-3 rounded-lg bg-gray-950 border border-gray-700 focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 text-white transition duration-200 appearance-none">
-                            <option value="" disabled selected>Select the type of incident</option>
-                            <option value="Blackmail / Extortion / Exploitation">Blackmail / Extortion / Exploitation</option>
-                            <option value="CSAM / CP / Child Sexual Exploitation">CSAM / CP / Child Sexual Exploitation</option>
-                            <option value="Scam / Fraud / Financial Dispute">Scam / Fraud / Financial Dispute</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <!-- END NEW INPUT GROUP -->
-
-                    <!-- Input Group: Threat Actor Alias -->
-                    <div class="mb-6">
-                        <label for="actorAlias" class="block text-sm font-medium text-gray-300 mb-2">Threat Actor's Username/Alias (Required)</label>
-                        <input type="text" id="actorAlias" name="actorAlias" required placeholder="e.g., @cyberbully404, TheHackerGroup"
-                               class="w-full p-3 rounded-lg bg-gray-950 border border-gray-700 focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 text-white transition duration-200">
-                    </div>
-
-                    <!-- Input Group: What They Did (Details) -->
-                    <div class="mb-6">
-                        <label for="details" class="block text-sm font-medium text-gray-300 mb-2">Incident Details: Describe what they did (Required)</label>
-                        <textarea id="details" name="details" rows="6" required placeholder="Provide a detailed, chronological description of the threat, blackmail, or exploitation."
-                                  class="w-full p-3 rounded-lg bg-gray-950 border border-gray-700 focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 text-white transition duration-200"></textarea>
-                    </div>
-
-                    <!-- Input Group: Evidence Attachment -->
-                    <div class="mb-6">
-                        <label for="evidence" class="block text-sm font-medium text-gray-300 mb-2">Evidence (Screenshots, Video, etc.)</label>
-                        <!-- Note: The file input is here for completeness. EmailJS and standard email protocols are not designed for large file attachments. -->
-                        <input type="file" id="evidence" name="evidence" multiple accept="image/*,video/*"
-                               class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-fuchsia-900/50 file:text-fuchsia-300 hover:file:bg-fuchsia-800/70 cursor-pointer transition duration-200">
-                        <p class="text-xs text-gray-500 mt-1">Note: Attachments are logged but not sent via EmailJS due to size limitations. You will be contacted for transfer.</p>
-                    </div>
-                    
-                    <!-- Input Group: Reporter Email -->
-                    <div class="mb-8">
-                        <label for="reporterEmail" class="block text-sm font-medium text-gray-300 mb-2">Your Contact Email (Required for case ID)</label>
-                        <input type="email" id="reporterEmail" name="reporterEmail" required placeholder="your.email@example.com"
-                               class="w-full p-3 rounded-lg bg-gray-950 border border-gray-700 focus:border-fuchsia-500 focus:ring-1 focus:ring-fuchsia-500 text-white transition duration-200">
-                        <p class="text-xs text-gray-500 mt-1">This email will receive your case ID and is kept strictly confidential.</p>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <button type="submit" id="submit-btn" class="w-full py-3 text-lg font-bold text-white rounded-xl shadow-xl transition duration-300 ease-in-out transform hover:scale-[1.005]
-                                   bg-gradient-to-r from-fuchsia-600 to-purple-800 border-b-4 border-fuchsia-900 active:border-b-0">
-                        SUBMIT CONFIDENTIAL REPORT
-                    </button>
-                </form>
-                 <!-- Loader Overlay -->
-                <div id="loader" class="absolute inset-0 bg-gray-900/80 backdrop-blur-sm flex items-center justify-center rounded-xl hidden">
-                    <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-fuchsia-500"></div>
-                </div>
-            </div>
-            <!-- END Report Form Container -->
-        </div>
-        <!-- END REPORT VIEW -->
+        
 
     </div>
 
     <script>
-        // --- EmailJS Configuration ---
-        // PUBLIC KEY is used for all client-side operations (initialization and sending).
-        // The Private Key (Access Token) is NOT included here for security purposes.
-        const SERVICE_ID = 'service_15g2vjg'; 
-        const TEMPLATE_ID_REPORTER = 'template_69qt202'; 
-        const TEMPLATE_ID_INVESTIGATOR = 'template_69qt202'; 
-        const PUBLIC_KEY = 'wl725MgdSJtyc1Fen'; 
         
-        const INVESTIGATOR_EMAIL = "intelguard@fbi.one"; // Target investigator email
+        // --- Mailto Link Launcher Function (now opens a new external window) ---
+        function openMailClient() {
+            const recipient = 'intelguard@fbi.one';
+            const subject = encodeURIComponent('CYBERCRIME REPORT - URGENT');
+            const bodyText = `
+**--- CONFIDENTIAL REPORT DETAILS ---**
 
-        // Initialize EmailJS (call this once on load)
-        emailjs.init(PUBLIC_KEY);
+1. Threat Actor's Username/Alias (e.g., @dark_user, TheHackerGroup): 
+[ENTER THREAT ACTOR'S USERNAME/ALIAS HERE]
 
-        // --- Utility Functions ---
+2. Incident Summary (What did they do?): 
+[ENTER SHORT SUMMARY OF THE INCIDENT HERE]
 
-        // Generates a random alphanumeric case number
-        function generateCaseNumber() {
-            const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            let result = '';
-            for (let i = 0; i < 6; i++) {
-                result += characters.charAt(Math.floor(Math.random() * characters.length));
-            }
-            return `CYBER-RPT-${result}`;
-        }
-        
-        // Displays a message in the report form container (success or failure)
-        function displayMessage(isSuccess, caseNumber, reporterEmail, errorMessage) {
-            const formContainer = document.getElementById('report-form-container');
-            const icon = isSuccess 
-                ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-green-400 mb-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>'
-                : '<svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-red-500 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+3. Detailed Explanation (What happened, when, and why? Include chronology, details on the exploitation, and all relevant facts): 
+[ENTER DEEPER EXPLANATION HERE]
 
-            const title = isSuccess ? 'Report Submitted Successfully!' : 'Submission Failed';
-            const primaryText = isSuccess 
-                ? 'Your confidential report has been securely logged and is pending review.'
-                : 'There was an error sending the report. Please try again.';
+4. Evidence (Required): 
+[NOTE: Attach all relevant files (screenshots, videos, logs) directly to this email for secure transfer. Do NOT paste images into the email body.]
+
+5. Your Contact Email (Optional, but recommended for follow-up and receiving case updates): 
+[ENTER YOUR CONTACT EMAIL HERE]
+
+**---------------------------------------**
+`;
+            // Encode the subject and body to handle spaces and special characters correctly in the mailto link
+            const body = encodeURIComponent(bodyText.trim());
+            const mailtoLink = `mailto:${recipient}?subject=${subject}&body=${body}`;
             
-            const caseBlock = isSuccess ? `
-                <div class="inline-block p-4 bg-gray-800 rounded-xl mb-6 shadow-lg">
-                    <p class="text-sm text-fuchsia-400 font-semibold mb-1 uppercase">Your Secure Case Number</p>
-                    <code class="text-3xl font-mono text-white tracking-widest">${caseNumber}</code>
-                </div>
-                <p class="text-gray-400 mb-4">A confirmation email with this ID was sent to: <span class="text-white font-semibold">${reporterEmail}</span></p>
-            ` : `<p class="text-red-300 font-mono text-sm break-words mt-4">${errorMessage}</p>`;
-
-            // Store original HTML before replacing it for submission confirmation
-            if (!formContainer.dataset.originalHtml) {
-                formContainer.dataset.originalHtml = formContainer.innerHTML;
-            }
-            
-            formContainer.innerHTML = `
-                <div class="p-8 text-center">
-                    ${icon}
-                    <h3 class="text-3xl font-bold ${isSuccess ? 'text-fuchsia-300' : 'text-red-400'} mb-4">${title}</h3>
-                    <p class="text-gray-400 mb-6">${primaryText}</p>
-                    ${caseBlock}
-                    <button onclick="showView('home')" class="mt-8 px-8 py-3 bg-fuchsia-700 rounded-lg font-bold text-white hover:bg-fuchsia-600 transition duration-300">Return to Home</button>
-                </div>
-            `;
-        }
-
-        // Toggles the visibility of the loader overlay
-        function toggleLoader(show) {
-            document.getElementById('loader').classList.toggle('hidden', !show);
-            document.getElementById('submit-btn').disabled = show;
+            // Using window.open allows the current instructions page to remain visible 
+            // while the email client is launched (this is the closest equivalent to opening a 'new tab' for an external app).
+            window.open(mailtoLink, '_blank'); 
         }
 
 
-        // --- Report Form Submission Handler ---
-        async function handleSubmitReport(event) {
-            event.preventDefault(); 
-            
-            const form = document.getElementById('report-form');
-            const formData = new FormData(form);
-            
-            const reporterEmail = formData.get('reporterEmail');
+        // --- Matrix Animation Logic ---
+        let matrixInterval = null; // Stores the current interval ID
 
-            if (!reporterEmail) {
-                console.error("Validation Error: Reporter email field is empty.");
-                // Use the updated displayMessage with an explicit error
-                return displayMessage(false, null, null, 'The reporter email field must be filled out to submit the report.');
+        // Entry point for starting the animation on a specific view
+        function startMatrixAnimation(cardId, canvasId) {
+            // Clear any existing animation interval
+            if (matrixInterval) {
+                clearInterval(matrixInterval);
+                matrixInterval = null;
             }
+            // Wait a moment for the card to be fully visible and rendered
+            setTimeout(() => setupMatrix(cardId, canvasId), 100); 
+        }
+
+        // Sets up and starts the matrix drawing loop
+        function setupMatrix(cardId, canvasId) {
+            const card = document.getElementById(cardId);
+            const canvas = document.getElementById(canvasId);
             
-            const caseNumber = generateCaseNumber();
+            if (!card || !canvas) return;
 
-            // 1. Create a base set of parameters (template data fields).
-            const templateParams = {
-                case_number: caseNumber,
-                reporter_contact_email: reporterEmail, // For display in email body
-                actor_alias: formData.get('actorAlias') || 'N/A',
-                crime_type: formData.get('crimeType') || 'N/A',
-                incident_details: formData.get('details') || '',
-                investigator_target_email: INVESTIGATOR_EMAIL // For display in email body
-            };
+            // Set canvas dimensions to match the card container size
+            canvas.width = card.offsetWidth;
+            canvas.height = card.offsetHeight;
+            
+            const ctx = canvas.getContext('2d');
+            const font_size = 18;
+            const columns = canvas.width / font_size;
+            
+            let dropY = [];
+            for(let i = 0; i < columns; i++) {
+                // Initialize drop starting position
+                dropY[i] = Math.floor(Math.random() * (canvas.height / font_size));
+            }
 
-            // Start loading state
-            toggleLoader(true);
+            const char_set = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+{}[]\\|:;\"'<>,.?/~`";
+            const char_array = char_set.split("");
 
-            try {
-                // 1. Send confirmation email TO THE REPORTER
-                // Use the dedicated 'to' parameter for dynamic recipient
-                const reporterEmailSendObject = {
-                    ...templateParams,
-                    to: reporterEmail 
-                };
-                
-                console.log("Attempting to send confirmation to reporter with params:", reporterEmailSendObject);
-                await emailjs.send(SERVICE_ID, TEMPLATE_ID_REPORTER, reporterEmailSendObject, PUBLIC_KEY);
-                console.log(`Confirmation email successfully sent to reporter: ${reporterEmail}`);
+            function drawMatrix() {
+                // Dim the screen/clear the previous frame slowly to create the trail effect
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; 
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                // 2. Send full report email TO THE INVESTIGATOR
-                // Use the dedicated 'to' parameter for the static investigator email
-                const investigatorEmailSendObject = {
-                    ...templateParams,
-                    to: INVESTIGATOR_EMAIL
-                };
-                
-                console.log("Attempting to send report to investigator with params:", investigatorEmailSendObject);
-                await emailjs.send(SERVICE_ID, TEMPLATE_ID_INVESTIGATOR, investigatorEmailSendObject, PUBLIC_KEY);
-                console.log(`Report successfully sent to investigator: ${INVESTIGATOR_EMAIL}`);
+                ctx.fillStyle = '#a855f7'; // Fuchsia/Purple color
+                ctx.font = font_size + 'px monospace';
 
+                for(let i = 0; i < dropY.length; i++) {
+                    const text = char_array[Math.floor(Math.random() * char_array.length)];
+                    const x = i * font_size;
+                    const y = dropY[i] * font_size;
 
-                // SUCCESS: Display confirmation
-                displayMessage(true, caseNumber, reporterEmail);
+                    ctx.fillText(text, x, y);
 
-            } catch (error) {
-                // FAILURE: Display error message
-                console.error("Email Sending Failed:", error);
-
-                // Provide helpful error messages based on status code
-                let userFriendlyError = "Could not connect to the reporting service. Please check console for details.";
-                if (error.status === 400) {
-                     userFriendlyError = "Configuration Error: Check your EmailJS Service ID, Template ID, and Public Key for typos.";
-                } else if (error.status === 422) {
-                     userFriendlyError = "Email Routing Error: Recipient email is missing. Double-check your EmailJS template settings, although the code now provides explicit recipients.";
+                    // Reset column drop position if it goes off screen (with a probability)
+                    if (y * font_size > canvas.height && Math.random() > 0.975) {
+                        dropY[i] = 0;
+                    }
+                    
+                    dropY[i]++;
                 }
-
-                displayMessage(false, caseNumber, reporterEmail, userFriendlyError);
-
-            } finally {
-                // Stop loading state
-                toggleLoader(false);
             }
+
+            // Start the interval and save the ID
+            matrixInterval = setInterval(drawMatrix, 50);
         }
 
-        // --- View Management and Matrix Animation (Remaining unchanged) ---
+        // Handles view switching and triggers the matrix animation if needed
         function showView(viewId) {
             const views = document.querySelectorAll('.view');
             views.forEach(view => {
@@ -446,78 +397,29 @@
                 window.scrollTo(0, 0);
 
                 if (viewId === 'team') {
-                    startMatrixAnimation();
-                } else if (viewId === 'report') {
-                    const formContainer = document.getElementById('report-form-container');
-                    if (formContainer && formContainer.dataset.originalHtml) {
-                         formContainer.innerHTML = formContainer.dataset.originalHtml;
-                    }
+                    // Start matrix for Team view
+                    startMatrixAnimation('profile-card', 'matrix-background-team');
+                } else if (viewId === 'instructions') {
+                    // Start matrix for Instructions view
+                    startMatrixAnimation('report-card', 'matrix-background-instructions');
                 }
-            }
-        }
-
-        let canvas, ctx, matrix, columns, dropY;
-        const font_size = 18;
-        const char_set = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+{}[]\\|:;\"'<>,.?/~`";
-        const char_array = char_set.split("");
-
-        function setupMatrix() {
-            const card = document.getElementById('profile-card');
-            canvas = document.getElementById('matrix-background');
-            
-            if (!card || !canvas) return;
-
-            canvas.width = card.offsetWidth;
-            canvas.height = card.offsetHeight;
-            
-            ctx = canvas.getContext('2d');
-            columns = canvas.width / font_size;
-            
-            dropY = [];
-            for(let i = 0; i < columns; i++) {
-                dropY[i] = 1;
-            }
-
-            if (!matrix) {
-                matrix = setInterval(drawMatrix, 50);
-            }
-        }
-
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; 
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = '#a855f7';
-            ctx.font = font_size + 'px monospace';
-
-            for(let i = 0; i < dropY.length; i++) {
-                const text = char_array[Math.floor(Math.random() * char_array.length)];
-                const x = i * font_size;
-                const y = dropY[i] * font_size;
-
-                ctx.fillText(text, x, y);
-
-                if (y > canvas.height && Math.random() > 0.975) {
-                    dropY[i] = 0;
-                }
-                
-                dropY[i]++;
             }
         }
         
-        function startMatrixAnimation() {
-            if (matrix) {
-                clearInterval(matrix);
-                matrix = null;
-            }
-            setTimeout(setupMatrix, 100); 
-        }
+        // Handle resizing to redraw the canvas correctly
+        function handleResize() {
+            const instructionsView = document.getElementById('instructions-view');
+            const teamView = document.getElementById('team-view');
 
-        window.addEventListener('resize', () => {
-            if (document.getElementById('team-view') && !document.getElementById('team-view').classList.contains('hidden')) {
-                 startMatrixAnimation();
+            if (instructionsView && !instructionsView.classList.contains('hidden')) {
+                // Re-start animation on instructions view
+                startMatrixAnimation('report-card', 'matrix-background-instructions');
+            } else if (teamView && !teamView.classList.contains('hidden')) {
+                // Re-start animation on team view
+                startMatrixAnimation('profile-card', 'matrix-background-team');
             }
-        });
+        }
+        window.addEventListener('resize', handleResize);
 
 
         // Initialize the app to show the home view on load
