@@ -3,88 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IntelGuard | Protecting the Vulnerable</title>
+    <title>IntelGuard | Law Enforcement Based Non-Profit</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .hero-gradient {
-            background: radial-gradient(circle at top right, #e0f2fe, #f8fafc);
+        :root {
+            --brand-blue: #2563eb;
+            --deep-navy: #0f172a;
+            --soft-blue: #f0f9ff;
         }
-        .smooth-transition { transition: all 0.3s ease; }
+
+        body { 
+            font-family: 'Lexend', sans-serif; 
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .nav-link { 
+            font-family: 'Inter', sans-serif; 
+            font-weight: 800;
+        }
+
+        /* Animated Background Canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(to bottom, #f0f9ff, #ffffff);
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(37, 99, 235, 0.1);
+        }
+
+        .hero-text-glow {
+            text-shadow: 0 0 20px rgba(37, 99, 235, 0.1);
+        }
+
+        .section-card {
+            background: white;
+            border: 1px solid rgba(37, 99, 235, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.05);
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900">
+<body class="text-slate-900">
 
-    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-blue-100">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <div class="text-2xl font-bold tracking-tight text-blue-700">
-                Intel<span class="text-slate-800">Guard</span>
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav">
+        <div class="max-w-7xl mx-auto px-6 h-24 flex flex-col justify-center items-center">
+            <div class="text-2xl font-black tracking-tighter text-blue-700 mb-2 uppercase italic">
+                Intel<span class="text-slate-900">Guard</span>
             </div>
-            <div class="hidden md:flex space-x-8 font-medium text-slate-600">
-                <a href="#about" class="hover:text-blue-600 smooth-transition">About Us</a>
-                <a href="#team" class="hover:text-blue-600 smooth-transition">Meet the Team</a>
-                <a href="#mission" class="hover:text-blue-600 smooth-transition">Our Mission</a>
-                <a href="#contact" class="px-5 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 smooth-transition">Contact Us</a>
+            <div class="flex space-x-10 text-xs uppercase tracking-widest font-bold text-slate-500">
+                <a href="#about" class="nav-link hover:text-blue-600 transition-colors">About Us</a>
+                <a href="#team" class="nav-link hover:text-blue-600 transition-colors">Meet the Team</a>
+                <a href="#mission" class="nav-link hover:text-blue-600 transition-colors">Our Mission</a>
+                <a href="#contact" class="nav-link hover:text-blue-600 transition-colors">Contact Us</a>
             </div>
         </div>
     </nav>
 
-    <section class="hero-gradient pt-40 pb-24 px-6">
-        <div class="max-w-5xl mx-auto text-center">
-            <span class="inline-block px-4 py-1.5 mb-6 text-sm font-semibold tracking-wide text-blue-700 uppercase bg-blue-100 rounded-full">
-                Law Enforcement Based Non-Profit
-            </span>
-            <h1 class="text-5xl md:text-7xl font-bold text-slate-900 mb-6 leading-tight">
-                Defending Childhood <br/>
-                <span class="text-blue-600">With Advanced Intelligence.</span>
+    <!-- Hero Section -->
+    <section class="relative pt-60 pb-32 px-6">
+        <div class="max-w-6xl mx-auto text-center">
+            <div class="inline-flex items-center px-4 py-2 mb-8 text-xs font-bold tracking-widest text-blue-700 uppercase bg-blue-50 border border-blue-100 rounded-lg">
+                <span class="w-2 h-2 bg-blue-600 rounded-full mr-3 animate-pulse"></span>
+                Authorized Law Enforcement Support
+            </div>
+            <h1 class="text-6xl md:text-8xl font-black text-slate-900 mb-8 tracking-tighter hero-text-glow">
+                ELIMINATING <br/>
+                <span class="text-blue-600 underline decoration-blue-200 underline-offset-8">EXPLOITATION.</span>
             </h1>
-            <p class="text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-                IntelGuard utilizes law-enforcement-grade strategies and specialized data insights to combat exploitation and secure a safer future for children worldwide.
+            <p class="text-xl md:text-2xl text-slate-500 mb-12 max-w-3xl mx-auto font-medium leading-relaxed">
+                A specialized non-profit intelligence unit dedicated to the identification, 
+                investigation, and eradication of child exploitation networks.
             </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="#mission" class="px-8 py-4 bg-blue-600 text-white font-bold rounded-xl shadow-lg shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 smooth-transition">
-                    Our Mission
+            <div class="flex flex-col sm:flex-row justify-center gap-6">
+                <a href="#contact" class="px-10 py-5 bg-blue-600 text-white font-black rounded-2xl shadow-xl shadow-blue-200 hover:bg-blue-700 hover:scale-105 transition-all text-sm uppercase tracking-widest">
+                    Secure Report / Contact
                 </a>
-                <a href="#about" class="px-8 py-4 bg-white text-blue-700 font-bold rounded-xl border border-blue-100 hover:bg-blue-50 smooth-transition">
-                    Learn More
+                <a href="#mission" class="px-10 py-5 bg-white text-slate-900 font-black rounded-2xl border-2 border-slate-100 hover:border-blue-200 hover:bg-blue-50 transition-all text-sm uppercase tracking-widest">
+                    Our Operational Strategy
                 </a>
             </div>
         </div>
     </section>
 
-    <section id="about" class="py-24 max-w-7xl mx-auto px-6">
-        <div class="grid md:grid-cols-2 gap-16 items-center">
-            <div class="bg-blue-600 h-96 rounded-3xl shadow-2xl overflow-hidden flex items-center justify-center text-white italic">
-                [High-Quality Professional Image]
-            </div>
-            <div>
-                <h2 class="text-3xl font-bold mb-6">About IntelGuard</h2>
-                <p class="text-slate-600 leading-relaxed mb-4">
-                    Founded by law enforcement professionals, IntelGuard bridges the gap between digital intelligence and actionable protection. We operate with the highest ethical standards to dismantle exploitation networks.
-                </p>
-                <div class="grid grid-cols-2 gap-6 mt-8">
-                    <div class="p-4 bg-white rounded-lg border border-slate-100 shadow-sm">
-                        <h4 class="font-bold text-blue-600">Integrity</h4>
-                        <p class="text-sm text-slate-500">Uncompromising ethical conduct.</p>
+    <!-- Mission Grid -->
+    <section id="mission" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="section-card p-10 rounded-3xl">
+                    <div class="w-12 h-12 bg-blue-600 rounded-xl mb-6 flex items-center justify-center text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor font-bold"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
                     </div>
-                    <div class="p-4 bg-white rounded-lg border border-slate-100 shadow-sm">
-                        <h4 class="font-bold text-blue-600">Expertise</h4>
-                        <p class="text-sm text-slate-500">Law enforcement backgrounds.</p>
+                    <h3 class="text-xl font-black mb-4 uppercase">Verification</h3>
+                    <p class="text-slate-500 font-medium leading-relaxed">Rigorous intelligence processing to verify threats and provide actionable data to law enforcement partners.</p>
+                </div>
+                <div class="section-card p-10 rounded-3xl">
+                    <div class="w-12 h-12 bg-blue-600 rounded-xl mb-6 flex items-center justify-center text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor font-bold"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                     </div>
+                    <h3 class="text-xl font-black mb-4 uppercase">Rapid Response</h3>
+                    <p class="text-slate-500 font-medium leading-relaxed">Real-time monitoring and deployment of digital tools to intercept exploitation activities before harm escalates.</p>
+                </div>
+                <div class="section-card p-10 rounded-3xl">
+                    <div class="w-12 h-12 bg-blue-600 rounded-xl mb-6 flex items-center justify-center text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor font-bold"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                    </div>
+                    <h3 class="text-xl font-black mb-4 uppercase">Expert Advocacy</h3>
+                    <p class="text-slate-500 font-medium leading-relaxed">Providing court-ready documentation and expert insights to support the prosecution of offenders.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="bg-slate-900 text-slate-400 py-12 px-6">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
-            <div class="text-xl font-bold text-white mb-4 md:mb-0">IntelGuard</div>
-            <div class="text-sm">
-                &copy; 2026 IntelGuard Non-Profit Organization. All rights reserved.
+    <!-- Refined Footer -->
+    <footer id="contact" class="bg-slate-900 pt-20 pb-10 px-6 mt-20">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-16 pb-16 border-b border-slate-800">
+                <div>
+                    <div class="text-3xl font-black text-white mb-6 italic uppercase tracking-tighter">IntelGuard</div>
+                    <p class="text-slate-400 max-w-md leading-relaxed font-medium">
+                        IntelGuard is a federally recognized non-profit organization. We operate in close coordination with global law enforcement to protect the sanctity of childhood.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-white font-black uppercase text-xs tracking-widest mb-6">Navigation</h4>
+                        <ul class="text-slate-500 space-y-4 text-sm font-bold uppercase">
+                            <li><a href="#" class="hover:text-blue-500 transition-colors">About Us</a></li>
+                            <li><a href="#" class="hover:text-blue-500 transition-colors">Our Team</a></li>
+                            <li><a href="#" class="hover:text-blue-500 transition-colors">Mission</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-black uppercase text-xs tracking-widest mb-6">Contact</h4>
+                        <ul class="text-slate-500 space-y-4 text-sm font-bold uppercase">
+                            <li><a href="#" class="hover:text-blue-500 transition-colors">Secure Portal</a></li>
+                            <li><a href="#" class="hover:text-blue-500 transition-colors">Legal Dept</a></li>
+                            <li><a href="#" class="hover:text-blue-500 transition-colors">Press Inquiries</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-10 flex flex-col md:flex-row justify-between items-center text-xs font-bold uppercase tracking-widest text-slate-600">
+                <p>&copy; 2026 IntelGuard Non-Profit. No part of this site may be reproduced without written consent.</p>
+                <div class="mt-4 md:mt-0 flex space-x-6">
+                    <span>Integrity</span>
+                    <span>Justice</span>
+                    <span>Protection</span>
+                </div>
             </div>
         </div>
     </footer>
 
+    <script>
+        // Particle Background Logic
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            for (let i = 0; i < 60; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 1,
+                    speedX: (Math.random() - 0.5) * 0.5,
+                    speedY: (Math.random() - 0.5) * 0.5,
+                    opacity: Math.random() * 0.5 + 0.1
+                });
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.speedX;
+                p.y += p.speedY;
+
+                if (p.x > canvas.width) p.x = 0;
+                if (p.x < 0) p.x = canvas.width;
+                if (p.y > canvas.height) p.y = 0;
+                if (p.y < 0) p.y = canvas.height;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(37, 99, 235, ${p.opacity})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', init);
+        init();
+        animate();
+    </script>
 </body>
 </html>
