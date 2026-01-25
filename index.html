@@ -3,430 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stop Extortion | Report Exploitation</title>
-    <!-- Load Tailwind CSS -->
+    <title>IntelGuard | Protecting the Vulnerable</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Use Inter font family -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        body { font-family: 'Inter', sans-serif; }
+        .hero-gradient {
+            background: radial-gradient(circle at top right, #e0f2fe, #f8fafc);
         }
-        /* Define base view classes */
-        .view {
-            padding: 2rem 0;
-            animation: fadeIn 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; /* Smoother animation curve */
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        /* Custom class for the card container */
-        .profile-card-bg {
-            background: #000000; /* Fallback/base color */
-            box-shadow: 0 10px 30px rgba(109, 40, 217, 0.2);
-            transition: all 0.5s ease;
-            position: relative; /* Important for canvas positioning */
-        }
-        .profile-card-bg:hover {
-            box-shadow: 0 15px 40px rgba(162, 28, 253, 0.3);
-            transform: translateY(-2px);
-        }
-        /* Style for the Matrix background canvas */
-        .matrix-canvas {
-            filter: blur(0.5px);
-        }
+        .smooth-transition { transition: all 0.3s ease; }
     </style>
 </head>
-<body class="bg-black text-white p-4">
+<body class="bg-slate-50 text-slate-900">
 
-    <!-- Main App Container - Centered Content -->
-    <div id="app" class="max-w-5xl w-full text-center">
-
-        <!-- HOME VIEW (Default Landing Content) -->
-        <div id="home-view" class="view">
-            <!-- Reporting Badge -->
-            <div class="mb-8">
-                <span class="inline-block px-5 py-2 text-sm text-fuchsia-300 bg-gray-900 rounded-full shadow-inner border border-fuchsia-800/50">
-                    CYBERCRIME PREVENTION INITIATIVE
-                </span>
+    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-blue-100">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="text-2xl font-bold tracking-tight text-blue-700">
+                Intel<span class="text-slate-800">Guard</span>
             </div>
+            <div class="hidden md:flex space-x-8 font-medium text-slate-600">
+                <a href="#about" class="hover:text-blue-600 smooth-transition">About Us</a>
+                <a href="#team" class="hover:text-blue-600 smooth-transition">Meet the Team</a>
+                <a href="#mission" class="hover:text-blue-600 smooth-transition">Our Mission</a>
+                <a href="#contact" class="px-5 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 smooth-transition">Contact Us</a>
+            </div>
+        </div>
+    </nav>
 
-            <!-- Main Headline (Updated to Purple Gradient) -->
-            <h1 class="text-6xl sm:text-7xl md:text-8xl font-black leading-tight mb-6">
-                STOP <span class="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-fuchsia-600 tracking-wide">EXTORTION</span>
-                <br>
-                REPORT EXPLOITATION
+    <section class="hero-gradient pt-40 pb-24 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+            <span class="inline-block px-4 py-1.5 mb-6 text-sm font-semibold tracking-wide text-blue-700 uppercase bg-blue-100 rounded-full">
+                Law Enforcement Based Non-Profit
+            </span>
+            <h1 class="text-5xl md:text-7xl font-bold text-slate-900 mb-6 leading-tight">
+                Defending Childhood <br/>
+                <span class="text-blue-600">With Advanced Intelligence.</span>
             </h1>
-
-            <!-- Subheading/Description -->
-            <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-12 font-light">
-                Securely report threats, blackmail, and abuse. We leverage advanced digital forensics and global collaboration to protect victims and ensure justice.
+            <p class="text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+                IntelGuard utilizes law-enforcement-grade strategies and specialized data insights to combat exploitation and secure a safer future for children worldwide.
             </p>
-
-            <!-- Call-to-Action Buttons -->
-            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-16">
-                <!-- Primary Button (Submit Report) - NOW redirects to Instructions View -->
-                <button onclick="showView('instructions')" class="flex items-center justify-center space-x-2 px-10 py-4 text-lg font-bold text-white rounded-xl shadow-xl transition duration-300 ease-in-out transform hover:scale-[1.03] hover:shadow-fuchsia-600/50
-                               bg-gradient-to-r from-fuchsia-600 to-purple-800 border-b-4 border-fuchsia-900 active:border-b-0">
-                    <span>SUBMIT CONFIDENTIAL REPORT</span>
-                    <!-- Right Arrow SVG -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                </button>
-
-                <!-- Secondary Button (Meet Our Team) -->
-                <button onclick="showView('team')" class="px-10 py-4 text-lg font-semibold text-fuchsia-300 rounded-xl shadow-lg transition duration-300 ease-in-out transform hover:scale-[1.03]
-                               bg-gray-900 border border-gray-700 hover:bg-gray-800 hover:border-fuchsia-600/50">
-                    MEET THE INVESTIGATOR
-                </button>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#mission" class="px-8 py-4 bg-blue-600 text-white font-bold rounded-xl shadow-lg shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 smooth-transition">
+                    Our Mission
+                </a>
+                <a href="#about" class="px-8 py-4 bg-white text-blue-700 font-bold rounded-xl border border-blue-100 hover:bg-blue-50 smooth-transition">
+                    Learn More
+                </a>
             </div>
+        </div>
+    </section>
 
-            <!-- Detailed Features/Benefits List (Enhanced structure) -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm md:text-base text-gray-400 max-w-4xl mx-auto">
-                <div class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-950/50 border border-gray-800">
-                    <span class="text-lg font-bold text-fuchsia-500 mb-1">24/7 Availability</span>
-                    <span class="text-sm">Global coverage for immediate response.</span>
-                </div>
-                <div class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-950/50 border border-gray-800">
-                    <span class="text-lg font-bold text-fuchsia-500 mb-1">Total Anonymity</span>
-                    <span class="text-sm">Secure, encrypted, and untraceable submissions.</span>
-                </div>
-                <div class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-950/50 border border-gray-800">
-                    <span class="text-lg font-bold text-fuchsia-500 mb-1">Expert Investigation</span>
-                    <span class="text-sm">Leveraging deep OSINT and cybercrime expertise.</span>
+    <section id="about" class="py-24 max-w-7xl mx-auto px-6">
+        <div class="grid md:grid-cols-2 gap-16 items-center">
+            <div class="bg-blue-600 h-96 rounded-3xl shadow-2xl overflow-hidden flex items-center justify-center text-white italic">
+                [High-Quality Professional Image]
+            </div>
+            <div>
+                <h2 class="text-3xl font-bold mb-6">About IntelGuard</h2>
+                <p class="text-slate-600 leading-relaxed mb-4">
+                    Founded by law enforcement professionals, IntelGuard bridges the gap between digital intelligence and actionable protection. We operate with the highest ethical standards to dismantle exploitation networks.
+                </p>
+                <div class="grid grid-cols-2 gap-6 mt-8">
+                    <div class="p-4 bg-white rounded-lg border border-slate-100 shadow-sm">
+                        <h4 class="font-bold text-blue-600">Integrity</h4>
+                        <p class="text-sm text-slate-500">Uncompromising ethical conduct.</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-lg border border-slate-100 shadow-sm">
+                        <h4 class="font-bold text-blue-600">Expertise</h4>
+                        <p class="text-sm text-slate-500">Law enforcement backgrounds.</p>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- END HOME VIEW -->
+    </section>
 
-        <!-- INSTRUCTIONS VIEW (New View) -->
-        <div id="instructions-view" class="view hidden">
-            <h2 class="text-5xl font-extrabold mb-4 text-fuchsia-400">Secure Reporting Guidelines</h2>
-            <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-10 font-light">
-                Follow these critical steps to ensure your report is handled quickly and effectively by the cybercrime response team.
-            </p>
-
-             <!-- Back Button -->
-            <button onclick="showView('home')" class="mb-12 flex items-center justify-center mx-auto space-x-2 px-8 py-3 text-sm text-white bg-gray-800 rounded-lg hover:bg-gray-700 transition duration-300">
-                <!-- Back Arrow SVG -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                <span>Return to Dashboard</span>
-            </button>
-
-
-            <!-- Report Card Container -->
-            <div id="report-card" class="max-w-3xl mx-auto profile-card-bg rounded-3xl p-8 md:p-10 relative overflow-hidden text-left">
-                
-                <!-- Matrix Canvas Background for Instructions -->
-                <canvas id="matrix-background-instructions" class="absolute inset-0 z-0 matrix-canvas"></canvas>
-
-                <!-- Content (z-index 10) -->
-                <div class="relative z-10 space-y-6">
-                
-                    <h3 class="text-3xl font-bold text-fuchsia-300 border-b border-fuchsia-900/50 pb-4">MANDATORY REPORT FORMAT</h3>
-
-                    <!-- Instruction 1: Actor Alias -->
-                    <div class="border-l-4 border-fuchsia-600 pl-4 p-3 rounded-tr-xl rounded-br-xl bg-black/50 transition duration-300 hover:bg-black/70">
-                        <p class="text-xl font-semibold text-white mb-1">1. Threat Actor's Usernames/Aliases</p>
-                        <p class="text-gray-400">List <span class="font-bold italic text-fuchsia-300">all</span> names, handles, IDs, or accounts used by the threat actor (e.g., Discord ID, Instagram Handle, Telegram Username, email address).</p>
-                        <code class="block mt-3 p-2 bg-gray-950/70 text-fuchsia-300 rounded-lg text-sm">Example: @dark_user, TheHackerGroup, JohnDoe@protonmail.com</code>
-                    </div>
-
-                    <!-- Instruction 2: Incident Summary (What) -->
-                    <div class="border-l-4 border-fuchsia-600 pl-4 p-3 rounded-tr-xl rounded-br-xl bg-black/50 transition duration-300 hover:bg-black/70">
-                        <p class="text-xl font-semibold text-white mb-1">2. Incident Summary (The Core Action)</p>
-                        <p class="text-gray-400">Provide a concise, single-sentence summary of the incident. <span class="font-bold italic text-fuchsia-300">Do not</span> elaborate here.</p>
-                        <code class="block mt-3 p-2 bg-gray-950/70 text-fuchsia-300 rounded-lg text-sm">Example: Actor is threatening to release private photos unless $500 in crypto is sent.</code>
-                    </div>
-
-                    <!-- Instruction 3: Detailed Explanation (Why, When, How) -->
-                    <div class="border-l-4 border-fuchsia-600 pl-4 p-3 rounded-tr-xl rounded-br-xl bg-black/50 transition duration-300 hover:bg-black/70">
-                        <p class="text-xl font-semibold text-white mb-1">3. Detailed Explanation & Chronology</p>
-                        <p class="text-gray-400">Provide a chronological, in-depth account. Explain what happened, when it started, how they contacted you, the method of exploitation, and <span class="font-bold italic text-fuchsia-300">why</span> you believe they targeted you or how they obtained the compromising material.</p>
-                    </div>
-
-                    <!-- Instruction 4: Evidence Attachment -->
-                    <div class="border-l-4 border-fuchsia-600 pl-4 p-3 rounded-tr-xl rounded-br-xl bg-black/50 transition duration-300 hover:bg-black/70">
-                        <p class="text-xl font-semibold text-white mb-1">4. Secure Evidence Attachment (CRITICAL)</p>
-                        <p class="text-gray-300"><span class="font-bold italic text-fuchsia-300">You MUST attach all evidence directly to the email.</span></p>
-                        <ul class="list-disc list-inside text-gray-400 ml-4 mt-3 space-y-1">
-                            <li>Screenshots of chat logs and threats.</li>
-                            <li>Video clips (if applicable).</li>
-                            <li>Transaction IDs (if payment was attempted).</li>
-                            <li>Ensure screenshots show dates/times and platform usernames.</li>
-                        </ul>
-                    </div>
-                    
-                    <hr class="border-fuchsia-900/50 mt-8">
-
-                    <div class="text-center pt-4">
-                        <p class="text-lg text-fuchsia-300 font-bold mb-4">Ready to Submit?</p>
-                        <!-- Final Button - Calls the mailto link in a new window/tab, text updated -->
-                        <button onclick="openMailClient()" class="w-full py-4 text-xl font-bold text-white rounded-xl shadow-xl transition duration-300 ease-in-out transform hover:scale-[1.01] hover:shadow-fuchsia-600/50
-                                    bg-gradient-to-r from-fuchsia-600 to-purple-800 border-b-4 border-fuchsia-900 active:border-b-0 flex items-center justify-center space-x-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                            <span>LAUNCH EMAIL CLIENT</span>
-                        </button>
-                    </div>
-                </div>
-
+    <footer class="bg-slate-900 text-slate-400 py-12 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
+            <div class="text-xl font-bold text-white mb-4 md:mb-0">IntelGuard</div>
+            <div class="text-sm">
+                &copy; 2026 IntelGuard Non-Profit Organization. All rights reserved.
             </div>
         </div>
-        <!-- END INSTRUCTIONS VIEW -->
-
-        <!-- TEAM VIEW (Professional Profile Card) -->
-        <div id="team-view" class="view hidden">
-            <h2 class="text-5xl font-extrabold mb-8 text-fuchsia-400">Investigator Profile</h2>
-            
-            <!-- Back Button -->
-            <button onclick="showView('home')" class="mb-12 flex items-center justify-center mx-auto space-x-2 px-8 py-3 text-sm text-white bg-gray-800 rounded-lg hover:bg-gray-700 transition duration-300">
-                <!-- Back Arrow SVG -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                <span>Return to Dashboard</span>
-            </button>
-
-            <!-- Single User Profile Card (Highly Detailed and Professional) -->
-            <div class="flex justify-center w-full">
-                <!-- Card Container: Professional Background, Clean structure -->
-                <div id="profile-card" class="p-10 rounded-3xl profile-card-bg max-w-lg w-full relative overflow-hidden">
-                    
-                    <!-- Matrix Canvas Background (Positioned absolutely behind content) -->
-                    <canvas id="matrix-background-team" class="absolute inset-0 z-0 matrix-canvas"></canvas>
-                    
-                    <!-- Content (z-index 10) -->
-                    <div class="relative z-10">
-                        <!-- Profile Monogram/Image -->
-                        <div class="relative mb-8">
-                            <!-- Monogram Ring and Shadow -->
-                            <div class="w-40 h-40 mx-auto rounded-full p-1 bg-gradient-to-tr from-fuchsia-500 to-purple-600 shadow-xl ring-4 ring-black/50">
-                                <!-- PFP: Updated to use the new uploaded image file -->
-                                <img src="image_be4381.jpg" alt="Profile Picture" class="rounded-full w-full h-full object-cover border-4 border-gray-950" onerror="this.onerror=null; this.src='https://placehold.co/160x160/0a0a0a/ffffff?text=L';">
-                            </div>
-                        </div>
-
-                        <!-- Name and Status -->
-                        <h3 class="text-5xl font-extrabold text-white mb-4 tracking-wider uppercase">luabytes</h3>
-
-                        <!-- Professional Status -->
-                        <p class="text-xl font-semibold text-fuchsia-300 mb-10 border-b border-gray-800 pb-4">Certified Cybercrime Investigator</p>
-                        
-                        <!-- Professional Skills/Roles List -->
-                        <div class="text-left text-gray-300 space-y-4 pt-6">
-                            <h4 class="text-lg font-bold text-fuchsia-200 uppercase mb-4 tracking-wider">Core Proficiencies</h4>
-
-                            <!-- Skill 1: Non-Profit Organizer -->
-                            <div class="flex items-start space-x-4">
-                                <span class="text-fuchsia-400 pt-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4v7h7"/><path d="M13 13l9 9"/></svg>
-                                </span>
-                                <div>
-                                    <p class="font-semibold text-white">Verified Non-Profit Organizer</p>
-                                    <p class="text-sm text-gray-400">Experience in structured advocacy and resource management for public good.</p>
-                                </div>
-                            </div>
-
-                            <!-- Skill 2: Anti-Extortion Enthusiast -->
-                            <div class="flex items-start space-x-4">
-                                <span class="text-fuchsia-400 pt-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                </span>
-                                <div>
-                                    <p class="font-semibold text-white">Anti-Extortion Specialist</p>
-                                    <p class="text-sm text-gray-400">Dedicated to threat assessment, negotiation strategy, and digital defense.</p>
-                                </div>
-                            </div>
-
-                            <!-- Skill 3: Public & Private Sector Employee -->
-                            <div class="flex items-start space-x-4">
-                                <span class="text-fuchsia-400 pt-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5L12 2z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                                </span>
-                                <div>
-                                    <p class="font-semibold text-white">Public & Private Sector Experience</p>
-                                    <p class="text-sm text-gray-400">Bridging the gap between government security protocols and corporate threat landscapes.</p>
-                                </div>
-                            </div>
-
-                            <!-- Skill 4: OSINT Enthusiast -->
-                            <div class="flex items-start space-x-4">
-                                <span class="text-fuchsia-400 pt-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                                </span>
-                                <div>
-                                    <p class="font-semibold text-white">Advanced OSINT Practitioner</p>
-                                    <p class="text-sm text-gray-400">Mastery of open-source intelligence gathering for threat identification and tracing.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-        <!-- END TEAM VIEW -->
-        
-
-    </div>
-
-    <script>
-        
-        // --- Mailto Link Launcher Function (now opens a new external window) ---
-        function openMailClient() {
-            const recipient = 'intelguard@fbi.one';
-            const subject = encodeURIComponent('CYBERCRIME REPORT - URGENT');
-            const bodyText = `
-**--- CONFIDENTIAL REPORT DETAILS ---**
-
-1. Threat Actor's Username/Alias (e.g., @dark_user, TheHackerGroup): 
-[ENTER THREAT ACTOR'S USERNAME/ALIAS HERE]
-
-2. Incident Summary (What did they do?): 
-[ENTER SHORT SUMMARY OF THE INCIDENT HERE]
-
-3. Detailed Explanation (What happened, when, and why? Include chronology, details on the exploitation, and all relevant facts): 
-[ENTER DEEPER EXPLANATION HERE]
-
-4. Evidence (Required): 
-[NOTE: Attach all relevant files (screenshots, videos, logs) directly to this email for secure transfer. Do NOT paste images into the email body.]
-
-5. Your Contact Email (Optional, but recommended for follow-up and receiving case updates): 
-[ENTER YOUR CONTACT EMAIL HERE]
-
-**---------------------------------------**
-`;
-            // Encode the subject and body to handle spaces and special characters correctly in the mailto link
-            const body = encodeURIComponent(bodyText.trim());
-            const mailtoLink = `mailto:${recipient}?subject=${subject}&body=${body}`;
-            
-            // Using window.open allows the current instructions page to remain visible 
-            // while the email client is launched (this is the closest equivalent to opening a 'new tab' for an external app).
-            window.open(mailtoLink, '_blank'); 
-        }
-
-
-        // --- Matrix Animation Logic ---
-        let matrixInterval = null; // Stores the current interval ID
-
-        // Entry point for starting the animation on a specific view
-        function startMatrixAnimation(cardId, canvasId) {
-            // Clear any existing animation interval
-            if (matrixInterval) {
-                clearInterval(matrixInterval);
-                matrixInterval = null;
-            }
-            // Wait a moment for the card to be fully visible and rendered
-            setTimeout(() => setupMatrix(cardId, canvasId), 100); 
-        }
-
-        // Sets up and starts the matrix drawing loop
-        function setupMatrix(cardId, canvasId) {
-            const card = document.getElementById(cardId);
-            const canvas = document.getElementById(canvasId);
-            
-            if (!card || !canvas) return;
-
-            // Set canvas dimensions to match the card container size
-            canvas.width = card.offsetWidth;
-            canvas.height = card.offsetHeight;
-            
-            const ctx = canvas.getContext('2d');
-            const font_size = 18;
-            const columns = canvas.width / font_size;
-            
-            let dropY = [];
-            for(let i = 0; i < columns; i++) {
-                // Initialize drop starting position
-                dropY[i] = Math.floor(Math.random() * (canvas.height / font_size));
-            }
-
-            const char_set = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+{}[]\\|:;\"'<>,.?/~`";
-            const char_array = char_set.split("");
-
-            function drawMatrix() {
-                // Dim the screen/clear the previous frame slowly to create the trail effect
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; 
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                ctx.fillStyle = '#a855f7'; // Fuchsia/Purple color
-                ctx.font = font_size + 'px monospace';
-
-                for(let i = 0; i < dropY.length; i++) {
-                    const text = char_array[Math.floor(Math.random() * char_array.length)];
-                    const x = i * font_size;
-                    const y = dropY[i] * font_size;
-
-                    ctx.fillText(text, x, y);
-
-                    // Reset column drop position if it goes off screen (with a probability)
-                    if (y * font_size > canvas.height && Math.random() > 0.975) {
-                        dropY[i] = 0;
-                    }
-                    
-                    dropY[i]++;
-                }
-            }
-
-            // Start the interval and save the ID
-            matrixInterval = setInterval(drawMatrix, 50);
-        }
-
-        // Handles view switching and triggers the matrix animation if needed
-        function showView(viewId) {
-            const views = document.querySelectorAll('.view');
-            views.forEach(view => {
-                view.classList.add('hidden');
-                view.style.opacity = 0;
-            });
-
-            const targetView = document.getElementById(viewId + '-view');
-            if (targetView) {
-                targetView.classList.remove('hidden');
-                void targetView.offsetWidth; 
-                targetView.style.opacity = 1;
-                window.scrollTo(0, 0);
-
-                if (viewId === 'team') {
-                    // Start matrix for Team view
-                    startMatrixAnimation('profile-card', 'matrix-background-team');
-                } else if (viewId === 'instructions') {
-                    // Start matrix for Instructions view
-                    startMatrixAnimation('report-card', 'matrix-background-instructions');
-                }
-            }
-        }
-        
-        // Handle resizing to redraw the canvas correctly
-        function handleResize() {
-            const instructionsView = document.getElementById('instructions-view');
-            const teamView = document.getElementById('team-view');
-
-            if (instructionsView && !instructionsView.classList.contains('hidden')) {
-                // Re-start animation on instructions view
-                startMatrixAnimation('report-card', 'matrix-background-instructions');
-            } else if (teamView && !teamView.classList.contains('hidden')) {
-                // Re-start animation on team view
-                startMatrixAnimation('profile-card', 'matrix-background-team');
-            }
-        }
-        window.addEventListener('resize', handleResize);
-
-
-        // Initialize the app to show the home view on load
-        window.onload = () => {
-             showView('home');
-        };
-    </script>
+    </footer>
 
 </body>
 </html>
