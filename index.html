@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IntelGuard | Non-Profit Law Enforcement Organizationy</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Added Lenis for smooth physical scrolling -->
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;600;700;800;900&family=Fraunces:ital,opsz,wght@1,9..144,700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -15,11 +18,14 @@
             --text-main: #1a1a1a;
         }
 
+        /* Removed native CSS scroll-behavior to prevent conflict with Lenis */
+        html {
+        }
+
         body { 
             font-family: 'Public Sans', sans-serif; 
             background-color: #ffffff;
             color: var(--text-main);
-            scroll-behavior: smooth;
         }
 
         .fed-header {
@@ -463,6 +469,23 @@
     </footer>
 
     <script>
+        // Initialize Lenis for physical mouse wheel smooth scrolling
+        const lenis = new Lenis();
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // Tell Lenis to also handle our navigation anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                lenis.scrollTo(this.getAttribute('href'));
+            });
+        });
+
         function toggleFaq(btn) {
             const content = btn.nextElementSibling;
             const icon = btn.querySelector('svg');
