@@ -110,6 +110,11 @@ export default function App() {
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('mousemove', handleMouseMove);
     
+    // Dynamically inject Tailwind CSS for styling
+    const tailwindScript = document.createElement('script');
+    tailwindScript.src = 'https://cdn.tailwindcss.com';
+    document.head.appendChild(tailwindScript);
+
     // Setup Lenis Momentum Smooth Scrolling
     let lenis;
     let animationFrameId;
@@ -133,17 +138,18 @@ export default function App() {
     };
 
     // Dynamically inject the Lenis library
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js';
-    script.onload = initLenis;
-    document.head.appendChild(script);
+    const lenisScript = document.createElement('script');
+    lenisScript.src = 'https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js';
+    lenisScript.onload = initLenis;
+    document.head.appendChild(lenisScript);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousemove', handleMouseMove);
       if (lenis) lenis.destroy();
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
-      if (document.head.contains(script)) document.head.removeChild(script);
+      if (document.head.contains(lenisScript)) document.head.removeChild(lenisScript);
+      if (document.head.contains(tailwindScript)) document.head.removeChild(tailwindScript);
     };
   }, []);
 
@@ -442,22 +448,60 @@ export default function App() {
               </FadeIn>
             </div>
 
-            {/* Quote Visualization */}
+            {/* Network Grid & Quote Visualization */}
             <div className="relative">
               <FadeIn delay={200} className="h-full min-h-[500px] w-full bg-[#030303] border border-white/10 relative shadow-[0_0_50px_rgba(0,0,0,1)] flex items-center justify-center overflow-hidden p-10 md:p-16 group">
+                
                 {/* Subtle Grid Lines */}
                 <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'linear-gradient(#4f4f4f 1px, transparent 1px), linear-gradient(90deg, #4f4f4f 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
                 
-                {/* Glowing Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-blue-600/5 opacity-50 group-hover:opacity-100 transition-opacity duration-700"></div>
+                {/* Flock Safety-style Leading Lines Animation SVG */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40 group-hover:opacity-80 transition-opacity duration-1000" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+                  {/* Base structure lines */}
+                  <g stroke="#ffffff15" strokeWidth="1" fill="none">
+                     <path d="M-100,200 L200,200 L350,350 L900,350" />
+                     <path d="M200,-100 L200,150 L400,350 L400,700" />
+                     <path d="M900,100 L600,100 L450,250 L-100,250" />
+                     <path d="M600,700 L600,500 L400,300 L900,300" />
+                     <path d="M-100,500 L250,500 L400,350 L500,350 L650,200 L900,200" />
+                  </g>
+                  
+                  {/* Glowing Animated Leading Lines */}
+                  <g stroke="#22d3ee" strokeWidth="2" fill="none" strokeLinecap="round" className="opacity-90">
+                    {/* pathLength="100" makes strokeDasharray scale correctly across paths of different sizes */}
+                    <path pathLength="100" strokeDasharray="15 85" className="animate-[flowLine_4s_linear_infinite]" d="M-100,200 L200,200 L350,350 L900,350" />
+                    <path pathLength="100" strokeDasharray="10 90" className="animate-[flowLine_3s_linear_infinite]" style={{animationDelay: '-1s'}} d="M200,-100 L200,150 L400,350 L400,700" />
+                    <path pathLength="100" strokeDasharray="20 80" className="animate-[flowLine_5s_linear_infinite]" style={{animationDelay: '-2s'}} d="M900,100 L600,100 L450,250 L-100,250" />
+                    <path pathLength="100" strokeDasharray="15 85" className="animate-[flowLine_3.5s_linear_infinite]" style={{animationDelay: '-1.5s'}} d="M600,700 L600,500 L400,300 L900,300" />
+                    <path pathLength="100" strokeDasharray="25 75" className="animate-[flowLine_6s_linear_infinite]" style={{animationDelay: '-3s'}} d="M-100,500 L250,500 L400,350 L500,350 L650,200 L900,200" />
+                  </g>
+
+                  {/* Intersecting Data Nodes */}
+                  <circle cx="200" cy="200" r="3" fill="#22d3ee" className="animate-pulse" />
+                  <circle cx="350" cy="350" r="3" fill="#22d3ee" className="animate-pulse" />
+                  <circle cx="450" cy="250" r="3" fill="#3b82f6" className="animate-pulse" />
+                  <circle cx="650" cy="200" r="3" fill="#22d3ee" className="animate-pulse" />
+                  <circle cx="400" cy="350" r="4" fill="#3b82f6" className="animate-pulse" />
+                </svg>
+
+                {/* Glowing Gradient Backdrop */}
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-blue-600/5 opacity-50 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
                 
-                {/* Large Quotes */}
-                <div className="absolute top-8 left-8 text-9xl text-white/5 font-syne font-black leading-none group-hover:text-cyan-500/10 transition-colors duration-500">"</div>
-                <div className="absolute bottom-8 right-8 text-9xl text-white/5 font-syne font-black leading-none rotate-180 group-hover:text-cyan-500/10 transition-colors duration-500">"</div>
+                {/* HUD Element from Screenshot */}
+                <div className="absolute top-6 left-6 bg-black/80 backdrop-blur-md border border-white/10 p-4 rounded-sm z-10">
+                  <div className="text-[10px] font-mono text-slate-500 mb-2 tracking-widest uppercase">Global Threat Level</div>
+                  <div className="text-rose-500 font-syne font-bold tracking-widest uppercase flex items-center gap-3">
+                    <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> ELEVATED
+                  </div>
+                </div>
+
+                {/* Large Decorative Quotes */}
+                <div className="absolute top-8 left-8 text-9xl text-white/5 font-syne font-black leading-none group-hover:text-cyan-500/10 transition-colors duration-500 pointer-events-none">"</div>
+                <div className="absolute bottom-8 right-8 text-9xl text-white/5 font-syne font-black leading-none rotate-180 group-hover:text-cyan-500/10 transition-colors duration-500 pointer-events-none">"</div>
                 
                 {/* Quote Content */}
-                <div className="relative z-10">
-                  <p className="text-2xl md:text-3xl lg:text-4xl font-syne font-bold text-white leading-tight mb-8 tracking-tight">
+                <div className="relative z-10 mt-12 backdrop-blur-[2px] p-6 rounded-2xl bg-[#030303]/40 border border-white/5">
+                  <p className="text-xl md:text-2xl lg:text-3xl font-syne font-bold text-white leading-tight mb-8 tracking-tight">
                     IntelGuard isn't just a non-profit, we are the ones that speak up for those who can't speak up for themselves. That is the definition of a true IntelGuardian.
                   </p>
                   <div className="flex items-center gap-5">
@@ -875,6 +919,10 @@ export default function App() {
         }
         .animate-marquee {
           animation: marquee 40s linear infinite;
+        }
+        @keyframes flowLine {
+          from { stroke-dashoffset: 100; }
+          to { stroke-dashoffset: 0; }
         }
       `}} />
     </div>
