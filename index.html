@@ -1,930 +1,992 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Shield, 
-  Globe, 
-  Users, 
-  FileText, 
-  Mail, 
-  ChevronRight, 
-  Activity, 
-  Lock, 
-  Search,
-  Menu,
-  X,
-  Building,
-  Terminal,
-  Crosshair,
-  Database,
-  Network,
-  ArrowUpRight,
-  Fingerprint,
-  Send,
-  AtSign,
-  BookOpen,
-  Star,
-  Settings,
-  Crown,
-  Gem,
-  Code
-} from 'lucide-react';
-
-// --- Custom Hooks for Animations ---
-const useIntersectionObserver = (options) => {
-  const [isIntersecting, setIsIntersecting] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setIsIntersecting(true);
-        observer.unobserve(entry.target);
-      }
-    }, options);
-
-    if (ref.current) observer.observe(ref.current);
-    return () => ref.current && observer.unobserve(ref.current);
-  }, [ref, options]);
-
-  return [ref, isIntersecting];
-};
-
-const FadeIn = ({ children, delay = 0, className = '', direction = 'up' }) => {
-  const [ref, isVisible] = useIntersectionObserver({ threshold: 0.1 });
-  
-  const translations = {
-    up: 'translate-y-8',
-    down: '-translate-y-8',
-    left: 'translate-x-8',
-    right: '-translate-x-8',
-    none: 'translate-y-0 translate-x-0'
-  };
-
-  return (
-    <div
-      ref={ref}
-      className={`transition-all duration-1000 ease-out ${
-        isVisible ? 'opacity-100 translate-y-0 translate-x-0 blur-none' : `opacity-0 blur-[2px] ${translations[direction]}`
-      } ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
-      {children}
-    </div>
-  );
-};
-
-// --- Terminal Typing Effect Component ---
-const TypewriterText = ({ text, delay = 0 }) => {
-  const [displayText, setDisplayText] = useState('');
-  const [ref, isVisible] = useIntersectionObserver({ threshold: 0.1 });
-  const [started, setStarted] = useState(false);
-
-  useEffect(() => {
-    if (isVisible && !started) {
-      setTimeout(() => setStarted(true), delay);
-    }
-  }, [isVisible, delay, started]);
-
-  useEffect(() => {
-    if (started && displayText.length < text.length) {
-      const timeout = setTimeout(() => {
-        setDisplayText(text.slice(0, displayText.length + 1));
-      }, 30); // Typing speed
-      return () => clearTimeout(timeout);
-    }
-  }, [displayText, started, text]);
-
-  return <span>{displayText}{started && displayText.length < text.length ? <span className="animate-pulse">_</span> : ''}</span>;
-};
-
-// --- Main Application Component ---
-export default function App() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
-  // Handle Navbar background, mouse tracking, and Smooth Scrolling
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    const handleMouseMove = (e) => setMousePos({ x: e.clientX, y: e.clientY });
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntelGuard | Tactical Intelligence. Global Enforcement.</title>
     
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('mousemove', handleMouseMove);
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     
-    // Dynamically inject Tailwind CSS for styling
-    const tailwindScript = document.createElement('script');
-    tailwindScript.src = 'https://cdn.tailwindcss.com';
-    document.head.appendChild(tailwindScript);
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-    // Setup Lenis Momentum Smooth Scrolling
-    let lenis;
-    let animationFrameId;
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    const initLenis = () => {
-      if (!window.Lenis) return;
-      lenis = new window.Lenis({
-        duration: 1.5, // Controls the smoothness duration
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-        wheelMultiplier: 1,
-        touchMultiplier: 2,
-      });
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        syne: ['Syne', 'sans-serif'],
+                        space: ['Space Grotesk', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin': 'spin 1s linear infinite',
+                        'bounce': 'bounce 1s infinite',
+                        'float': 'float 4s ease-in-out infinite',
+                        'marquee': 'marquee 40s linear infinite',
+                        'flowLine': 'flowLine 4s linear infinite',
+                        'shimmer': 'shimmer 1.5s infinite',
+                        'scanline': 'scanline 2s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-33.33%)' },
+                        },
+                        flowLine: {
+                            '0%': { strokeDashoffset: '100' },
+                            '100%': { strokeDashoffset: '0' },
+                        },
+                        shimmer: {
+                            '100%': { transform: 'translateX(100%)' },
+                        },
+                        scanline: {
+                            '0%': { transform: 'translateY(-100%)' },
+                            '100%': { transform: 'translateY(1000%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
-      const raf = (time) => {
-        lenis.raf(time);
-        animationFrameId = requestAnimationFrame(raf);
-      };
+    <!-- Custom CSS for Scroll Animations -->
+    <style>
+        .fade-in {
+            opacity: 0;
+            filter: blur(2px);
+            transition: opacity 1s ease-out, transform 1s ease-out, filter 1s ease-out;
+            will-change: opacity, transform, filter;
+        }
+        .fade-in.is-visible {
+            opacity: 1;
+            filter: blur(0);
+            transform: translate(0, 0);
+        }
+        .fade-in-up { transform: translateY(2rem); }
+        .fade-in-left { transform: translateX(2rem); }
+        .fade-in-right { transform: translateX(-2rem); }
+        .fade-in-down { transform: translateY(-2rem); }
+        
+        /* Hide scrollbar for marquee */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-[#030303] font-space text-slate-300 selection:bg-cyan-900 selection:text-white overflow-x-hidden antialiased">
 
-      animationFrameId = requestAnimationFrame(raf);
-    };
+    <!-- Global Background Grid & Glow -->
+    <div class="fixed inset-0 z-0 pointer-events-none opacity-20" style="background-image: linear-gradient(to right, #1f2937 1px, transparent 1px), linear-gradient(to bottom, #1f2937 1px, transparent 1px); background-size: 3rem 3rem;"></div>
+    <div id="mouse-glow" class="fixed inset-0 z-0 pointer-events-none transition-opacity duration-300 opacity-20" style="background: radial-gradient(800px circle at 0px 0px, rgba(14, 165, 233, 0.15), transparent 40%);"></div>
 
-    // Dynamically inject the Lenis library
-    const lenisScript = document.createElement('script');
-    lenisScript.src = 'https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js';
-    lenisScript.onload = initLenis;
-    document.head.appendChild(lenisScript);
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('mousemove', handleMouseMove);
-      if (lenis) lenis.destroy();
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
-      if (document.head.contains(lenisScript)) document.head.removeChild(lenisScript);
-      if (document.head.contains(tailwindScript)) document.head.removeChild(tailwindScript);
-    };
-  }, []);
-
-  const navLinks = [
-    { name: 'About Us', href: '#about' },
-    { name: 'Our Team', href: '#team' },
-    { name: 'Insights', href: '#insights' },
-    { name: 'Case Studies', href: '#cases' },
-    { name: 'Partners', href: '#partners' },
-  ];
-
-  const internationalPartners = [
-    { name: 'INTERPOL', url: 'interpol.int' },
-    { name: 'ROMANIAN POLICE', url: 'politiaromana.ro' },
-    { name: 'COLUMBIAN POLICE', url: 'policia.gov.co' },
-    { name: 'CITY OF LONDON POLICE', url: 'cityoflondon.police.uk' },
-    { name: 'DORSET POLICE', url: 'dorset.police.uk' },
-    { name: 'MINISTRY OF INTERIOR POLICE', url: 'interieur.gouv.fr' },
-    { name: 'EUROPOL', url: 'europol.europa.eu' },
-  ];
-
-  const domesticPartners = [
-    { name: 'FEDERAL BUREAU OF INVESTIGATION', url: 'fbi.gov' },
-    { name: 'DALLAS POLICE DEPARTMENT', url: 'dallaspolice.net' },
-    { name: 'SANTA ROSA POLICE DEPARTMENT', url: 'srcity.org' },
-    { name: 'TORRANCE POLICE DEPARTMENT', url: 'torranceca.gov' },
-    { name: 'NCMEC', url: 'missingkids.org' },
-    { name: 'INTERNET WATCH FOUNDATION', url: 'iwf.org.uk' },
-  ];
-
-  const osintTools = [
-    { name: 'Proximity OSINT', url: 'proximityosint.com' },
-    { name: 'Enformion', url: 'enformion.com' },
-    { name: 'OSINT Industries', url: 'osint.industries' },
-    { name: 'nOSINT', url: 'nosint.org' },
-    { name: 'Veritas OSINT', url: 'veritasosint.net' },
-    { name: 'Hudson Rock', url: 'hudsonrock.com' },
-    { name: 'Cypher Dynamics', url: 'cypherdynamics.com' },
-    { name: 'BreachHub', url: 'breachhub.org' },
-    { name: 'Crowsint', url: 'crowsint.cc' }
-  ];
-
-  // Badge configuration dictionary
-  const badgeMap = {
-    globe: { icon: Globe, label: "Global Specialist", color: "text-blue-400" },
-    book: { icon: BookOpen, label: "Operator in Training", color: "text-amber-400" },
-    search: { icon: Search, label: "Verified Investigator", color: "text-emerald-400" },
-    shield: { icon: Shield, label: "Official IntelGuardian", color: "text-cyan-400" },
-    star: { icon: Star, label: "OG Operator", color: "text-yellow-400" },
-    gear: { icon: Settings, label: "Operations Supervisor", color: "text-slate-300" },
-    crown: { icon: Crown, label: "Founder", color: "text-purple-400" },
-    gem: { icon: Gem, label: "Public Relations Lead", color: "text-pink-400" },
-    dev: { icon: Code, label: "Site & Tool Developer", color: "text-green-400" }
-  };
-
-  return (
-    <div className="min-h-screen bg-[#030303] font-space text-slate-300 selection:bg-cyan-900 selection:text-white overflow-x-hidden">
-      
-      {/* Global Background Grid & Glow (Horus/OSINT Vibe) */}
-      <div className="fixed inset-0 z-0 pointer-events-none opacity-20" style={{ 
-        backgroundImage: 'linear-gradient(to right, #1f2937 1px, transparent 1px), linear-gradient(to bottom, #1f2937 1px, transparent 1px)', 
-        backgroundSize: '3rem 3rem' 
-      }}></div>
-      <div 
-        className="fixed inset-0 z-0 pointer-events-none transition-opacity duration-300 opacity-20"
-        style={{
-          background: `radial-gradient(800px circle at ${mousePos.x}px ${mousePos.y}px, rgba(14, 165, 233, 0.15), transparent 40%)`
-        }}
-      />
-
-      {/* --- Floating Navigation --- */}
-      <nav className={`fixed w-full z-50 transition-all duration-500 pt-4 px-4 md:px-8`}>
-        <div className={`max-w-7xl mx-auto transition-all duration-300 ${
-            isScrolled ? 'bg-[#050505]/90 backdrop-blur-xl border border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.8)] rounded-2xl py-3 px-6' : 'bg-transparent border-transparent py-4 px-2'
-          } flex justify-between items-center`}>
-          
-          <div className="flex items-center gap-3 group cursor-pointer" onClick={() => window.scrollTo(0,0)}>
-            <div className="relative">
-              <div className="absolute inset-0 bg-cyan-500 blur-md opacity-0 group-hover:opacity-50 transition-opacity"></div>
-              <Shield className="w-6 h-6 text-cyan-400 relative z-10 animate-[pulse_3s_ease-in-out_infinite]" />
-            </div>
-            <span className="text-xl font-syne font-bold tracking-tight text-white">
-              INTEL<span className="text-cyan-400 font-light">GUARD</span>
-            </span>
-          </div>
-
-          <div className="hidden lg:flex items-center gap-2 bg-white/5 p-1.5 rounded-full border border-white/5 backdrop-blur-sm">
-            {navLinks.map((link) => (
-              <a 
-                key={link.name} 
-                href={link.href}
-                className="px-5 py-2 text-sm font-medium text-slate-400 hover:text-white hover:bg-white/10 rounded-full transition-all tracking-wide"
-              >
-                {link.name}
-              </a>
-            ))}
-          </div>
-
-          <div className="hidden lg:flex items-center gap-4">
-            <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 bg-emerald-400/10 px-3 py-1.5 rounded-full border border-emerald-400/20">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              SYS.SECURE
-            </div>
-            <a href="#connect" className="bg-white text-black hover:bg-cyan-400 hover:text-black px-6 py-2.5 rounded-full text-sm font-syne font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]">
-              Connect
+    <!-- --- Floating Navigation --- -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 pt-4 px-4 md:px-8">
+        <div id="navbar-container" class="max-w-7xl mx-auto transition-all duration-300 bg-transparent border-transparent py-4 px-2 flex justify-between items-center">
+            
+            <a href="#" class="flex items-center gap-3 group cursor-pointer">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-cyan-500 blur-md opacity-0 group-hover:opacity-50 transition-opacity"></div>
+                    <i data-lucide="shield" class="w-6 h-6 text-cyan-400 relative z-10 animate-[pulse_3s_ease-in-out_infinite]"></i>
+                </div>
+                <span class="text-xl font-syne font-bold tracking-tight text-white">
+                    INTEL<span class="text-cyan-400 font-light">GUARD</span>
+                </span>
             </a>
-          </div>
 
-          <button className="lg:hidden text-white p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X /> : <Menu />}
-          </button>
+            <!-- Desktop Nav -->
+            <div class="hidden lg:flex items-center gap-2 bg-white/5 p-1.5 rounded-full border border-white/5 backdrop-blur-sm">
+                <a href="#about" class="px-5 py-2 text-sm font-medium text-slate-400 hover:text-white hover:bg-white/10 rounded-full transition-all tracking-wide">About Us</a>
+                <a href="#team" class="px-5 py-2 text-sm font-medium text-slate-400 hover:text-white hover:bg-white/10 rounded-full transition-all tracking-wide">Our Team</a>
+                <a href="#cases" class="px-5 py-2 text-sm font-medium text-slate-400 hover:text-white hover:bg-white/10 rounded-full transition-all tracking-wide">Case Studies</a>
+                <a href="#partners" class="px-5 py-2 text-sm font-medium text-slate-400 hover:text-white hover:bg-white/10 rounded-full transition-all tracking-wide">Partners</a>
+            </div>
+
+            <div class="hidden lg:flex items-center gap-4">
+                <div class="flex items-center gap-2 text-xs font-mono text-emerald-400 bg-emerald-400/10 px-3 py-1.5 rounded-full border border-emerald-400/20">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    SYS.SECURE
+                </div>
+                <a href="#connect" class="bg-white text-black hover:bg-cyan-400 hover:text-black px-6 py-2.5 rounded-full text-sm font-syne font-bold transition-all shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]">
+                    Connect
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="lg:hidden text-white p-2">
+                <i data-lucide="menu" id="menu-icon"></i>
+                <i data-lucide="x" id="close-icon" class="hidden"></i>
+            </button>
         </div>
 
-        {mobileMenuOpen && (
-          <div className="lg:hidden absolute top-20 left-4 right-4 bg-[#0a0a0a]/95 backdrop-blur-xl shadow-2xl border border-white/10 rounded-2xl p-4 flex flex-col gap-2 z-50">
-            {navLinks.map((link) => (
-              <a 
-                key={link.name} 
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-slate-300 hover:text-white hover:bg-white/5 font-medium px-4 py-3 rounded-xl transition-colors font-space"
-              >
-                {link.name}
-              </a>
-            ))}
-             <a href="#connect" onClick={() => setMobileMenuOpen(false)} className="mt-2 text-center bg-cyan-500 text-black px-4 py-3 rounded-xl font-syne font-bold">
-              Secure Channels
-            </a>
-          </div>
-        )}
-      </nav>
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden absolute top-20 left-4 right-4 bg-[#0a0a0a]/95 backdrop-blur-xl shadow-2xl border border-white/10 rounded-2xl p-4 flex flex-col gap-2 z-50">
+            <a href="#about" class="mobile-link text-slate-300 hover:text-white hover:bg-white/5 font-medium px-4 py-3 rounded-xl transition-colors font-space">About Us</a>
+            <a href="#team" class="mobile-link text-slate-300 hover:text-white hover:bg-white/5 font-medium px-4 py-3 rounded-xl transition-colors font-space">Our Team</a>
+            <a href="#cases" class="mobile-link text-slate-300 hover:text-white hover:bg-white/5 font-medium px-4 py-3 rounded-xl transition-colors font-space">Case Studies</a>
+            <a href="#partners" class="mobile-link text-slate-300 hover:text-white hover:bg-white/5 font-medium px-4 py-3 rounded-xl transition-colors font-space">Partners</a>
+            <a href="#connect" class="mobile-link mt-2 text-center bg-cyan-500 text-black px-4 py-3 rounded-xl font-syne font-bold">Secure Channels</a>
+        </div>
+    </nav>
 
-      {/* --- Hero Section --- */}
-      <section className="relative pt-48 pb-32 lg:pt-60 lg:pb-40 z-10 border-b border-white/5">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-cyan-600/10 rounded-full blur-[150px] pointer-events-none"></div>
+    <!-- --- Hero Section --- -->
+    <section class="relative pt-48 pb-32 lg:pt-60 lg:pb-40 z-10 border-b border-white/5">
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-cyan-600/10 rounded-full blur-[150px] pointer-events-none"></div>
 
-        <div className="max-w-7xl mx-auto px-6 md:px-12 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            {/* Left Column - Copy */}
-            <div className="lg:col-span-7">
-              <FadeIn delay={100}>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-white/5 border border-white/10 text-cyan-400 text-xs font-mono mb-8 uppercase tracking-widest">
-                  <Terminal className="w-3 h-3" /> <TypewriterText text="EST. JUNE 2025 // NONPROFIT OSINT ORG" delay={500} />
+        <div class="max-w-7xl mx-auto px-6 md:px-12 relative">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Column - Copy -->
+                <div class="lg:col-span-7">
+                    <div class="fade-in fade-in-up inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-white/5 border border-white/10 text-cyan-400 text-xs font-mono mb-8 uppercase tracking-widest" style="transition-delay: 100ms;">
+                        <i data-lucide="terminal" class="w-3 h-3"></i> 
+                        <span id="typewriter-text"></span><span class="animate-pulse">_</span>
+                    </div>
+                    
+                    <div class="fade-in fade-in-up" style="transition-delay: 200ms;">
+                        <h1 class="text-6xl md:text-8xl lg:text-[7rem] font-syne font-extrabold text-white leading-[0.9] mb-8 tracking-tighter uppercase">
+                            Tactical <br />
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">Intelligence.</span><br />
+                            Global <br />
+                            Enforcement.
+                        </h1>
+                    </div>
+                    
+                    <div class="fade-in fade-in-up" style="transition-delay: 300ms;">
+                        <p class="text-xl text-slate-400 mb-10 leading-relaxed border-l-2 border-cyan-500/50 pl-6 max-w-2xl font-space font-light">
+                            We specialize in advanced Open Source Intelligence (OSINT) and dark web monitoring. Partnering with global authorities to terminate illicit networks, trace threats, and secure the vulnerable.
+                        </p>
+                    </div>
+                    
+                    <div class="fade-in fade-in-up flex flex-wrap gap-4" style="transition-delay: 400ms;">
+                        <a href="#about" class="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-black font-syne font-bold uppercase tracking-widest text-sm overflow-hidden transition-all hover:scale-[1.02]">
+                            <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                            Initiate Scan <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                        </a>
+                        <a href="#cases" class="inline-flex items-center gap-3 px-8 py-4 bg-transparent border border-white/20 text-white font-syne font-bold uppercase tracking-widest text-sm hover:bg-white/5 transition-all">
+                            View Archives
+                        </a>
+                    </div>
                 </div>
-              </FadeIn>
-              
-              <FadeIn delay={200}>
-                <h1 className="text-6xl md:text-8xl lg:text-[7rem] font-syne font-extrabold text-white leading-[0.9] mb-8 tracking-tighter uppercase">
-                  Tactical <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">Intelligence.</span><br />
-                  Global <br />
-                  Enforcement.
-                </h1>
-              </FadeIn>
-              
-              <FadeIn delay={300}>
-                <p className="text-xl text-slate-400 mb-10 leading-relaxed border-l-2 border-cyan-500/50 pl-6 max-w-2xl font-space font-light">
-                  We specialize in advanced Open Source Intelligence (OSINT) and dark web monitoring. Partnering with global authorities to terminate illicit networks, trace threats, and secure the vulnerable.
-                </p>
-              </FadeIn>
-              
-              <FadeIn delay={400} className="flex flex-wrap gap-4">
-                <a href="#about" className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-black font-syne font-bold uppercase tracking-widest text-sm overflow-hidden transition-all hover:scale-[1.02]">
-                  <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                  Initiate Scan <ArrowUpRight className="w-4 h-4" />
-                </a>
-                <a href="#cases" className="inline-flex items-center gap-3 px-8 py-4 bg-transparent border border-white/20 text-white font-syne font-bold uppercase tracking-widest text-sm hover:bg-white/5 transition-all">
-                  View Archives
-                </a>
-              </FadeIn>
+
+                <!-- Right Column - Faux Terminal -->
+                <div class="fade-in fade-in-left relative hidden lg:block lg:col-span-5" style="transition-delay: 500ms;">
+                    <div class="relative bg-[#050505] border border-white/10 shadow-[0_0_50px_rgba(0,0,0,1)] overflow-hidden backdrop-blur-sm">
+                        <!-- Window Controls -->
+                        <div class="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-white/5">
+                            <div class="w-2.5 h-2.5 rounded-full bg-rose-500/80"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-amber-500/80"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
+                            <div class="ml-2 text-[10px] font-mono text-slate-500 uppercase tracking-widest">sys_monitor@intelguard: ~</div>
+                        </div>
+                        <!-- Terminal Content -->
+                        <div class="p-8 font-mono text-sm text-slate-400 space-y-4 h-[380px] overflow-hidden relative leading-relaxed">
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-[#050505] top-1/2 z-10 pointer-events-none"></div>
+                            <p class="text-cyan-400 font-bold">&gt; INITIALIZING INTELGUARD FRAMEWORK...</p>
+                            <p class="text-emerald-400">&gt; MODULES: OSINT, DARKWEB_MONITOR, FORENSICS</p>
+                            <p>&gt; Establishing secure connection to Interpol DB...</p>
+                            <p class="text-emerald-400">[SUCCESS] Secure handshake verified.</p>
+                            <p>&gt; Scanning target sectors for unindexed nodes...</p>
+                            <p class="text-amber-400">[WARNING] 12 encrypted nodes detected.</p>
+                            <p>&gt; Running decryption protocols (Auth: Boaz Acosta)...</p>
+                            <div class="flex gap-2 items-center">
+                                <span class="text-blue-500">&gt; Extracting relational metadata</span>
+                                <span class="flex space-x-1">
+                                    <span class="w-1.5 h-4 bg-slate-600 animate-pulse delay-75"></span>
+                                    <span class="w-1.5 h-4 bg-slate-600 animate-pulse delay-150"></span>
+                                    <span class="w-1.5 h-4 bg-slate-600 animate-pulse delay-300"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Decorative nodes -->
+                    <div class="absolute -bottom-6 -left-6 bg-[#0a0a0a] p-4 border border-white/10 shadow-2xl flex items-center gap-4 animate-bounce" style="animation-duration: 4s;">
+                        <div class="bg-cyan-500/20 p-2 rounded">
+                            <i data-lucide="activity" class="w-6 h-6 text-cyan-400"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-mono text-slate-500 tracking-widest">NETWORK STATUS</div>
+                            <div class="text-sm font-syne font-bold text-white uppercase tracking-wide">Active Tracking</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- Sleek Bento Stats --- -->
+    <section class="relative z-10 -mt-16 max-w-7xl mx-auto px-6 md:px-12 pb-24">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="fade-in fade-in-up relative group p-[1px] bg-gradient-to-b from-white/20 to-transparent overflow-hidden" style="transition-delay: 200ms;">
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="h-full bg-[#080808] p-10 relative z-10 hover:bg-[#0a0a0a] transition-colors">
+                    <i data-lucide="crosshair" class="w-8 h-8 text-cyan-500 mb-8 animate-[spin_8s_linear_infinite]"></i>
+                    <div class="text-6xl font-syne font-extrabold text-white mb-3 tracking-tighter">200+</div>
+                    <div class="text-xs font-mono text-cyan-400 uppercase tracking-widest mb-4">Operations Closed</div>
+                    <p class="text-sm text-slate-500 font-light leading-relaxed">High-priority investigations successfully concluded and transitioned to global authorities.</p>
+                </div>
+            </div>
+            
+            <div class="fade-in fade-in-up relative group p-[1px] bg-gradient-to-b from-white/20 to-transparent overflow-hidden" style="transition-delay: 300ms;">
+                <div class="absolute inset-0 bg-gradient-to-br from-cyan-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="h-full bg-[#080808] p-10 relative z-10 flex flex-col justify-center hover:bg-[#0a0a0a] transition-colors">
+                    <i data-lucide="database" class="w-8 h-8 text-blue-500 mb-8 animate-float"></i>
+                    <div class="text-6xl font-syne font-extrabold text-white mb-3 tracking-tighter flex items-baseline gap-2">
+                        350+ <span class="text-3xl text-slate-600 font-medium">GB</span>
+                    </div>
+                    <div class="text-xs font-mono text-blue-400 uppercase tracking-widest mb-4">CSAM Terminated</div>
+                    <p class="text-sm text-slate-500 font-light leading-relaxed">Illicit material identified, documented, and permanently eradicated from global infrastructure.</p>
+                </div>
             </div>
 
-            {/* Right Column - Faux Terminal / UI Component */}
-            <FadeIn delay={500} direction="left" className="relative hidden lg:block lg:col-span-5">
-              <div className="relative bg-[#050505] border border-white/10 shadow-[0_0_50px_rgba(0,0,0,1)] overflow-hidden backdrop-blur-sm">
-                {/* Window Controls */}
-                <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-white/5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80"></div>
-                  <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80"></div>
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
-                  <div className="ml-2 text-[10px] font-mono text-slate-500 uppercase tracking-widest">sys_monitor@intelguard: ~</div>
+            <div class="fade-in fade-in-up relative group p-[1px] bg-gradient-to-b from-white/20 to-transparent overflow-hidden" style="transition-delay: 400ms;">
+                <div class="absolute inset-0 bg-gradient-to-br from-emerald-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div class="h-full bg-[#080808] p-10 relative z-10 hover:bg-[#0a0a0a] transition-colors">
+                    <i data-lucide="fingerprint" class="w-8 h-8 text-emerald-500 mb-8 animate-pulse"></i>
+                    <div class="text-4xl font-syne font-extrabold text-white mb-3 tracking-tight pt-2 pb-1">Rapid Scale</div>
+                    <div class="text-xs font-mono text-emerald-400 uppercase tracking-widest mb-4">Active Since 2025</div>
+                    <p class="text-sm text-slate-500 font-light leading-relaxed">Engineered to bypass traditional bureaucracy, scaling intelligence impact on a global level.</p>
                 </div>
-                {/* Terminal Content */}
-                <div className="p-8 font-mono text-sm text-slate-400 space-y-4 h-[380px] overflow-hidden relative leading-relaxed">
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#050505] top-1/2 z-10 pointer-events-none"></div>
-                  <p className="text-cyan-400 font-bold">&gt; INITIALIZING INTELGUARD FRAMEWORK...</p>
-                  <p className="text-emerald-400">&gt; MODULES: OSINT, DARKWEB_MONITOR, FORENSICS</p>
-                  <p>&gt; Establishing secure connection to Interpol DB...</p>
-                  <p className="text-emerald-400">[SUCCESS] Secure handshake verified.</p>
-                  <p>&gt; Scanning target sectors for unindexed nodes...</p>
-                  <p className="text-amber-400">[WARNING] 12 encrypted nodes detected.</p>
-                  <p>&gt; Running decryption protocols (Auth: Boaz Acosta)...</p>
-                  <div className="flex gap-2 items-center">
-                    <span className="text-blue-500">&gt; Extracting relational metadata</span>
-                    <span className="flex space-x-1">
-                      <span className="w-1.5 h-4 bg-slate-600 animate-pulse delay-75"></span>
-                      <span className="w-1.5 h-4 bg-slate-600 animate-pulse delay-150"></span>
-                      <span className="w-1.5 h-4 bg-slate-600 animate-pulse delay-300"></span>
-                    </span>
-                  </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- About / Mission Command --- -->
+    <section id="about" class="py-24 relative border-t border-white/5 bg-black/60">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
+                <div class="flex flex-col justify-center">
+                    <div class="fade-in fade-in-up">
+                        <div class="flex items-center gap-4 mb-8">
+                            <div class="w-16 h-[2px] bg-cyan-500"></div>
+                            <span class="text-cyan-500 font-mono text-xs tracking-[0.3em] uppercase">Entity Profile</span>
+                        </div>
+                        <h2 class="text-4xl md:text-6xl font-syne font-extrabold text-white mb-8 tracking-tighter uppercase leading-[1.1]">Operating where algorithms fail.</h2>
+                    </div>
+                    
+                    <div class="fade-in fade-in-up space-y-6 text-slate-400 text-lg font-light leading-relaxed" style="transition-delay: 100ms;">
+                        <p>
+                            Founded by <span class="text-white font-semibold">Boaz Acosta</span> and a specialized core team of four, IntelGuard was engineered to fill a critical gap in digital law enforcement capabilities.
+                        </p>
+                        <p>
+                            Operating strictly as a non-profit entity, our primary directive is the identification and eradication of severe cyber-criminal networks, tracking illicit digital materials, and dismantling the deep-web infrastructure facilitating them.
+                        </p>
+                        
+                        <div class="pt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <!-- Feature Map converted to static -->
+                            <div class="flex gap-4 items-start group">
+                                <div class="mt-1 text-cyan-400 group-hover:text-white transition-colors"><i data-lucide="network" class="w-5 h-5 group-hover:animate-bounce"></i></div>
+                                <div>
+                                    <div class="text-white font-syne font-bold uppercase tracking-wider text-sm mb-1">Dark Web Ops</div>
+                                    <div class="text-slate-500 text-xs font-mono">Penetrating hidden services.</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 items-start group">
+                                <div class="mt-1 text-cyan-400 group-hover:text-white transition-colors"><i data-lucide="search" class="w-5 h-5 group-hover:animate-bounce"></i></div>
+                                <div>
+                                    <div class="text-white font-syne font-bold uppercase tracking-wider text-sm mb-1">Deep OSINT</div>
+                                    <div class="text-slate-500 text-xs font-mono">Advanced subject tracking.</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 items-start group">
+                                <div class="mt-1 text-cyan-400 group-hover:text-white transition-colors"><i data-lucide="lock" class="w-5 h-5 group-hover:animate-bounce"></i></div>
+                                <div>
+                                    <div class="text-white font-syne font-bold uppercase tracking-wider text-sm mb-1">Data Secure</div>
+                                    <div class="text-slate-500 text-xs font-mono">Encrypted intelligence transfer.</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 items-start group">
+                                <div class="mt-1 text-cyan-400 group-hover:text-white transition-colors"><i data-lucide="shield" class="w-5 h-5 group-hover:animate-bounce"></i></div>
+                                <div>
+                                    <div class="text-white font-syne font-bold uppercase tracking-wider text-sm mb-1">Zero Tolerance</div>
+                                    <div class="text-slate-500 text-xs font-mono">Relentless pursuit of threats.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              {/* Decorative nodes */}
-              <div className="absolute -bottom-6 -left-6 bg-[#0a0a0a] p-4 border border-white/10 shadow-2xl flex items-center gap-4 animate-bounce" style={{animationDuration: '4s'}}>
-                <div className="bg-cyan-500/20 p-2 rounded">
-                  <Activity className="w-6 h-6 text-cyan-400" />
+
+                <!-- Network Grid & Quote Visualization -->
+                <div class="relative">
+                    <div class="fade-in fade-in-up h-full min-h-[500px] w-full bg-[#030303] border border-white/10 relative shadow-[0_0_50px_rgba(0,0,0,1)] flex items-center justify-center overflow-hidden p-10 md:p-16 group" style="transition-delay: 200ms;">
+                        
+                        <!-- Subtle Grid Lines -->
+                        <div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(#4f4f4f 1px, transparent 1px), linear-gradient(90deg, #4f4f4f 1px, transparent 1px); background-size: 40px 40px;"></div>
+                        
+                        <!-- Flock Safety-style Leading Lines Animation SVG -->
+                        <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-40 group-hover:opacity-80 transition-opacity duration-1000" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+                            <g stroke="#ffffff15" stroke-width="1" fill="none">
+                                <path d="M-100,200 L200,200 L350,350 L900,350"></path>
+                                <path d="M200,-100 L200,150 L400,350 L400,700"></path>
+                                <path d="M900,100 L600,100 L450,250 L-100,250"></path>
+                                <path d="M600,700 L600,500 L400,300 L900,300"></path>
+                                <path d="M-100,500 L250,500 L400,350 L500,350 L650,200 L900,200"></path>
+                            </g>
+                            <g stroke="#22d3ee" stroke-width="2" fill="none" stroke-linecap="round" class="opacity-90">
+                                <path pathLength="100" stroke-dasharray="15 85" class="animate-[flowLine_4s_linear_infinite]" d="M-100,200 L200,200 L350,350 L900,350"></path>
+                                <path pathLength="100" stroke-dasharray="10 90" class="animate-[flowLine_3s_linear_infinite]" style="animation-delay: -1s;" d="M200,-100 L200,150 L400,350 L400,700"></path>
+                                <path pathLength="100" stroke-dasharray="20 80" class="animate-[flowLine_5s_linear_infinite]" style="animation-delay: -2s;" d="M900,100 L600,100 L450,250 L-100,250"></path>
+                                <path pathLength="100" stroke-dasharray="15 85" class="animate-[flowLine_3.5s_linear_infinite]" style="animation-delay: -1.5s;" d="M600,700 L600,500 L400,300 L900,300"></path>
+                                <path pathLength="100" stroke-dasharray="25 75" class="animate-[flowLine_6s_linear_infinite]" style="animation-delay: -3s;" d="M-100,500 L250,500 L400,350 L500,350 L650,200 L900,200"></path>
+                            </g>
+                            <circle cx="200" cy="200" r="3" fill="#22d3ee" class="animate-pulse"></circle>
+                            <circle cx="350" cy="350" r="3" fill="#22d3ee" class="animate-pulse"></circle>
+                            <circle cx="450" cy="250" r="3" fill="#3b82f6" class="animate-pulse"></circle>
+                            <circle cx="650" cy="200" r="3" fill="#22d3ee" class="animate-pulse"></circle>
+                            <circle cx="400" cy="350" r="4" fill="#3b82f6" class="animate-pulse"></circle>
+                        </svg>
+
+                        <!-- Glowing Gradient Backdrop -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-blue-600/5 opacity-50 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+                        
+                        <!-- HUD Element from Screenshot -->
+                        <div class="absolute top-6 left-6 bg-black/80 backdrop-blur-md border border-white/10 p-4 rounded-sm z-10">
+                            <div class="text-[10px] font-mono text-slate-500 mb-2 tracking-widest uppercase">Global Threat Level</div>
+                            <div class="text-rose-500 font-syne font-bold tracking-widest uppercase flex items-center gap-3">
+                                <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> ELEVATED
+                            </div>
+                        </div>
+
+                        <!-- Large Decorative Quotes -->
+                        <div class="absolute top-8 left-8 text-9xl text-white/5 font-syne font-black leading-none group-hover:text-cyan-500/10 transition-colors duration-500 pointer-events-none">"</div>
+                        <div class="absolute bottom-8 right-8 text-9xl text-white/5 font-syne font-black leading-none rotate-180 group-hover:text-cyan-500/10 transition-colors duration-500 pointer-events-none">"</div>
+                        
+                        <!-- Quote Content -->
+                        <div class="relative z-10 mt-12 backdrop-blur-[2px] p-6 rounded-2xl bg-[#030303]/40 border border-white/5">
+                            <p class="text-xl md:text-2xl lg:text-3xl font-syne font-bold text-white leading-tight mb-8 tracking-tight">
+                                IntelGuard isn't just a non-profit, we are the ones that speak up for those who can't speak up for themselves. That is the definition of a true IntelGuardian.
+                            </p>
+                            <div class="flex items-center gap-5">
+                                <div class="w-12 h-[2px] bg-cyan-500 group-hover:w-20 transition-all duration-500"></div>
+                                <div>
+                                    <div class="text-cyan-400 font-syne font-bold uppercase tracking-widest text-sm md:text-base">Boaz Acosta</div>
+                                    <div class="text-slate-500 font-mono text-[10px] tracking-[0.2em] mt-1 uppercase">Founder & CEO</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- Partners Section --- -->
+    <section id="partners" class="py-32 relative overflow-hidden border-t border-white/5">
+        <!-- Abstract Glow -->
+        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[150px] pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-amber-900/10 rounded-full blur-[150px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+            <div class="fade-in fade-in-up mb-20">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-[2px] bg-white"></div>
+                    <span class="text-white font-mono text-xs tracking-[0.2em] uppercase">Architecture</span>
+                </div>
+                <h2 class="text-4xl md:text-6xl font-syne font-extrabold text-white tracking-tighter uppercase max-w-2xl leading-[1.1]">Cooperative <br/>Network</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
+                
+                <!-- International Cooperatives -->
+                <div class="fade-in fade-in-up relative group" style="transition-delay: 100ms;">
+                    <div class="bg-[#050505] border border-white/10 relative flex flex-col h-full hover:border-blue-500/50 transition-colors duration-500">
+                        <div class="flex items-center gap-4 px-10 py-8 border-b border-white/5 bg-gradient-to-r from-blue-900/10 to-transparent">
+                            <i data-lucide="globe" class="w-6 h-6 text-blue-500 animate-[spin_10s_linear_infinite]"></i>
+                            <h3 class="font-syne font-bold text-white tracking-widest text-sm uppercase">International Cooperatives</h3>
+                        </div>
+                        <div class="p-10 border-l-[3px] border-blue-600 flex-grow relative">
+                            <div class="space-y-8 relative z-10">
+                                <!-- Hardcoded International List -->
+                                <div class="flex items-start gap-5 group/item cursor-crosshair">
+                                    <div class="mt-1.5 text-blue-600 group-hover/item:text-cyan-400 transition-all"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor"><rect width="10" height="10" /></svg></div>
+                                    <div><div class="font-syne font-bold text-slate-300 text-lg tracking-wide uppercase group-hover/item:text-white transition-colors">INTERPOL</div><div class="text-slate-600 font-mono text-xs mt-1 tracking-widest group-hover/item:text-blue-400 transition-colors">interpol.int</div></div>
+                                </div>
+                                <div class="flex items-start gap-5 group/item cursor-crosshair">
+                                    <div class="mt-1.5 text-blue-600 group-hover/item:text-cyan-400 transition-all"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor"><rect width="10" height="10" /></svg></div>
+                                    <div><div class="font-syne font-bold text-slate-300 text-lg tracking-wide uppercase group-hover/item:text-white transition-colors">ROMANIAN POLICE</div><div class="text-slate-600 font-mono text-xs mt-1 tracking-widest group-hover/item:text-blue-400 transition-colors">politiaromana.ro</div></div>
+                                </div>
+                                <div class="flex items-start gap-5 group/item cursor-crosshair">
+                                    <div class="mt-1.5 text-blue-600 group-hover/item:text-cyan-400 transition-all"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor"><rect width="10" height="10" /></svg></div>
+                                    <div><div class="font-syne font-bold text-slate-300 text-lg tracking-wide uppercase group-hover/item:text-white transition-colors">COLUMBIAN POLICE</div><div class="text-slate-600 font-mono text-xs mt-1 tracking-widest group-hover/item:text-blue-400 transition-colors">policia.gov.co</div></div>
+                                </div>
+                                <div class="flex items-start gap-5 group/item cursor-crosshair">
+                                    <div class="mt-1.5 text-blue-600 group-hover/item:text-cyan-400 transition-all"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor"><rect width="10" height="10" /></svg></div>
+                                    <div><div class="font-syne font-bold text-slate-300 text-lg tracking-wide uppercase group-hover/item:text-white transition-colors">CITY OF LONDON POLICE</div><div class="text-slate-600 font-mono text-xs mt-1 tracking-widest group-hover/item:text-blue-400 transition-colors">cityoflondon.police.uk</div></div>
+                                </div>
+                                <div class="flex items-start gap-5 group/item cursor-crosshair">
+                                    <div class="mt-1.5 text-blue-600 group-hover/item:text-cyan-400 transition-all"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor"><rect width="10" height="10" /></svg></div>
+                                    <div><div class="font-syne font-bold text-slate-300 text-lg tracking-wide uppercase group-hover/item:text-white transition-colors">DORSET POLICE</div><div class="text-slate-600 font-mono text-xs mt-1 tracking-widest group-hover/item:text-blue-400 transition-colors">dorset.police.uk</div></div>
+                                </div>
+                                <div class="flex items-start gap-5 group/item cursor-crosshair">
+                                    <div class="mt-1.5 text-blue-600 group-hover/item:text-cyan-400 transition-all"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor"><rect width="10" height="10" /></svg></div>
+                                    <div><div class="font-syne font-bold text-slate-300 text-lg tracking-wide uppercase group-hover/item:text-white transition-colors">MINISTRY OF INTERIOR POLICE</div><div class="text-slate-600 font-mono text-xs mt-1 tracking-widest group-hover/item:text-blue-400 transition-colors">interieur.gouv.fr</div></div>
+                                </div>
+                                <div class="flex items-start gap-5 group/item cursor-crosshair">
+                                    <div class="mt-1.5 text-blue-600 group-hover/item:text-cyan-400 transition-all"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor"><rect width="10" height="10" /></svg></div>
+                                    <div><div class="font-syne font-bold text-slate-300 text-lg tracking-wide uppercase group-hover/item:text-white transition-colors">EUROPOL</div><div class="text-slate-600 font-mono text-xs mt-1 tracking-widest group-hover/item:text-blue-400 transition-colors">europol.europa.eu</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Domestic Cooperatives -->
+                <div class="fade-in fade-in-up relative group" style="transition-delay: 200ms;">
+                    <div class="bg-[#050505] border border-white/10 relative flex flex-col h-full hover:border-amber-500/50 transition-colors duration-500">
+                        <div class="flex items-center gap-4 px-10 py-8 border-b border-white/5 bg-gradient-to-r from-amber-900/10 to-transparent">
+                            <i data-lucide="building" class="w-6 h-6 text-amber-500 animate-pulse"></i>
+                            <h3 class="font-syne font-bold text-white tracking-widest text-sm uppercase">Domestic Cooperatives</h3>
+                        </div>
+                        <div class="p-10 border-l-[3px] border-amber-500 flex-grow relative">
+                            <div class="space-y-8 relative z-10">
+                                <!-- Hardcoded Domestic List -->
+                                <div class="flex items-start gap-5 group/item cursor-crosshair">
+                                    <div class="mt-1.5 text-amber-700 group-hover/item:text-amber-400 transition-all"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor"><rect width="10" height="10" /></svg></div>
+                                    <div><div class="font-syne font-bold text-slate-300 text-lg tracking-wide uppercase group-hover/item:text-white transition-colors">FEDERAL BUREAU OF INVESTIGATION</div><div class="text-slate-600 font-mono text-xs mt-1 tracking-widest group-hover/item:text-amber-400 transition-colors">fbi.gov</div></div>
+                                </div>
+                                <div class="flex items-start gap-5 group/item cursor-crosshair">
+                                    <div class="mt-1.5 text-amber-700 group-hover/item:text-amber-400 transition-all"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor"><rect width="10" height="10" /></svg></div>
+                                    <div><div class="font-syne font-bold text-slate-300 text-lg tracking-wide uppercase group-hover/item:text-white transition-colors">DALLAS POLICE DEPARTMENT</div><div class="text-slate-600 font-mono text-xs mt-1 tracking-widest group-hover/item:text-amber-400 transition-colors">dallaspolice.net</div></div>
+                                </div>
+                                <div class="flex items-start gap-5 group/item cursor-crosshair">
+                                    <div class="mt-1.5 text-amber-700 group-hover/item:text-amber-400 transition-all"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor"><rect width="10" height="10" /></svg></div>
+                                    <div><div class="font-syne font-bold text-slate-300 text-lg tracking-wide uppercase group-hover/item:text-white transition-colors">SANTA ROSA POLICE DEPARTMENT</div><div class="text-slate-600 font-mono text-xs mt-1 tracking-widest group-hover/item:text-amber-400 transition-colors">srcity.org</div></div>
+                                </div>
+                                <div class="flex items-start gap-5 group/item cursor-crosshair">
+                                    <div class="mt-1.5 text-amber-700 group-hover/item:text-amber-400 transition-all"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor"><rect width="10" height="10" /></svg></div>
+                                    <div><div class="font-syne font-bold text-slate-300 text-lg tracking-wide uppercase group-hover/item:text-white transition-colors">TORRANCE POLICE DEPARTMENT</div><div class="text-slate-600 font-mono text-xs mt-1 tracking-widest group-hover/item:text-amber-400 transition-colors">torranceca.gov</div></div>
+                                </div>
+                                <div class="flex items-start gap-5 group/item cursor-crosshair">
+                                    <div class="mt-1.5 text-amber-700 group-hover/item:text-amber-400 transition-all"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor"><rect width="10" height="10" /></svg></div>
+                                    <div><div class="font-syne font-bold text-slate-300 text-lg tracking-wide uppercase group-hover/item:text-white transition-colors">NCMEC</div><div class="text-slate-600 font-mono text-xs mt-1 tracking-widest group-hover/item:text-amber-400 transition-colors">missingkids.org</div></div>
+                                </div>
+                                <div class="flex items-start gap-5 group/item cursor-crosshair">
+                                    <div class="mt-1.5 text-amber-700 group-hover/item:text-amber-400 transition-all"><svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor"><rect width="10" height="10" /></svg></div>
+                                    <div><div class="font-syne font-bold text-slate-300 text-lg tracking-wide uppercase group-hover/item:text-white transition-colors">INTERNET WATCH FOUNDATION</div><div class="text-slate-600 font-mono text-xs mt-1 tracking-widest group-hover/item:text-amber-400 transition-colors">iwf.org.uk</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- --- Intelligence Providers (Marquee) --- -->
+            <div class="mt-32 pt-16 border-t border-white/5 relative overflow-hidden">
+                <div class="text-center mb-12 relative z-10">
+                    <h3 class="text-slate-500 font-mono text-xs tracking-[0.3em] uppercase">Intelligence Partners & Tooling</h3>
+                </div>
+                <div class="relative flex overflow-x-hidden group">
+                    <div class="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#030303] to-transparent z-20 pointer-events-none"></div>
+                    <div class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#030303] to-transparent z-20 pointer-events-none"></div>
+                    
+                    <div class="flex animate-marquee group-hover:[animation-play-state:paused] whitespace-nowrap" id="marquee-container">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- Insights & Case Studies --- -->
+    <section id="cases" class="py-32 border-t border-white/5 bg-black/60">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+                <div class="fade-in fade-in-up">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-[2px] bg-cyan-500"></div>
+                        <span class="text-cyan-500 font-mono text-xs tracking-[0.2em] uppercase">Archive</span>
+                    </div>
+                    <h2 class="text-4xl md:text-6xl font-syne font-extrabold text-white tracking-tighter uppercase">Declassified <br/>Intel</h2>
+                </div>
+                <div class="fade-in fade-in-up" style="transition-delay: 100ms;">
+                    <button class="text-cyan-400 font-mono text-xs uppercase tracking-[0.2em] hover:text-white flex items-center gap-3 group transition-colors border border-cyan-500/30 hover:border-white px-6 py-3">
+                        Access Records <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Case Study 1 -->
+                <div class="fade-in fade-in-up group relative" style="transition-delay: 0ms;">
+                    <div class="bg-[#050505] p-10 border border-white/10 group-hover:border-cyan-500/50 transition-colors duration-500 h-full flex flex-col relative z-10">
+                        <div class="flex justify-between items-center mb-10 relative z-10">
+                            <div class="text-[10px] font-mono font-bold tracking-[0.2em] text-cyan-400 uppercase">LAW ENFORCEMENT</div>
+                            <div class="text-[10px] font-mono text-slate-600 tracking-widest">OP-CRONOS</div>
+                        </div>
+                        <h3 class="text-2xl font-syne font-bold text-white mb-6 uppercase tracking-wide group-hover:text-cyan-300 transition-colors leading-snug">Operation Cronos</h3>
+                        <p class="text-slate-400 text-sm mb-12 flex-grow font-light leading-relaxed">An international law enforcement operation that disrupted the LockBit ransomware group, seizing their infrastructure and decryption keys.</p>
+                        <div class="flex items-center justify-between mt-auto pt-8 border-t border-white/5 relative z-10">
+                            <span class="text-slate-600 text-xs font-mono tracking-widest">FEB 2024</span>
+                            <div class="text-slate-600 group-hover:text-cyan-400 transition-colors"><i data-lucide="file-text" class="w-5 h-5"></i></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Case Study 2 -->
+                <div class="fade-in fade-in-up group relative" style="transition-delay: 150ms;">
+                    <div class="bg-[#050505] p-10 border border-white/10 group-hover:border-cyan-500/50 transition-colors duration-500 h-full flex flex-col relative z-10">
+                        <div class="flex justify-between items-center mb-10 relative z-10">
+                            <div class="text-[10px] font-mono font-bold tracking-[0.2em] text-cyan-400 uppercase">CYBER OP</div>
+                            <div class="text-[10px] font-mono text-slate-600 tracking-widest">OP-COOKIE</div>
+                        </div>
+                        <h3 class="text-2xl font-syne font-bold text-white mb-6 uppercase tracking-wide group-hover:text-cyan-300 transition-colors leading-snug">Genesis Market Takedown</h3>
+                        <p class="text-slate-400 text-sm mb-12 flex-grow font-light leading-relaxed">FBI-led international takedown of Genesis Market, a massive illicit marketplace selling stolen credentials and device fingerprints.</p>
+                        <div class="flex items-center justify-between mt-auto pt-8 border-t border-white/5 relative z-10">
+                            <span class="text-slate-600 text-xs font-mono tracking-widest">APR 2023</span>
+                            <div class="text-slate-600 group-hover:text-cyan-400 transition-colors"><i data-lucide="file-text" class="w-5 h-5"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case Study 3 -->
+                <div class="fade-in fade-in-up group relative" style="transition-delay: 300ms;">
+                    <div class="bg-[#050505] p-10 border border-white/10 group-hover:border-cyan-500/50 transition-colors duration-500 h-full flex flex-col relative z-10">
+                        <div class="flex justify-between items-center mb-10 relative z-10">
+                            <div class="text-[10px] font-mono font-bold tracking-[0.2em] text-cyan-400 uppercase">DARK WEB</div>
+                            <div class="text-[10px] font-mono text-slate-600 tracking-widest">OP-BAYONET</div>
+                        </div>
+                        <h3 class="text-2xl font-syne font-bold text-white mb-6 uppercase tracking-wide group-hover:text-cyan-300 transition-colors leading-snug">AlphaBay Dismantled</h3>
+                        <p class="text-slate-400 text-sm mb-12 flex-grow font-light leading-relaxed">Coordinated multinational operation leading to the shutdown of AlphaBay, the largest darknet market in history, disrupting global illicit trade.</p>
+                        <div class="flex items-center justify-between mt-auto pt-8 border-t border-white/5 relative z-10">
+                            <span class="text-slate-600 text-xs font-mono tracking-widest">JUL 2017</span>
+                            <div class="text-slate-600 group-hover:text-cyan-400 transition-colors"><i data-lucide="file-text" class="w-5 h-5"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- Team Roster --- -->
+    <section id="team" class="py-32 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+            <div class="fade-in fade-in-up mb-20">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-[2px] bg-white"></div>
+                    <span class="text-white font-mono text-xs tracking-[0.2em] uppercase">Personnel</span>
+                </div>
+                <h2 class="text-4xl md:text-6xl font-syne font-extrabold text-white tracking-tighter uppercase max-w-2xl leading-[1.1]">Core <br/>Operatives</h2>
+            </div>
+
+            <div class="flex flex-col gap-8">
+                <!-- Director profile -->
+                <div class="fade-in fade-in-up w-full" style="transition-delay: 100ms;">
+                    <div class="bg-[#050505] border border-white/10 p-8 md:p-12 flex flex-col md:flex-row items-start gap-8 relative group hover:border-cyan-500/50 hover:-translate-y-2 hover:shadow-[0_15px_50px_rgba(34,211,238,0.1)] transition-all duration-500 z-20">
+                        <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                        
+                        <!-- Avatar -->
+                        <div class="w-32 h-32 bg-[#0a0a0a] border border-white/10 flex items-center justify-center flex-shrink-0 relative overflow-hidden shadow-2xl">
+                            <div class="absolute inset-0 bg-cyan-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+                            <i data-lucide="users" class="w-12 h-12 text-slate-500 relative z-10 group-hover:text-cyan-400 transition-colors"></i>
+                        </div>
+
+                        <div class="flex flex-col flex-grow justify-between h-full w-full">
+                            <div>
+                                <div class="text-[10px] font-mono text-cyan-500 mb-3 tracking-[0.3em] uppercase">Clearance: Lvl 5 / Founder</div>
+                                <h3 class="text-4xl font-syne font-extrabold text-white uppercase tracking-tighter">Boaz Acosta</h3>
+                                <p class="text-slate-400 text-sm mt-2 font-mono tracking-widest uppercase">Founder & CEO</p>
+                            </div>
+                            
+                            <!-- Badges -->
+                            <div class="flex flex-wrap gap-2 mt-6">
+                                <div class="group/badge relative p-2 bg-white/5 border border-white/10 rounded-md hover:bg-white/10 transition-colors cursor-help"><i data-lucide="globe" class="w-4 h-4 text-blue-400"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">Global Specialist</div></div>
+                                <div class="group/badge relative p-2 bg-white/5 border border-white/10 rounded-md hover:bg-white/10 transition-colors cursor-help"><i data-lucide="star" class="w-4 h-4 text-yellow-400"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">OG Operator</div></div>
+                                <div class="group/badge relative p-2 bg-white/5 border border-white/10 rounded-md hover:bg-white/10 transition-colors cursor-help"><i data-lucide="search" class="w-4 h-4 text-emerald-400"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">Verified Investigator</div></div>
+                                <div class="group/badge relative p-2 bg-white/5 border border-white/10 rounded-md hover:bg-white/10 transition-colors cursor-help"><i data-lucide="crown" class="w-4 h-4 text-purple-400"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">Founder</div></div>
+                                <div class="group/badge relative p-2 bg-white/5 border border-white/10 rounded-md hover:bg-white/10 transition-colors cursor-help"><i data-lucide="shield" class="w-4 h-4 text-cyan-400"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">Official IntelGuardian</div></div>
+                                <div class="group/badge relative p-2 bg-white/5 border border-white/10 rounded-md hover:bg-white/10 transition-colors cursor-help"><i data-lucide="code" class="w-4 h-4 text-green-400"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">Site & Tool Developer</div></div>
+                                <div class="group/badge relative p-2 bg-white/5 border border-white/10 rounded-md hover:bg-white/10 transition-colors cursor-help"><i data-lucide="gem" class="w-4 h-4 text-pink-400"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">Public Relations Lead</div></div>
+                            </div>
+
+                            <!-- Socials -->
+                            <div class="flex gap-4 mt-6 pt-6 border-t border-white/10 w-full md:w-auto">
+                                <a href="https://t.me/bo_sint" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-xs font-mono text-slate-500 hover:text-blue-400 transition-colors">
+                                    <i data-lucide="send" class="w-4 h-4"></i> @bo_sint
+                                </a>
+                                <a href="mailto:boaz@intelguard.org" class="flex items-center gap-2 text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors">
+                                    <i data-lucide="mail" class="w-4 h-4"></i> boaz@intelguard.org
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Core Members Matrix -->
+                <div class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- OP-01 -->
+                    <div class="fade-in fade-in-up" style="transition-delay: 200ms;">
+                        <div class="bg-[#050505] border border-white/10 p-8 text-center group hover:bg-[#080808] hover:border-cyan-500/30 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(34,211,238,0.05)] transition-all duration-300 relative overflow-visible h-full flex flex-col items-center">
+                            <div class="w-16 h-16 mx-auto bg-[#0a0a0a] border border-white/10 flex items-center justify-center mb-6 text-slate-600 group-hover:text-cyan-400 group-hover:border-cyan-500/30 transition-colors rounded-full relative z-10"><span class="font-syne font-bold text-lg">01</span></div>
+                            <div class="relative z-10 flex-grow">
+                                <h3 class="text-xl font-syne font-bold text-slate-200 uppercase tracking-wide group-hover:text-white transition-colors">Monroe Wright</h3>
+                                <p class="text-slate-500 text-[10px] font-mono mt-2 tracking-widest uppercase">OP-01 // OSINT Specialist</p>
+                            </div>
+                            <div class="flex flex-wrap justify-center gap-2 mt-8 pt-6 border-t border-white/5 w-full relative z-10">
+                                <div class="group/badge relative p-1.5 bg-white/5 border border-white/10 rounded hover:bg-white/10 transition-colors cursor-help"><i data-lucide="globe" class="w-3.5 h-3.5 text-blue-400 opacity-70 group-hover/badge:opacity-100 transition-opacity"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">Global Specialist</div></div>
+                                <div class="group/badge relative p-1.5 bg-white/5 border border-white/10 rounded hover:bg-white/10 transition-colors cursor-help"><i data-lucide="star" class="w-3.5 h-3.5 text-yellow-400 opacity-70 group-hover/badge:opacity-100 transition-opacity"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">OG Operator</div></div>
+                                <div class="group/badge relative p-1.5 bg-white/5 border border-white/10 rounded hover:bg-white/10 transition-colors cursor-help"><i data-lucide="shield" class="w-3.5 h-3.5 text-cyan-400 opacity-70 group-hover/badge:opacity-100 transition-opacity"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">Official IntelGuardian</div></div>
+                                <div class="group/badge relative p-1.5 bg-white/5 border border-white/10 rounded hover:bg-white/10 transition-colors cursor-help"><i data-lucide="settings" class="w-3.5 h-3.5 text-slate-300 opacity-70 group-hover/badge:opacity-100 transition-opacity"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">Operations Supervisor</div></div>
+                                <div class="group/badge relative p-1.5 bg-white/5 border border-white/10 rounded hover:bg-white/10 transition-colors cursor-help"><i data-lucide="search" class="w-3.5 h-3.5 text-emerald-400 opacity-70 group-hover/badge:opacity-100 transition-opacity"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">Verified Investigator</div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OP-02 -->
+                    <div class="fade-in fade-in-up" style="transition-delay: 300ms;">
+                        <div class="bg-[#050505] border border-white/10 p-8 text-center group hover:bg-[#080808] hover:border-cyan-500/30 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(34,211,238,0.05)] transition-all duration-300 relative overflow-visible h-full flex flex-col items-center">
+                            <div class="w-16 h-16 mx-auto bg-[#0a0a0a] border border-white/10 flex items-center justify-center mb-6 text-slate-600 group-hover:text-cyan-400 group-hover:border-cyan-500/30 transition-colors rounded-full relative z-10"><span class="font-syne font-bold text-lg">02</span></div>
+                            <div class="relative z-10 flex-grow">
+                                <h3 class="text-xl font-syne font-bold text-slate-200 uppercase tracking-wide group-hover:text-white transition-colors">John Davis</h3>
+                                <p class="text-slate-500 text-[10px] font-mono mt-2 tracking-widest uppercase">OP-02 // Darknet Analyst</p>
+                            </div>
+                            <div class="flex flex-wrap justify-center gap-2 mt-8 pt-6 border-t border-white/5 w-full relative z-10">
+                                <div class="group/badge relative p-1.5 bg-white/5 border border-white/10 rounded hover:bg-white/10 transition-colors cursor-help"><i data-lucide="globe" class="w-3.5 h-3.5 text-blue-400 opacity-70 group-hover/badge:opacity-100 transition-opacity"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">Global Specialist</div></div>
+                                <div class="group/badge relative p-1.5 bg-white/5 border border-white/10 rounded hover:bg-white/10 transition-colors cursor-help"><i data-lucide="shield" class="w-3.5 h-3.5 text-cyan-400 opacity-70 group-hover/badge:opacity-100 transition-opacity"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">Official IntelGuardian</div></div>
+                                <div class="group/badge relative p-1.5 bg-white/5 border border-white/10 rounded hover:bg-white/10 transition-colors cursor-help"><i data-lucide="search" class="w-3.5 h-3.5 text-emerald-400 opacity-70 group-hover/badge:opacity-100 transition-opacity"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">Verified Investigator</div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OP-03 -->
+                    <div class="fade-in fade-in-up" style="transition-delay: 400ms;">
+                        <div class="bg-[#050505] border border-white/10 p-8 text-center group hover:bg-[#080808] hover:border-cyan-500/30 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(34,211,238,0.05)] transition-all duration-300 relative overflow-visible h-full flex flex-col items-center">
+                            <div class="w-16 h-16 mx-auto bg-[#0a0a0a] border border-white/10 flex items-center justify-center mb-6 text-slate-600 group-hover:text-cyan-400 group-hover:border-cyan-500/30 transition-colors rounded-full relative z-10"><span class="font-syne font-bold text-lg">03</span></div>
+                            <div class="relative z-10 flex-grow">
+                                <h3 class="text-xl font-syne font-bold text-slate-200 uppercase tracking-wide group-hover:text-white transition-colors">Vinnie Castro</h3>
+                                <p class="text-slate-500 text-[10px] font-mono mt-2 tracking-widest uppercase">OP-03 // Digital Forensics</p>
+                            </div>
+                            <div class="flex flex-wrap justify-center gap-2 mt-8 pt-6 border-t border-white/5 w-full relative z-10">
+                                <div class="group/badge relative p-1.5 bg-white/5 border border-white/10 rounded hover:bg-white/10 transition-colors cursor-help"><i data-lucide="globe" class="w-3.5 h-3.5 text-blue-400 opacity-70 group-hover/badge:opacity-100 transition-opacity"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">Global Specialist</div></div>
+                                <div class="group/badge relative p-1.5 bg-white/5 border border-white/10 rounded hover:bg-white/10 transition-colors cursor-help"><i data-lucide="book-open" class="w-3.5 h-3.5 text-amber-400 opacity-70 group-hover/badge:opacity-100 transition-opacity"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">Operator in Training</div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OP-04 -->
+                    <div class="fade-in fade-in-up" style="transition-delay: 500ms;">
+                        <div class="bg-[#050505] border border-white/10 p-8 text-center group hover:bg-[#080808] hover:border-cyan-500/30 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(34,211,238,0.05)] transition-all duration-300 relative overflow-visible h-full flex flex-col items-center">
+                            <div class="w-16 h-16 mx-auto bg-[#0a0a0a] border border-white/10 flex items-center justify-center mb-6 text-slate-600 group-hover:text-cyan-400 group-hover:border-cyan-500/30 transition-colors rounded-full relative z-10"><span class="font-syne font-bold text-lg">04</span></div>
+                            <div class="relative z-10 flex-grow">
+                                <h3 class="text-xl font-syne font-bold text-slate-200 uppercase tracking-wide group-hover:text-white transition-colors">Oliver Dudas</h3>
+                                <p class="text-slate-500 text-[10px] font-mono mt-2 tracking-widest uppercase">OP-04 // Liaison Officer</p>
+                            </div>
+                            <div class="flex flex-wrap justify-center gap-2 mt-8 pt-6 border-t border-white/5 w-full relative z-10">
+                                <div class="group/badge relative p-1.5 bg-white/5 border border-white/10 rounded hover:bg-white/10 transition-colors cursor-help"><i data-lucide="globe" class="w-3.5 h-3.5 text-blue-400 opacity-70 group-hover/badge:opacity-100 transition-opacity"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">Global Specialist</div></div>
+                                <div class="group/badge relative p-1.5 bg-white/5 border border-white/10 rounded hover:bg-white/10 transition-colors cursor-help"><i data-lucide="book-open" class="w-3.5 h-3.5 text-amber-400 opacity-70 group-hover/badge:opacity-100 transition-opacity"></i><div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">Operator in Training</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- Secure Channels --- -->
+    <section id="connect" class="py-32 relative border-t border-white/5 bg-[#030303]">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="fade-in fade-in-up mb-16 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-8">
+                <div>
+                    <div class="flex items-center justify-center md:justify-start gap-4 mb-6">
+                        <div class="w-12 h-[2px] bg-cyan-500"></div>
+                        <span class="text-cyan-500 font-mono text-xs tracking-[0.2em] uppercase">Communications</span>
+                    </div>
+                    <h2 class="text-4xl md:text-6xl font-syne font-extrabold text-white tracking-tighter uppercase leading-[1.1]">Secure<br/>Channels</h2>
+                </div>
+                <p class="text-slate-500 font-mono text-xs tracking-widest max-w-sm uppercase text-center md:text-right">
+                    Direct, encrypted pathways for intelligence handoffs and official agency liaisons.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Email Embed -->
+                <div class="fade-in fade-in-up" style="transition-delay: 100ms;">
+                    <a href="mailto:boaz@intelguard.org" class="group relative bg-[#050505] border border-white/10 p-8 md:p-10 hover:border-cyan-500/50 transition-all duration-300 overflow-hidden flex flex-col justify-between min-h-[240px] block">
+                        <div class="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div class="flex justify-between items-start relative z-10">
+                            <div class="bg-white/5 p-4 border border-white/5 group-hover:border-cyan-500/30 group-hover:scale-110 transition-all">
+                                <i data-lucide="mail" class="w-6 h-6 text-slate-400 group-hover:text-cyan-400 transition-colors"></i>
+                            </div>
+                            <i data-lucide="arrow-up-right" class="w-6 h-6 text-slate-700 group-hover:text-cyan-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"></i>
+                        </div>
+                        <div class="relative z-10 mt-12">
+                            <div class="text-[10px] font-mono text-slate-500 mb-3 uppercase tracking-widest">Official Direct Email</div>
+                            <div class="text-xl md:text-2xl font-bold text-white font-syne tracking-tight group-hover:text-cyan-300 transition-colors truncate">boaz@intelguard.org</div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Telegram Channel Embed -->
+                <div class="fade-in fade-in-up" style="transition-delay: 200ms;">
+                    <a href="https://t.me/intelguardian" target="_blank" rel="noopener noreferrer" class="group relative bg-[#050505] border border-white/10 p-8 md:p-10 hover:border-blue-500/50 transition-all duration-300 overflow-hidden flex flex-col justify-between min-h-[240px] block">
+                        <div class="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div class="flex justify-between items-start relative z-10">
+                            <div class="bg-white/5 p-4 border border-white/5 group-hover:border-blue-500/30 group-hover:scale-110 transition-all">
+                                <i data-lucide="send" class="w-6 h-6 text-slate-400 group-hover:text-blue-400 transition-colors"></i>
+                            </div>
+                            <i data-lucide="arrow-up-right" class="w-6 h-6 text-slate-700 group-hover:text-blue-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"></i>
+                        </div>
+                        <div class="relative z-10 mt-12">
+                            <div class="text-[10px] font-mono text-slate-500 mb-3 uppercase tracking-widest">Intel Dispatch Network</div>
+                            <div class="text-xl md:text-2xl font-bold text-white font-syne tracking-tight group-hover:text-blue-300 transition-colors truncate">t.me/intelguardian</div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Telegram User Embed -->
+                <div class="fade-in fade-in-up" style="transition-delay: 300ms;">
+                    <a href="https://t.me/bo_sint" target="_blank" rel="noopener noreferrer" class="group relative bg-[#050505] border border-white/10 p-8 md:p-10 hover:border-emerald-500/50 transition-all duration-300 overflow-hidden flex flex-col justify-between min-h-[240px] block">
+                        <div class="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div class="flex justify-between items-start relative z-10">
+                            <div class="bg-white/5 p-4 border border-white/5 group-hover:border-emerald-500/30 group-hover:scale-110 transition-all">
+                                <i data-lucide="at-sign" class="w-6 h-6 text-slate-400 group-hover:text-emerald-400 transition-colors"></i>
+                            </div>
+                            <i data-lucide="arrow-up-right" class="w-6 h-6 text-slate-700 group-hover:text-emerald-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"></i>
+                        </div>
+                        <div class="relative z-10 mt-12">
+                            <div class="text-[10px] font-mono text-slate-500 mb-3 uppercase tracking-widest">Secure Telegram Comm</div>
+                            <div class="text-xl md:text-2xl font-bold text-white font-syne tracking-tight group-hover:text-emerald-300 transition-colors truncate">@bo_sint</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- Footer --- -->
+    <footer class="bg-[#000] text-slate-500 py-20 border-t border-white/5 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-[0.02] pointer-events-none flex items-center justify-center">
+            <i data-lucide="globe" class="w-[1000px] h-[1000px]"></i>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-16 mb-20">
+                <div class="md:col-span-5">
+                    <div class="flex items-center gap-3 mb-8">
+                        <i data-lucide="shield" class="w-8 h-8 text-slate-600"></i>
+                        <span class="text-2xl font-syne font-bold text-white tracking-tighter">INTELGUARD</span>
+                    </div>
+                    <p class="text-sm leading-relaxed max-w-sm font-space text-slate-500">
+                        Advanced Open Source Intelligence and Digital Enforcement. A registered non-profit organization dedicated to the eradication of illicit digital materials and extreme cyber threats.
+                    </p>
+                </div>
+                
+                <div class="md:col-span-3 md:col-start-7">
+                    <h4 class="text-white font-mono text-[10px] mb-8 uppercase tracking-[0.2em]">Architecture</h4>
+                    <ul class="space-y-4 text-sm font-syne font-bold uppercase tracking-widest">
+                        <li><a href="#about" class="hover:text-cyan-400 transition-colors">Entity Profile</a></li>
+                        <li><a href="#cases" class="hover:text-cyan-400 transition-colors">Intel Archive</a></li>
+                        <li><a href="#partners" class="hover:text-cyan-400 transition-colors">Network</a></li>
+                        <li><a href="#team" class="hover:text-cyan-400 transition-colors">Personnel</a></li>
+                    </ul>
+                </div>
+
+                <div class="md:col-span-2">
+                    <h4 class="text-white font-mono text-[10px] mb-8 uppercase tracking-[0.2em]">Protocols</h4>
+                    <ul class="space-y-4 text-sm font-syne font-bold uppercase tracking-widest text-slate-600">
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Report</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">PGP Key</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-mono tracking-widest uppercase">
+                <p>&copy; <span id="year"></span> INTELGUARD ORG. ALL RIGHTS RESERVED.</p>
+                <div class="flex items-center gap-3">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
+                    <span>SYSTEMS NOMINAL</span>
+                </div>
+                <p>DIR: B. ACOSTA // EST. 2025</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logistics -->
+    <script>
+        // 1. Initialize Lucide Icons
+        lucide.createIcons();
+
+        // 2. Set Footer Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // 3. Dynamic Tool Marquee Generation
+        const osintTools = [
+            { name: 'ProximityOSINT', url: 'proximityosint.com' },
+            { name: 'EnformionGO', url: 'enformion.com' },
+            { name: 'OSINT Industries', url: 'osint.industries' },
+            { name: 'NOSINT', url: 'nosint.org' },
+            { name: 'VeritasOSINT', url: 'veritasosint.net' },
+            { name: 'HudsonRock', url: 'hudsonrock.com' },
+            { name: 'Cypher Dynamics', url: 'cypherdynamics.com' },
+            { name: 'BreachHub', url: 'breachhub.org' },
+            { name: 'Crowsint', url: 'crowsint.cc' }
+        ];
+        
+        const marqueeContainer = document.getElementById('marquee-container');
+        // Duplicate the list 3 times to ensure smooth infinite scrolling
+        const duplicatedTools = [...osintTools, ...osintTools, ...osintTools];
+        
+        duplicatedTools.forEach(tool => {
+            const a = document.createElement('a');
+            a.href = `https://${tool.url}`;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            a.className = "flex items-center gap-4 px-10 py-6 mx-4 bg-[#050505] border border-white/10 rounded-xl hover:border-cyan-500/50 hover:bg-white/5 hover:-translate-y-1 transition-all cursor-pointer shadow-[0_0_20px_rgba(0,0,0,0.5)]";
+            a.innerHTML = `
+                <div class="w-10 h-10 rounded-lg bg-[#0a0a0a] border border-white/10 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="terminal" class="w-5 h-5 text-cyan-500"></i>
                 </div>
                 <div>
-                  <div className="text-xs font-mono text-slate-500 tracking-widest">NETWORK STATUS</div>
-                  <div className="text-sm font-syne font-bold text-white uppercase tracking-wide">Active Tracking</div>
+                    <div class="text-white font-syne font-bold tracking-wide">${tool.name}</div>
+                    <div class="text-slate-500 font-mono text-[10px] tracking-widest uppercase">${tool.url}</div>
                 </div>
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
+            `;
+            marqueeContainer.appendChild(a);
+        });
+        // Re-init icons for dynamic content
+        lucide.createIcons();
 
-      {/* --- Sleek Bento Stats --- */}
-      <section className="relative z-10 -mt-16 max-w-7xl mx-auto px-6 md:px-12 pb-24">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <FadeIn delay={200} className="relative group p-[1px] bg-gradient-to-b from-white/20 to-transparent overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div className="h-full bg-[#080808] p-10 relative z-10 hover:bg-[#0a0a0a] transition-colors">
-              <Crosshair className="w-8 h-8 text-cyan-500 mb-8 animate-[spin_8s_linear_infinite]" />
-              <div className="text-6xl font-syne font-extrabold text-white mb-3 tracking-tighter">200+</div>
-              <div className="text-xs font-mono text-cyan-400 uppercase tracking-widest mb-4">Operations Closed</div>
-              <p className="text-sm text-slate-500 font-light leading-relaxed">High-priority investigations successfully concluded and transitioned to global authorities.</p>
-            </div>
-          </FadeIn>
-          
-          <FadeIn delay={300} className="relative group p-[1px] bg-gradient-to-b from-white/20 to-transparent overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div className="h-full bg-[#080808] p-10 relative z-10 flex flex-col justify-center hover:bg-[#0a0a0a] transition-colors">
-              <Database className="w-8 h-8 text-blue-500 mb-8 animate-float" />
-              <div className="text-6xl font-syne font-extrabold text-white mb-3 tracking-tighter flex items-baseline gap-2">
-                350+ <span className="text-3xl text-slate-600 font-medium">GB</span>
-              </div>
-              <div className="text-xs font-mono text-blue-400 uppercase tracking-widest mb-4">CSAM Terminated</div>
-              <p className="text-sm text-slate-500 font-light leading-relaxed">Illicit material identified, documented, and permanently eradicated from global infrastructure.</p>
-            </div>
-          </FadeIn>
+        // 4. Navbar & Background Glow logic
+        const navbar = document.getElementById('navbar');
+        const navbarContainer = document.getElementById('navbar-container');
+        const glowBg = document.getElementById('mouse-glow');
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
 
-          <FadeIn delay={400} className="relative group p-[1px] bg-gradient-to-b from-white/20 to-transparent overflow-hidden">
-             <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div className="h-full bg-[#080808] p-10 relative z-10 hover:bg-[#0a0a0a] transition-colors">
-              <Fingerprint className="w-8 h-8 text-emerald-500 mb-8 animate-pulse" />
-              <div className="text-4xl font-syne font-extrabold text-white mb-3 tracking-tight pt-2 pb-1">Rapid Scale</div>
-              <div className="text-xs font-mono text-emerald-400 uppercase tracking-widest mb-4">Active Since 2025</div>
-              <p className="text-sm text-slate-500 font-light leading-relaxed">Engineered to bypass traditional bureaucracy, scaling intelligence impact on a global level.</p>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbarContainer.classList.add('bg-[#050505]/90', 'backdrop-blur-xl', 'border', 'border-white/10', 'shadow-[0_0_30px_rgba(0,0,0,0.8)]', 'rounded-2xl', 'py-3', 'px-6');
+                navbarContainer.classList.remove('bg-transparent', 'border-transparent', 'py-4', 'px-2');
+            } else {
+                navbarContainer.classList.remove('bg-[#050505]/90', 'backdrop-blur-xl', 'border', 'border-white/10', 'shadow-[0_0_30px_rgba(0,0,0,0.8)]', 'rounded-2xl', 'py-3', 'px-6');
+                navbarContainer.classList.add('bg-transparent', 'border-transparent', 'py-4', 'px-2');
+            }
+        });
 
-      {/* --- About / Mission Command --- */}
-      <section id="about" className="py-24 relative border-t border-white/5 bg-black/60">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
-            <div className="flex flex-col justify-center">
-              <FadeIn>
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="w-16 h-[2px] bg-cyan-500"></div>
-                  <span className="text-cyan-500 font-mono text-xs tracking-[0.3em] uppercase">Entity Profile</span>
-                </div>
-                <h2 className="text-4xl md:text-6xl font-syne font-extrabold text-white mb-8 tracking-tighter uppercase leading-[1.1]">Operating where algorithms fail.</h2>
-              </FadeIn>
-              
-              <FadeIn delay={100} className="space-y-6 text-slate-400 text-lg font-light leading-relaxed">
-                <p>
-                  Founded by <span className="text-white font-semibold">Boaz Acosta</span> and a specialized core team of four, IntelGuard was engineered to fill a critical gap in digital law enforcement capabilities.
-                </p>
-                <p>
-                  Operating strictly as a non-profit entity, our primary directive is the identification and eradication of severe cyber-criminal networks, tracking illicit digital materials, and dismantling the deep-web infrastructure facilitating them.
-                </p>
-                
-                <div className="pt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {[
-                    { icon: Network, title: "Dark Web Ops", desc: "Penetrating hidden services." },
-                    { icon: Search, title: "Deep OSINT", desc: "Advanced subject tracking." },
-                    { icon: Lock, title: "Data Secure", desc: "Encrypted intelligence transfer." },
-                    { icon: Shield, title: "Zero Tolerance", desc: "Relentless pursuit of threats." }
-                  ].map((item, idx) => (
-                    <div key={idx} className="flex gap-4 items-start group">
-                      <div className="mt-1 text-cyan-400 group-hover:text-white transition-colors"><item.icon className="w-5 h-5 group-hover:animate-bounce" /></div>
-                      <div>
-                        <div className="text-white font-syne font-bold uppercase tracking-wider text-sm mb-1">{item.title}</div>
-                        <div className="text-slate-500 text-xs font-mono">{item.desc}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </FadeIn>
-            </div>
+        window.addEventListener('mousemove', (e) => {
+            glowBg.style.background = `radial-gradient(800px circle at ${e.clientX}px ${e.clientY}px, rgba(14, 165, 233, 0.15), transparent 40%)`;
+        });
 
-            {/* Network Grid & Quote Visualization */}
-            <div className="relative">
-              <FadeIn delay={200} className="h-full min-h-[500px] w-full bg-[#030303] border border-white/10 relative shadow-[0_0_50px_rgba(0,0,0,1)] flex items-center justify-center overflow-hidden p-10 md:p-16 group">
-                
-                {/* Subtle Grid Lines */}
-                <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'linear-gradient(#4f4f4f 1px, transparent 1px), linear-gradient(90deg, #4f4f4f 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-                
-                {/* Flock Safety-style Leading Lines Animation SVG */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40 group-hover:opacity-80 transition-opacity duration-1000" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
-                  {/* Base structure lines */}
-                  <g stroke="#ffffff15" strokeWidth="1" fill="none">
-                     <path d="M-100,200 L200,200 L350,350 L900,350" />
-                     <path d="M200,-100 L200,150 L400,350 L400,700" />
-                     <path d="M900,100 L600,100 L450,250 L-100,250" />
-                     <path d="M600,700 L600,500 L400,300 L900,300" />
-                     <path d="M-100,500 L250,500 L400,350 L500,350 L650,200 L900,200" />
-                  </g>
-                  
-                  {/* Glowing Animated Leading Lines */}
-                  <g stroke="#22d3ee" strokeWidth="2" fill="none" strokeLinecap="round" className="opacity-90">
-                    {/* pathLength="100" makes strokeDasharray scale correctly across paths of different sizes */}
-                    <path pathLength="100" strokeDasharray="15 85" className="animate-[flowLine_4s_linear_infinite]" d="M-100,200 L200,200 L350,350 L900,350" />
-                    <path pathLength="100" strokeDasharray="10 90" className="animate-[flowLine_3s_linear_infinite]" style={{animationDelay: '-1s'}} d="M200,-100 L200,150 L400,350 L400,700" />
-                    <path pathLength="100" strokeDasharray="20 80" className="animate-[flowLine_5s_linear_infinite]" style={{animationDelay: '-2s'}} d="M900,100 L600,100 L450,250 L-100,250" />
-                    <path pathLength="100" strokeDasharray="15 85" className="animate-[flowLine_3.5s_linear_infinite]" style={{animationDelay: '-1.5s'}} d="M600,700 L600,500 L400,300 L900,300" />
-                    <path pathLength="100" strokeDasharray="25 75" className="animate-[flowLine_6s_linear_infinite]" style={{animationDelay: '-3s'}} d="M-100,500 L250,500 L400,350 L500,350 L650,200 L900,200" />
-                  </g>
+        // Mobile Menu Toggle
+        let menuOpen = false;
+        mobileBtn.addEventListener('click', () => {
+            menuOpen = !menuOpen;
+            if(menuOpen) {
+                mobileMenu.classList.remove('hidden');
+                menuIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+            } else {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            }
+        });
 
-                  {/* Intersecting Data Nodes */}
-                  <circle cx="200" cy="200" r="3" fill="#22d3ee" className="animate-pulse" />
-                  <circle cx="350" cy="350" r="3" fill="#22d3ee" className="animate-pulse" />
-                  <circle cx="450" cy="250" r="3" fill="#3b82f6" className="animate-pulse" />
-                  <circle cx="650" cy="200" r="3" fill="#22d3ee" className="animate-pulse" />
-                  <circle cx="400" cy="350" r="4" fill="#3b82f6" className="animate-pulse" />
-                </svg>
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                menuOpen = false;
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            });
+        });
 
-                {/* Glowing Gradient Backdrop */}
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-blue-600/5 opacity-50 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-                
-                {/* HUD Element from Screenshot */}
-                <div className="absolute top-6 left-6 bg-black/80 backdrop-blur-md border border-white/10 p-4 rounded-sm z-10">
-                  <div className="text-[10px] font-mono text-slate-500 mb-2 tracking-widest uppercase">Global Threat Level</div>
-                  <div className="text-rose-500 font-syne font-bold tracking-widest uppercase flex items-center gap-3">
-                    <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> ELEVATED
-                  </div>
-                </div>
+        // 5. Intersection Observer for FadeIns
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
 
-                {/* Large Decorative Quotes */}
-                <div className="absolute top-8 left-8 text-9xl text-white/5 font-syne font-black leading-none group-hover:text-cyan-500/10 transition-colors duration-500 pointer-events-none">"</div>
-                <div className="absolute bottom-8 right-8 text-9xl text-white/5 font-syne font-black leading-none rotate-180 group-hover:text-cyan-500/10 transition-colors duration-500 pointer-events-none">"</div>
-                
-                {/* Quote Content */}
-                <div className="relative z-10 mt-12 backdrop-blur-[2px] p-6 rounded-2xl bg-[#030303]/40 border border-white/5">
-                  <p className="text-xl md:text-2xl lg:text-3xl font-syne font-bold text-white leading-tight mb-8 tracking-tight">
-                    IntelGuard isn't just a non-profit, we are the ones that speak up for those who can't speak up for themselves. That is the definition of a true IntelGuardian.
-                  </p>
-                  <div className="flex items-center gap-5">
-                    <div className="w-12 h-[2px] bg-cyan-500 group-hover:w-20 transition-all duration-500"></div>
-                    <div>
-                      <div className="text-cyan-400 font-syne font-bold uppercase tracking-widest text-sm md:text-base">Boaz Acosta</div>
-                      <div className="text-slate-500 font-mono text-[10px] tracking-[0.2em] mt-1 uppercase">Founder & CEO</div>
-                    </div>
-                  </div>
-                </div>
-              </FadeIn>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* --- Partners Section --- */}
-      <section id="partners" className="py-32 relative overflow-hidden border-t border-white/5">
-        {/* Abstract Glow */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[150px] pointer-events-none"></div>
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-amber-900/10 rounded-full blur-[150px] pointer-events-none"></div>
-
-        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-          <FadeIn className="mb-20">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-[2px] bg-white"></div>
-              <span className="text-white font-mono text-xs tracking-[0.2em] uppercase">Architecture</span>
-            </div>
-            <h2 className="text-4xl md:text-6xl font-syne font-extrabold text-white tracking-tighter uppercase max-w-2xl leading-[1.1]">Cooperative <br/>Network</h2>
-          </FadeIn>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
-            
-            {/* International Cooperatives */}
-            <FadeIn delay={100} className="relative group">
-              <div className="bg-[#050505] border border-white/10 relative flex flex-col h-full hover:border-blue-500/50 transition-colors duration-500">
-                <div className="flex items-center gap-4 px-10 py-8 border-b border-white/5 bg-gradient-to-r from-blue-900/10 to-transparent">
-                  <Globe className="w-6 h-6 text-blue-500 animate-[spin_10s_linear_infinite]" />
-                  <h3 className="font-syne font-bold text-white tracking-widest text-sm uppercase">International Cooperatives</h3>
-                </div>
-                <div className="p-10 border-l-[3px] border-blue-600 flex-grow relative">
-                  <div className="space-y-8 relative z-10">
-                    {internationalPartners.map((partner, idx) => (
-                      <div key={idx} className="flex items-start gap-5 group/item cursor-crosshair">
-                        <div className="mt-1.5 text-blue-600 group-hover/item:text-cyan-400 transition-all">
-                          <svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="10" height="10" />
-                          </svg>
-                        </div>
-                        <div>
-                          <div className="font-syne font-bold text-slate-300 text-lg tracking-wide uppercase group-hover/item:text-white transition-colors">{partner.name}</div>
-                          <div className="text-slate-600 font-mono text-xs mt-1 tracking-widest group-hover/item:text-blue-400 transition-colors">{partner.url}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-
-            {/* Domestic Cooperatives */}
-            <FadeIn delay={200} className="relative group">
-              <div className="bg-[#050505] border border-white/10 relative flex flex-col h-full hover:border-amber-500/50 transition-colors duration-500">
-                <div className="flex items-center gap-4 px-10 py-8 border-b border-white/5 bg-gradient-to-r from-amber-900/10 to-transparent">
-                  <Building className="w-6 h-6 text-amber-500 animate-pulse" />
-                  <h3 className="font-syne font-bold text-white tracking-widest text-sm uppercase">Domestic Cooperatives</h3>
-                </div>
-                <div className="p-10 border-l-[3px] border-amber-500 flex-grow relative">
-                  <div className="space-y-8 relative z-10">
-                    {domesticPartners.map((partner, idx) => (
-                      <div key={idx} className="flex items-start gap-5 group/item cursor-crosshair">
-                         <div className="mt-1.5 text-amber-700 group-hover/item:text-amber-400 transition-all">
-                          <svg width="8" height="8" viewBox="0 0 10 10" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="10" height="10" />
-                          </svg>
-                        </div>
-                        <div>
-                          <div className="font-syne font-bold text-slate-300 text-lg tracking-wide uppercase group-hover/item:text-white transition-colors">{partner.name}</div>
-                          <div className="text-slate-600 font-mono text-xs mt-1 tracking-widest group-hover/item:text-amber-400 transition-colors">{partner.url}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-
-          </div>
-
-          {/* --- Intelligence Providers (Marquee) --- */}
-          <div className="mt-32 pt-16 border-t border-white/5 relative overflow-hidden">
-            <div className="text-center mb-12 relative z-10">
-              <h3 className="text-slate-500 font-mono text-xs tracking-[0.3em] uppercase">Intelligence Partners & Tooling</h3>
-            </div>
-            <div className="relative flex overflow-x-hidden group">
-              <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#030303] to-transparent z-20 pointer-events-none"></div>
-              <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#030303] to-transparent z-20 pointer-events-none"></div>
-              
-              <div className="flex animate-marquee group-hover:[animation-play-state:paused] whitespace-nowrap">
-                {[...osintTools, ...osintTools, ...osintTools].map((tool, idx) => (
-                  <a key={idx} href={`https://${tool.url}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 px-10 py-6 mx-4 bg-[#050505] border border-white/10 rounded-xl hover:border-cyan-500/50 hover:bg-white/5 hover:-translate-y-1 transition-all cursor-pointer shadow-[0_0_20px_rgba(0,0,0,0.5)]">
-                    <div className="w-10 h-10 rounded-lg bg-[#0a0a0a] border border-white/10 flex items-center justify-center flex-shrink-0">
-                       <Terminal className="w-5 h-5 text-cyan-500" />
-                    </div>
-                    <div>
-                      <div className="text-white font-syne font-bold tracking-wide">{tool.name}</div>
-                      <div className="text-slate-500 font-mono text-[10px] tracking-widest uppercase">{tool.url}</div>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* --- Insights & Case Studies --- */}
-      <section id="cases" className="py-32 border-t border-white/5 bg-black/60">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
-            <FadeIn>
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-[2px] bg-cyan-500"></div>
-                <span className="text-cyan-500 font-mono text-xs tracking-[0.2em] uppercase">Archive</span>
-              </div>
-              <h2 className="text-4xl md:text-6xl font-syne font-extrabold text-white tracking-tighter uppercase">Declassified <br/>Intel</h2>
-            </FadeIn>
-            <FadeIn delay={100}>
-              <button className="text-cyan-400 font-mono text-xs uppercase tracking-[0.2em] hover:text-white flex items-center gap-3 group transition-colors border border-cyan-500/30 hover:border-white px-6 py-3">
-                Access Records <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </FadeIn>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { title: "Operation Cronos", date: "FEB 2024", category: "LAW ENFORCEMENT", code: "OP-CRONOS", desc: "An international law enforcement operation that disrupted the LockBit ransomware group, seizing their infrastructure and decryption keys." },
-              { title: "Genesis Market Takedown", date: "APR 2023", category: "CYBER OP", code: "OP-COOKIE", desc: "FBI-led international takedown of Genesis Market, a massive illicit marketplace selling stolen credentials and device fingerprints." },
-              { title: "AlphaBay Dismantled", date: "JUL 2017", category: "DARK WEB", code: "OP-BAYONET", desc: "Coordinated multinational operation leading to the shutdown of AlphaBay, the largest darknet market in history, disrupting global illicit trade." },
-            ].map((item, idx) => (
-              <FadeIn key={idx} delay={idx * 150} className="group relative">
-                <div className="bg-[#050505] p-10 border border-white/10 group-hover:border-cyan-500/50 transition-colors duration-500 h-full flex flex-col relative z-10">
-                  <div className="flex justify-between items-center mb-10 relative z-10">
-                    <div className="text-[10px] font-mono font-bold tracking-[0.2em] text-cyan-400 uppercase">{item.category}</div>
-                    <div className="text-[10px] font-mono text-slate-600 tracking-widest">{item.code}</div>
-                  </div>
-                  <h3 className="text-2xl font-syne font-bold text-white mb-6 uppercase tracking-wide group-hover:text-cyan-300 transition-colors leading-snug">{item.title}</h3>
-                  <p className="text-slate-400 text-sm mb-12 flex-grow font-light leading-relaxed">{item.desc}</p>
-                  
-                  <div className="flex items-center justify-between mt-auto pt-8 border-t border-white/5 relative z-10">
-                    <span className="text-slate-600 text-xs font-mono tracking-widest">{item.date}</span>
-                    <div className="text-slate-600 group-hover:text-cyan-400 transition-colors">
-                      <FileText className="w-5 h-5" />
-                    </div>
-                  </div>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* --- Team Roster --- */}
-      <section id="team" className="py-32 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-          <FadeIn className="mb-20">
-             <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-[2px] bg-white"></div>
-                <span className="text-white font-mono text-xs tracking-[0.2em] uppercase">Personnel</span>
-              </div>
-            <h2 className="text-4xl md:text-6xl font-syne font-extrabold text-white tracking-tighter uppercase max-w-2xl leading-[1.1]">Core <br/>Operatives</h2>
-          </FadeIn>
-
-          <div className="flex flex-col gap-8">
-            {/* Director profile */}
-            <FadeIn delay={100} className="w-full">
-              <div className="bg-[#050505] border border-white/10 p-8 md:p-12 flex flex-col md:flex-row items-start gap-8 relative group hover:border-cyan-500/50 hover:-translate-y-2 hover:shadow-[0_15px_50px_rgba(34,211,238,0.1)] transition-all duration-500 z-20">
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                
-                {/* Avatar */}
-                <div className="w-32 h-32 bg-[#0a0a0a] border border-white/10 flex items-center justify-center flex-shrink-0 relative overflow-hidden shadow-2xl">
-                  <div className="absolute inset-0 bg-cyan-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-                  <Users className="w-12 h-12 text-slate-500 relative z-10 group-hover:text-cyan-400 transition-colors" />
-                </div>
-
-                <div className="flex flex-col flex-grow justify-between h-full w-full">
-                  <div>
-                    <div className="text-[10px] font-mono text-cyan-500 mb-3 tracking-[0.3em] uppercase">Clearance: Lvl 5 / Founder</div>
-                    <h3 className="text-4xl font-syne font-extrabold text-white uppercase tracking-tighter">Boaz Acosta</h3>
-                    <p className="text-slate-400 text-sm mt-2 font-mono tracking-widest uppercase">Founder & CEO</p>
-                  </div>
-                  
-                  {/* Badges */}
-                  <div className="flex flex-wrap gap-2 mt-6">
-                    {['globe', 'star', 'search', 'crown', 'shield', 'dev', 'gem'].map(badgeKey => {
-                      const badge = badgeMap[badgeKey];
-                      return (
-                        <div key={badgeKey} className="group/badge relative p-2 bg-white/5 border border-white/10 rounded-md hover:bg-white/10 transition-colors cursor-help">
-                          <badge.icon className={`w-4 h-4 ${badge.color}`} />
-                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">
-                            {badge.label}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Socials */}
-                  <div className="flex gap-4 mt-6 pt-6 border-t border-white/10 w-full md:w-auto">
-                    <a href="https://t.me/bo_sint" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-mono text-slate-500 hover:text-blue-400 transition-colors">
-                      <Send className="w-4 h-4" /> @bo_sint
-                    </a>
-                    <a href="mailto:boaz@intelguard.org" className="flex items-center gap-2 text-xs font-mono text-slate-500 hover:text-cyan-400 transition-colors">
-                      <Mail className="w-4 h-4" /> boaz@intelguard.org
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-            
-            {/* Core Members Matrix */}
-            <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                 { id: "OP-01", name: "Monroe Wright", role: "OSINT Specialist", badges: ['globe', 'star', 'shield', 'gear', 'search'] },
-                 { id: "OP-02", name: "John Davis", role: "Darknet Analyst", badges: ['globe', 'shield', 'search'] },
-                 { id: "OP-03", name: "Vinnie Castro", role: "Digital Forensics", badges: ['globe', 'book'] },
-                 { id: "OP-04", name: "Oliver Dudas", role: "Liaison Officer", badges: ['globe', 'book'] }
-              ].map((member, idx) => (
-                <FadeIn key={idx} delay={200 + (idx * 100)}>
-                  <div className="bg-[#050505] border border-white/10 p-8 text-center group hover:bg-[#080808] hover:border-cyan-500/30 hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(34,211,238,0.05)] transition-all duration-300 relative overflow-visible h-full flex flex-col items-center">
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
                     
-                    {/* Identifier */}
-                    <div className="w-16 h-16 mx-auto bg-[#0a0a0a] border border-white/10 flex items-center justify-center mb-6 text-slate-600 group-hover:text-cyan-400 group-hover:border-cyan-500/30 transition-colors rounded-full relative z-10">
-                      <span className="font-syne font-bold text-lg">{member.id.split('-')[1]}</span>
-                    </div>
+                    // Trigger Typewriter if it's the specific element
+                    if (entry.target.id === 'typewriter-wrapper' && !window.typewriterStarted) {
+                        window.typewriterStarted = true;
+                        setTimeout(typeText, 500); // Wait for fade in delay
+                    }
                     
-                    {/* Details */}
-                    <div className="relative z-10 flex-grow">
-                      <h3 className="text-xl font-syne font-bold text-slate-200 uppercase tracking-wide group-hover:text-white transition-colors">{member.name}</h3>
-                      <p className="text-slate-500 text-[10px] font-mono mt-2 tracking-widest uppercase">{member.id} // {member.role}</p>
-                    </div>
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
 
-                    {/* Operative Badges */}
-                    <div className="flex flex-wrap justify-center gap-2 mt-8 pt-6 border-t border-white/5 w-full relative z-10">
-                      {member.badges.map(badgeKey => {
-                        const badge = badgeMap[badgeKey];
-                        return (
-                          <div key={badgeKey} className="group/badge relative p-1.5 bg-white/5 border border-white/10 rounded hover:bg-white/10 transition-colors cursor-help">
-                            <badge.icon className={`w-3.5 h-3.5 ${badge.color} opacity-70 group-hover/badge:opacity-100 transition-opacity`} />
-                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max px-2 py-1 bg-black text-white text-[10px] font-mono border border-white/20 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity pointer-events-none z-50">
-                              {badge.label}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    
-                  </div>
-                </FadeIn>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+        document.querySelectorAll('.fade-in').forEach((el) => {
+            if(el.querySelector('#typewriter-text')) {
+                el.id = 'typewriter-wrapper';
+            }
+            observer.observe(el);
+        });
 
-      {/* --- Secure Channels (Replaces Contact Form) --- */}
-      <section id="connect" className="py-32 relative border-t border-white/5 bg-[#030303]">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
-          
-          <FadeIn className="mb-16 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-8">
-            <div>
-              <div className="flex items-center justify-center md:justify-start gap-4 mb-6">
-                <div className="w-12 h-[2px] bg-cyan-500"></div>
-                <span className="text-cyan-500 font-mono text-xs tracking-[0.2em] uppercase">Communications</span>
-              </div>
-              <h2 className="text-4xl md:text-6xl font-syne font-extrabold text-white tracking-tighter uppercase leading-[1.1]">Secure<br/>Channels</h2>
-            </div>
-            <p className="text-slate-500 font-mono text-xs tracking-widest max-w-sm uppercase text-center md:text-right">
-              Direct, encrypted pathways for intelligence handoffs and official agency liaisons.
-            </p>
-          </FadeIn>
+        // 6. Typewriter Logic
+        const textToType = "EST. JUNE 2025 // NONPROFIT OSINT ORG";
+        const typewriterEl = document.getElementById('typewriter-text');
+        let typeIndex = 0;
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            {/* Email Embed */}
-            <FadeIn delay={100}>
-              <a href="mailto:boaz@intelguard.org" className="group relative bg-[#050505] border border-white/10 p-8 md:p-10 hover:border-cyan-500/50 transition-all duration-300 overflow-hidden flex flex-col justify-between min-h-[240px] block">
-                <div className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div className="flex justify-between items-start relative z-10">
-                  <div className="bg-white/5 p-4 border border-white/5 group-hover:border-cyan-500/30 group-hover:scale-110 transition-all">
-                    <Mail className="w-6 h-6 text-slate-400 group-hover:text-cyan-400 transition-colors" />
-                  </div>
-                  <ArrowUpRight className="w-6 h-6 text-slate-700 group-hover:text-cyan-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
-                </div>
-                <div className="relative z-10 mt-12">
-                  <div className="text-[10px] font-mono text-slate-500 mb-3 uppercase tracking-widest">Official Direct Email</div>
-                  <div className="text-xl md:text-2xl font-bold text-white font-syne tracking-tight group-hover:text-cyan-300 transition-colors truncate">boaz@intelguard.org</div>
-                </div>
-              </a>
-            </FadeIn>
-
-            {/* Telegram Channel Embed */}
-            <FadeIn delay={200}>
-              <a href="https://t.me/intelguardian" target="_blank" rel="noopener noreferrer" className="group relative bg-[#050505] border border-white/10 p-8 md:p-10 hover:border-blue-500/50 transition-all duration-300 overflow-hidden flex flex-col justify-between min-h-[240px] block">
-                <div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div className="flex justify-between items-start relative z-10">
-                  <div className="bg-white/5 p-4 border border-white/5 group-hover:border-blue-500/30 group-hover:scale-110 transition-all">
-                    <Send className="w-6 h-6 text-slate-400 group-hover:text-blue-400 transition-colors" />
-                  </div>
-                  <ArrowUpRight className="w-6 h-6 text-slate-700 group-hover:text-blue-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
-                </div>
-                <div className="relative z-10 mt-12">
-                  <div className="text-[10px] font-mono text-slate-500 mb-3 uppercase tracking-widest">Intel Dispatch Network</div>
-                  <div className="text-xl md:text-2xl font-bold text-white font-syne tracking-tight group-hover:text-blue-300 transition-colors truncate">t.me/intelguardian</div>
-                </div>
-              </a>
-            </FadeIn>
-
-            {/* Telegram User Embed */}
-            <FadeIn delay={300}>
-               <a href="https://t.me/bo_sint" target="_blank" rel="noopener noreferrer" className="group relative bg-[#050505] border border-white/10 p-8 md:p-10 hover:border-emerald-500/50 transition-all duration-300 overflow-hidden flex flex-col justify-between min-h-[240px] block">
-                <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div className="flex justify-between items-start relative z-10">
-                  <div className="bg-white/5 p-4 border border-white/5 group-hover:border-emerald-500/30 group-hover:scale-110 transition-all">
-                    <AtSign className="w-6 h-6 text-slate-400 group-hover:text-emerald-400 transition-colors" />
-                  </div>
-                  <ArrowUpRight className="w-6 h-6 text-slate-700 group-hover:text-emerald-400 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
-                </div>
-                <div className="relative z-10 mt-12">
-                  <div className="text-[10px] font-mono text-slate-500 mb-3 uppercase tracking-widest">Secure Telegram Comm</div>
-                  <div className="text-xl md:text-2xl font-bold text-white font-syne tracking-tight group-hover:text-emerald-300 transition-colors truncate">@bo_sint</div>
-                </div>
-              </a>
-            </FadeIn>
-
-          </div>
-        </div>
-      </section>
-
-      {/* --- Footer --- */}
-      <footer className="bg-[#000] text-slate-500 py-20 border-t border-white/5 relative overflow-hidden">
-        {/* Subtle Map / Grid Background */}
-        <div className="absolute inset-0 opacity-[0.02] pointer-events-none flex items-center justify-center">
-           <Globe className="w-[1000px] h-[1000px]" />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-16 mb-20">
-            <div className="md:col-span-5">
-              <div className="flex items-center gap-3 mb-8">
-                <Shield className="w-8 h-8 text-slate-600" />
-                <span className="text-2xl font-syne font-bold text-white tracking-tighter">INTELGUARD</span>
-              </div>
-              <p className="text-sm leading-relaxed max-w-sm font-space text-slate-500">
-                Advanced Open Source Intelligence and Digital Enforcement. A registered non-profit organization dedicated to the eradication of illicit digital materials and extreme cyber threats.
-              </p>
-            </div>
-            
-            <div className="md:col-span-3 md:col-start-7">
-              <h4 className="text-white font-mono text-[10px] mb-8 uppercase tracking-[0.2em]">Architecture</h4>
-              <ul className="space-y-4 text-sm font-syne font-bold uppercase tracking-widest">
-                <li><a href="#about" className="hover:text-cyan-400 transition-colors">Entity Profile</a></li>
-                <li><a href="#cases" className="hover:text-cyan-400 transition-colors">Intel Archive</a></li>
-                <li><a href="#partners" className="hover:text-cyan-400 transition-colors">Network</a></li>
-                <li><a href="#team" className="hover:text-cyan-400 transition-colors">Personnel</a></li>
-              </ul>
-            </div>
-
-            <div className="md:col-span-2">
-              <h4 className="text-white font-mono text-[10px] mb-8 uppercase tracking-[0.2em]">Protocols</h4>
-              <ul className="space-y-4 text-sm font-syne font-bold uppercase tracking-widest text-slate-600">
-                <li><a href="#" className="hover:text-white transition-colors">Privacy</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Terms</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Report</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">PGP Key</a></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-mono tracking-widest uppercase">
-            <p>&copy; {new Date().getFullYear()} INTELGUARD ORG. ALL RIGHTS RESERVED.</p>
-            <div className="flex items-center gap-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
-              <span>SYSTEMS NOMINAL</span>
-            </div>
-            <p>DIR: B. ACOSTA // EST. 2025</p>
-          </div>
-        </div>
-      </footer>
-
-      {/* Required CSS for Fonts & Specific Animations */}
-      <style dangerouslySetInnerHTML={{__html: `
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap');
-        
-        .font-syne { font-family: 'Syne', sans-serif; }
-        .font-space { font-family: 'Space Grotesk', sans-serif; }
-
-        @keyframes shimmer {
-          100% { transform: translateX(100%); }
+        function typeText() {
+            if (typeIndex < textToType.length) {
+                typewriterEl.innerHTML += textToType.charAt(typeIndex);
+                typeIndex++;
+                setTimeout(typeText, 30); // Typing speed
+            } else {
+                // remove cursor or keep it pulsing
+            }
         }
-        @keyframes scanline {
-          0% { transform: translateY(-100%); }
-          100% { transform: translateY(1000%); }
-        }
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-        .animate-float {
-          animation: float 4s ease-in-out infinite;
-        }
-        @keyframes marquee {
-          0% { transform: translateX(0%); }
-          100% { transform: translateX(-33.33%); }
-        }
-        .animate-marquee {
-          animation: marquee 40s linear infinite;
-        }
-        @keyframes flowLine {
-          from { stroke-dashoffset: 100; }
-          to { stroke-dashoffset: 0; }
-        }
-      `}} />
-    </div>
-  );
-}
+
+    </script>
+
+    <!-- Lenis Smooth Scrolling Injection -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (window.Lenis) {
+                const lenis = new window.Lenis({
+                    duration: 1.5,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                    smoothWheel: true,
+                    wheelMultiplier: 1,
+                    touchMultiplier: 2,
+                });
+
+                function raf(time) {
+                    lenis.raf(time);
+                    requestAnimationFrame(raf);
+                }
+                requestAnimationFrame(raf);
+
+                // Update links to use Lenis scrollTo
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        lenis.scrollTo(this.getAttribute('href'));
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
