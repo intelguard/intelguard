@@ -337,7 +337,7 @@
                 <!-- Overlay UI on top of 3D -->
                 <div class="absolute bottom-6 right-6 left-6 z-20 flex justify-between items-end pointer-events-none">
                     <div class="glass-panel px-4 py-2 rounded-lg text-xs font-mono text-ig-accent/80">
-                        SYS.STATUS: <span class="text-white">NOMINAL</span>
+                        NGO.STATUS: <span class="text-white">VERIFIED</span>
                     </div>
                     <div class="glass-panel px-4 py-2 rounded-lg text-xs font-mono text-white/50 text-right">
                         NODES: ACTIVE<br>
@@ -873,7 +873,7 @@
             if(!counterDiv) return;
             
             const targetId = counterDiv.id;
-            let targetValue = targetId === 'stat-cases' ? 120 : targetId === 'stat-takedowns' ? 23568 : 243;
+            let targetValue = targetId === 'stat-cases' ? 85 : targetId === 'stat-takedowns' ? 23568 : 243;
             const obj = { val: 0 };
 
             ScrollTrigger.create({
