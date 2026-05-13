@@ -1,771 +1,1037 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IntelGuard | Tactical Intelligence. Global Enforcement.</title>
-    
-    <!-- Fonts: Inter & JetBrains Mono -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>IntelGuard | Protecting the Unnoticed</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
+                        serif: ['Playfair Display', 'serif'],
                     },
                     colors: {
-                        intelbg: '#ffffff',
-                        intelpanel: '#f8fafc', // slate-50
-                        intelcard: '#ffffff',
-                        intelblue: '#2563eb', // blue-600
-                        inteldarkblue: '#0f172a', // slate-900 (darker for tech feel)
-                        intellightblue: '#eff6ff', // blue-50
-                        intelborder: '#e2e8f0', // slate-200
-                        inteltext: '#0f172a', // slate-900
-                        intelmuted: '#64748b', // slate-500
+                        ig: {
+                            base: '#020612', // Darker navy base from image
+                            panel: 'rgba(10, 17, 40, 0.6)', // Glass panel color
+                            accent: '#4a90e2', // Shield color
+                            glow: '#8bb4e6', // Lighter glow
+                            muted: '#94a3b8'
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'card-gradient': 'linear-gradient(180deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%)',
+                        'diagonal-rays': 'linear-gradient(105deg, transparent 20%, rgba(74, 144, 226, 0.05) 25%, transparent 30%, transparent 50%, rgba(74, 144, 226, 0.03) 55%, transparent 60%)',
                     },
                     boxShadow: {
-                        'glow': '0 0 20px rgba(37, 99, 235, 0.1)',
-                        'glow-strong': '0 0 40px rgba(37, 99, 235, 0.25)',
-                        'tech-inner': 'inset 0 0 0 1px rgba(37, 99, 235, 0.1)',
+                        'glow': '0 0 40px -10px rgba(74, 144, 226, 0.3)',
+                        'glow-white': '0 0 30px -5px rgba(255, 255, 255, 0.2)',
                     }
                 }
             }
         }
     </script>
 
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <!-- Lenis Smooth Scroll -->
-    <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
-
     <style>
         body {
-            background-color: #ffffff;
-            color: #0f172a;
+            background-color: #020612;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
         }
-        
-        ::selection {
-            background-color: #2563eb;
-            color: white;
-        }
 
-        /* Lenis Required CSS */
+        /* Lenis Smooth Scroll */
         html.lenis, html.lenis body { height: auto; }
         .lenis.lenis-smooth { scroll-behavior: auto !important; }
         .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
         .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-scrolling iframe { pointer-events: none; }
 
-        /* OSINT Industries inspired Grid Background */
-        .tactical-grid {
-            background-size: 60px 60px;
+        /* Typography & Glow Effects */
+        .text-glow {
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+        }
+        
+        .accent-glow {
+            text-shadow: 0 0 15px rgba(74, 144, 226, 0.6);
+        }
+
+        /* Complex Backgrounds */
+        .bg-grid-pattern {
             background-image: 
-                linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
-            position: relative;
-        }
-        
-        /* Moving radial gradient overlay for tech feel */
-        .tactical-grid::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 80%);
-            pointer-events: none;
-            z-index: 0;
+                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at center, black, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black, transparent 80%);
         }
 
-        /* Horus inspired Advanced Animations */
-        .reveal-blur {
-            opacity: 0;
-            filter: blur(12px);
-            transform: translateY(50px) scale(0.97);
-            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
-                        filter 1.2s cubic-bezier(0.16, 1, 0.3, 1),
-                        transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: opacity, filter, transform;
-        }
-        
-        .reveal-slide-right {
-            opacity: 0;
-            filter: blur(8px);
-            transform: translateX(-40px);
-            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .reveal-blur.active, .reveal-slide-right.active {
-            opacity: 1;
-            filter: blur(0);
-            transform: translate(0) scale(1);
-        }
-
-        /* Delays */
-        .delay-100 { transition-delay: 0.1s; }
-        .delay-200 { transition-delay: 0.2s; }
-        .delay-300 { transition-delay: 0.3s; }
-        .delay-400 { transition-delay: 0.4s; }
-        .delay-500 { transition-delay: 0.5s; }
-
-        /* Mouse Tracking Glow (OSINT feel) */
-        #mouse-glow {
+        .ambient-light {
             position: fixed;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(37, 99, 235, 0.06) 0%, rgba(255,255,255,0) 70%);
             border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
             pointer-events: none;
-            z-index: 1;
-            transform: translate(-50%, -50%);
-            transition: opacity 0.5s ease;
-            opacity: 0;
         }
 
-        /* Vertical Ticker Animation */
-        .fade-mask {
-            mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
-            -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
-        }
-
-        @keyframes verticalScroll {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-50%); }
-        }
-        
-        .animate-vertical-scroll {
-            animation: verticalScroll 25s linear infinite;
-        }
-        .animate-vertical-scroll:hover {
-            animation-play-state: paused;
-        }
-
-        /* Custom OSINT style card borders */
-        .tech-border {
+        /* Glassmorphism & Borders */
+        .glass-panel {
+            background: var(--tw-colors-ig-panel);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02);
             position: relative;
+            overflow: hidden;
         }
-        .tech-border::after {
+
+        /* Corner Tech Accents for Bento Boxes */
+        .glass-panel::before, .glass-panel::after {
             content: '';
             position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.05);
-            pointer-events: none;
-            transition: all 0.5s ease;
+            width: 8px;
+            height: 8px;
+            border: 1px solid rgba(74, 144, 226, 0.5);
+            opacity: 0.5;
+            transition: all 0.3s ease;
         }
-        .tech-border:hover::after {
-            box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.3);
+        .glass-panel::before { top: 0; left: 0; border-right: none; border-bottom: none; }
+        .glass-panel::after { bottom: 0; right: 0; border-left: none; border-top: none; }
+        .glass-panel:hover::before, .glass-panel:hover::after { width: 12px; height: 12px; opacity: 1; }
+
+        /* Smooth FAQ Grid Transition */
+        .faq-grid {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .faq-grid.is-open {
+            grid-template-rows: 1fr;
+        }
+        .faq-inner {
+            overflow: hidden;
+        }
+
+        /* GSAP Initial States */
+        .reveal-up, .reveal-fade, .reveal-scale { opacity: 0; visibility: hidden; }
+
+        /* Animated Rays Background */
+        @keyframes drift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 200%; }
+        }
+        .animate-rays {
+            animation: drift 60s linear infinite;
+        }
+
+        /* Marquee / Infinite Scroll */
+        .marquee-mask {
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+        @keyframes scroll-x {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-scroll-x {
+            animation: scroll-x 35s linear infinite;
         }
     </style>
 </head>
-<body class="antialiased min-h-screen">
+<body class="antialiased selection:bg-ig-accent selection:text-white">
 
-    <div id="mouse-glow"></div>
+<!-- Global Cinematic Vignette (Shader effect) -->
+<div class="fixed inset-0 z-[60] pointer-events-none bg-[radial-gradient(circle_at_center,transparent_20%,rgba(2,6,18,0.6)_150%)] mix-blend-multiply"></div>
 
-    <!-- NAVBAR -->
-    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-700 bg-white/70 backdrop-blur-xl py-4 border-b border-intelborder shadow-sm transform -translate-y-full">
-        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-            <a href="#" class="flex items-center space-x-3 cursor-pointer group">
-                <div class="w-10 h-10 bg-intelblue rounded-lg flex items-center justify-center shadow-glow group-hover:shadow-glow-strong transition-all duration-500 group-hover:scale-110">
-                    <i data-lucide="shield" class="w-5 h-5 text-white"></i>
-                </div>
-                <span class="font-extrabold text-xl tracking-widest text-inteldarkblue uppercase">INTELGUARD</span>
-            </a>
+<!-- Ambient Background Layers to eliminate "empty space" -->
+<div class="fixed inset-0 z-[-3] bg-ig-base"></div>
+<div class="fixed inset-0 z-[-2] bg-diagonal-rays animate-rays opacity-70"></div>
+<div class="fixed inset-0 z-[-1] bg-grid-pattern"></div>
+<!-- Glowing Orbs -->
+<div class="ambient-light bg-blue-900/30 w-[600px] h-[600px] top-[-200px] left-[-200px]"></div>
+<div class="ambient-light bg-blue-600/20 w-[500px] h-[500px] bottom-[10%] right-[-100px]"></div>
 
-            <div class="hidden md:flex items-center space-x-8 text-sm font-semibold tracking-wider text-intelmuted">
-                <a href="#about" class="hover:text-intelblue transition-colors duration-300">About Us</a>
-                <a href="#team" class="hover:text-intelblue transition-colors duration-300">Our Team</a>
-                <a href="#archive" class="hover:text-intelblue transition-colors duration-300">Case Studies</a>
-                <a href="#architecture" class="hover:text-intelblue transition-colors duration-300">Partners</a>
-            </div>
-
-            <div class="hidden md:flex items-center space-x-6">
-                <div class="flex items-center space-x-2 font-mono text-xs text-intelblue font-bold bg-intellightblue px-3 py-1.5 rounded-full border border-blue-100 transition-all hover:bg-blue-100">
-                    <div class="w-2 h-2 rounded-full bg-intelblue animate-pulse"></div>
-                    <span>SECURE</span>
-                </div>
-                <a href="#connect" class="px-6 py-2.5 bg-inteldarkblue hover:bg-intelblue text-white text-sm font-bold transition-all duration-300 uppercase tracking-widest rounded-lg shadow-md hover:shadow-glow-strong transform hover:-translate-y-0.5">
-                    Connect
-                </a>
-            </div>
-
-            <button id="mobile-menu-btn" class="md:hidden text-inteltext hover:text-intelblue transition-colors p-2">
-                <i data-lucide="menu"></i>
-            </button>
+<!-- Navigation -->
+<nav class="fixed w-full top-0 z-50 transition-all duration-300" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center glass-panel md:rounded-full mt-0 md:mt-6 md:mx-6">
+        <div class="flex items-center gap-3 z-50">
+            <!-- Shield Logo based on the image -->
+            <svg class="w-8 h-8 text-ig-accent drop-shadow-[0_0_8px_rgba(74,144,226,0.5)]" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L3 6v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V6l-9-4zm0 18.92c-4.04-1.11-7-5.32-7-9.92V7.47l7-3.11 7 3.11v4.61c0 4.6-2.96 8.81-7 9.92z"/>
+                <path fill="#ffffff" opacity="0.8" d="M11 7h2v4h4v2h-4v4h-2v-4H7v-2h4V7z"/> <!-- Star/Cross inside -->
+            </svg>
+            <span class="font-bold text-lg tracking-widest text-white uppercase" style="letter-spacing: 0.2em;">IntelGuard</span>
         </div>
-    </nav>
-
-    <!-- MOBILE MENU -->
-    <div id="mobile-menu" class="fixed inset-0 z-40 bg-white/95 backdrop-blur-xl pt-24 px-6 md:hidden transition-all duration-500 opacity-0 pointer-events-none transform translate-y-4">
-        <div class="flex flex-col space-y-4 font-bold text-lg tracking-wider">
-            <a href="#about" class="mobile-link text-left py-4 border-b border-slate-100 text-slate-600 uppercase hover:text-intelblue hover:pl-4 transition-all duration-300">About Us</a>
-            <a href="#team" class="mobile-link text-left py-4 border-b border-slate-100 text-slate-600 uppercase hover:text-intelblue hover:pl-4 transition-all duration-300">Our Team</a>
-            <a href="#archive" class="mobile-link text-left py-4 border-b border-slate-100 text-slate-600 uppercase hover:text-intelblue hover:pl-4 transition-all duration-300">Case Studies</a>
-            <a href="#architecture" class="mobile-link text-left py-4 border-b border-slate-100 text-slate-600 uppercase hover:text-intelblue hover:pl-4 transition-all duration-300">Partners</a>
-            <a href="#connect" class="mobile-link text-center py-4 text-white bg-intelblue uppercase mt-6 rounded-xl shadow-glow-strong">Connect</a>
+        
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center gap-8 text-sm font-medium text-ig-muted">
+            <a href="#hero" class="hover:text-white transition-colors">Mission</a>
+            <a href="#stats" class="hover:text-white transition-colors">Impact</a>
+            <a href="#about" class="hover:text-white transition-colors">Ecosystem</a>
+            <a href="#team" class="hover:text-white transition-colors">Team</a>
+            <a href="#contact" class="px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-full border border-white/20 transition-all shadow-glow-white backdrop-blur-sm">Report Tip</a>
         </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none z-50">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
     </div>
 
-    <!-- HERO SECTION -->
-    <section class="relative pt-40 pb-20 md:pt-52 md:pb-32 px-6 max-w-7xl mx-auto tactical-grid overflow-hidden">
-        <div class="relative z-10 max-w-5xl mx-auto text-center">
-            <div class="reveal-blur delay-100 inline-flex items-center space-x-2 bg-white/80 backdrop-blur-md border border-slate-200 px-4 py-2 rounded-full mb-8 shadow-sm">
-                <i data-lucide="globe" class="w-4 h-4 text-intelblue"></i>
-                <span class="font-mono text-intelmuted uppercase tracking-[0.2em] text-xs font-semibold">Global Directive Active</span>
-            </div>
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-ig-base/98 backdrop-blur-xl z-40 hidden flex-col justify-center items-center gap-8 text-2xl font-serif">
+        <a href="#hero" class="mobile-link hover:text-ig-accent transition-colors">Mission</a>
+        <a href="#stats" class="mobile-link hover:text-ig-accent transition-colors">Impact</a>
+        <a href="#about" class="mobile-link hover:text-ig-accent transition-colors">Ecosystem</a>
+        <a href="#team" class="mobile-link hover:text-ig-accent transition-colors">Team</a>
+        <a href="#contact" class="mobile-link mt-4 px-8 py-3 bg-ig-accent/20 text-ig-accent rounded-full border border-ig-accent/50">Report Tip</a>
+    </div>
+</nav>
+
+<!-- Hero Section (Featuring intelguardmotto_2.jpg) -->
+<section id="hero" class="relative min-h-[100svh] flex flex-col items-center justify-center pt-32 pb-20 px-4 overflow-hidden z-10">
+    <div class="max-w-6xl mx-auto w-full flex flex-col items-center relative">
+        
+        <!-- Centerpiece: The provided image styled with Depth of Field & Shaders -->
+        <div class="relative w-full max-w-4xl mx-auto reveal-scale z-20 group perspective-1000">
+            <!-- Deep blurred shadow framing -->
+            <div class="absolute -inset-6 bg-gradient-to-r from-ig-accent/30 via-[#0a1128] to-ig-accent/30 rounded-[2rem] blur-2xl opacity-80 group-hover:opacity-100 transition duration-1000"></div>
             
-            <h1 class="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.95] text-inteldarkblue reveal-blur delay-200">
-                Tactical <span class="text-intelblue drop-shadow-sm">Intelligence.</span><br/>
-                Global <span class="text-slate-300">Enforcement.</span>
+            <div class="relative rounded-2xl overflow-hidden glass-panel border border-white/10 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8)] bg-[#02040a] p-1 md:p-2 transform transition-transform duration-700">
+                
+                <!-- The actual image with contrast/brightness adjustments -->
+                <img src="https://i.postimg.cc/63WwNn2r/intelguardmotto.png" alt="Many kids go unnoticed. We make sure that doesn't happen." 
+                     class="w-full h-auto rounded-xl object-cover relative z-10 transition-transform duration-[3s] group-hover:scale-[1.03] filter contrast-125 brightness-90">
+                
+                <!-- Shader: Inner Vignette directly over the image -->
+                <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(2,4,10,0.8)_100%)] pointer-events-none z-20 rounded-xl mix-blend-multiply"></div>
+                
+                <!-- Shader: Inner Glare -->
+                <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none z-20 rounded-xl"></div>
+
+                <!-- Depth of Field: Out-of-focus foreground elements overlapping the image -->
+                <div class="absolute -bottom-16 -left-16 w-56 h-56 bg-ig-accent/20 rounded-full blur-[50px] z-30 pointer-events-none mix-blend-screen"></div>
+                <div class="absolute -top-12 -right-12 w-40 h-40 bg-white/10 rounded-full blur-[40px] z-30 pointer-events-none mix-blend-screen"></div>
+            </div>
+        </div>
+
+        <!-- Supporting UI Below the Image -->
+        <div class="mt-12 flex flex-col items-center text-center reveal-up z-20 max-w-2xl">
+            <h1 class="text-2xl md:text-3xl font-serif text-ig-muted mb-8 tracking-wide leading-relaxed">
+                Bridging the gap between <span class="text-white">intelligence</span> and <span class="text-white">enforcement.</span>
             </h1>
             
-            <p class="mt-10 text-lg md:text-xl text-intelmuted max-w-3xl mx-auto leading-relaxed reveal-blur delay-300 font-medium">
-                We specialize in advanced Open Source Intelligence (OSINT) and dark web monitoring. Partnering with global authorities to terminate illicit networks, trace threats, and secure the vulnerable.
-            </p>
-            
-            <div class="mt-12 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 justify-center reveal-blur delay-400">
-                <a href="#connect" class="bg-intelblue text-white px-8 py-4 font-bold tracking-widest uppercase text-sm hover:bg-blue-700 transition-all duration-500 rounded-xl shadow-glow hover:shadow-glow-strong transform hover:-translate-y-1 flex items-center justify-center">
-                    Initiate Scan <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+            <div class="flex flex-col sm:flex-row gap-4 w-full justify-center">
+                <a href="#about" class="px-8 py-4 bg-white text-ig-base font-semibold rounded-full hover:bg-gray-200 transition-all transform hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+                    Explore Ecosystem
                 </a>
-                <a href="#archive" class="bg-white/80 backdrop-blur-md border-2 border-slate-200 text-slate-700 px-8 py-4 font-bold tracking-widest uppercase text-sm hover:border-intelblue hover:text-intelblue transition-all duration-500 rounded-xl shadow-sm transform hover:-translate-y-1 flex items-center justify-center">
-                    View Archives
+                <a href="#stats" class="px-8 py-4 glass-panel border border-white/20 rounded-full hover:bg-white/10 transition-all text-white flex items-center justify-center gap-2 group">
+                    View Impact Metrics
+                    <svg class="w-4 h-4 transform group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
                 </a>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- STATS -->
-    <section class="py-12 relative z-20">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                
-                <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-8 shadow-xl shadow-slate-200/40 hover:shadow-glow transition-all duration-700 transform hover:-translate-y-2 group reveal-blur delay-100 relative overflow-hidden tech-border">
-                    <div class="absolute -right-10 -top-10 bg-intellightblue w-40 h-40 rounded-full blur-3xl group-hover:bg-blue-200/50 transition-colors duration-700"></div>
-                    <div class="w-14 h-14 bg-intellightblue text-intelblue rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-sm border border-blue-100">
-                        <i data-lucide="shield-check" class="w-7 h-7"></i>
-                    </div>
-                    <h3 class="text-4xl md:text-5xl font-extrabold text-inteldarkblue mb-2 tracking-tight group-hover:text-intelblue transition-colors duration-500">200+</h3>
-                    <p class="font-mono text-sm tracking-widest text-slate-400 font-bold uppercase mb-4">Operations Closed</p>
-                    <p class="text-intelmuted text-sm leading-relaxed font-medium">High-priority investigations successfully concluded and transitioned to global authorities.</p>
-                </div>
-
-                <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-8 shadow-xl shadow-slate-200/40 hover:shadow-glow transition-all duration-700 transform hover:-translate-y-2 group reveal-blur delay-200 relative overflow-hidden tech-border">
-                    <div class="absolute -right-10 -top-10 bg-intellightblue w-40 h-40 rounded-full blur-3xl group-hover:bg-blue-200/50 transition-colors duration-700"></div>
-                    <div class="w-14 h-14 bg-intellightblue text-intelblue rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-sm border border-blue-100">
-                        <i data-lucide="database" class="w-7 h-7"></i>
-                    </div>
-                    <h3 class="text-4xl md:text-5xl font-extrabold text-inteldarkblue mb-2 tracking-tight group-hover:text-intelblue transition-colors duration-500">350+ <span class="text-2xl text-slate-300">GB</span></h3>
-                    <p class="font-mono text-sm tracking-widest text-slate-400 font-bold uppercase mb-4">Terminated Data</p>
-                    <p class="text-intelmuted text-sm leading-relaxed font-medium">Illicit material identified, documented, and permanently eradicated from global infrastructure.</p>
-                </div>
-
-                <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-8 shadow-xl shadow-slate-200/40 hover:shadow-glow transition-all duration-700 transform hover:-translate-y-2 group reveal-blur delay-300 relative overflow-hidden tech-border">
-                    <div class="absolute -right-10 -top-10 bg-intellightblue w-40 h-40 rounded-full blur-3xl group-hover:bg-blue-200/50 transition-colors duration-700"></div>
-                    <div class="w-14 h-14 bg-intellightblue text-intelblue rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-sm border border-blue-100">
-                        <i data-lucide="target" class="w-7 h-7"></i>
-                    </div>
-                    <h3 class="text-4xl md:text-5xl font-extrabold text-inteldarkblue mb-2 tracking-tight group-hover:text-intelblue transition-colors duration-500">Rapid</h3>
-                    <p class="font-mono text-sm tracking-widest text-slate-400 font-bold uppercase mb-4">Active Since 2025</p>
-                    <p class="text-intelmuted text-sm leading-relaxed font-medium">Engineered to bypass traditional bureaucracy, scaling intelligence impact on a global level.</p>
-                </div>
-
-            </div>
+<!-- Statistics / Impact Section (Bento Box Style to fill space) -->
+<section id="stats" class="py-24 relative z-10">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16 reveal-up">
+            <h2 class="text-base uppercase tracking-widest text-ig-accent mb-3 font-semibold">Global Impact</h2>
+            <div class="w-12 h-1 bg-ig-accent/50 mx-auto rounded-full mb-6"></div>
         </div>
-    </section>
 
-    <!-- ENTITY PROFILE (About Us) -->
-    <section id="about" class="py-24 px-6 max-w-7xl mx-auto relative">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div class="reveal-slide-right">
-                <div class="mb-8 flex flex-col">
-                    <div class="inline-flex items-center bg-blue-50 border border-blue-100 px-3 py-1 rounded-full mb-4 w-fit shadow-sm">
-                        <div class="w-1.5 h-1.5 rounded-full bg-intelblue mr-2 animate-pulse"></div>
-                        <span class="text-intelblue font-mono font-bold tracking-widest text-xs uppercase">Entity Profile</span>
-                    </div>
-                    <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-inteldarkblue mb-2">Operating where algorithms fail.</h2>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-fr">
+            <!-- Stat 1 (Large) -->
+            <div class="stat-item md:col-span-8 glass-panel rounded-2xl p-8 flex flex-col justify-between group overflow-hidden relative">
+                <div class="absolute -right-20 -top-20 w-64 h-64 bg-ig-accent/10 rounded-full blur-3xl group-hover:bg-ig-accent/20 transition-all duration-700"></div>
+                <div class="relative z-10">
+                    <svg class="w-8 h-8 text-ig-muted mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <p class="text-sm uppercase tracking-widest text-ig-muted mb-2 font-medium">Proactive Investigations</p>
+                    <div class="text-6xl md:text-8xl font-serif font-bold text-white mb-4 accent-glow tracking-tighter" id="stat-cases">0</div>
                 </div>
-                <div class="space-y-6 text-slate-600 text-lg leading-relaxed font-medium">
-                    <p>Founded by Boaz Acosta and a specialized core team of four, IntelGuard was engineered to fill a critical gap in digital law enforcement capabilities.</p>
-                    <p>Operating strictly as a non-profit entity, our primary directive is the identification and eradication of severe cyber-criminal networks, tracking illicit digital materials, and dismantling the deep-web infrastructure facilitating them.</p>
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div class="bg-intelpanel p-8 rounded-2xl hover:bg-white tech-border transition-all duration-500 group reveal-blur delay-100">
-                    <div class="bg-white border border-slate-100 w-12 h-12 rounded-xl flex items-center justify-center shadow-sm mb-6 group-hover:bg-intelblue group-hover:border-intelblue transition-colors duration-500">
-                        <i data-lucide="terminal" class="w-6 h-6 text-intelblue group-hover:text-white transition-colors duration-500"></i>
-                    </div>
-                    <h4 class="text-lg font-extrabold text-inteldarkblue uppercase tracking-wider mb-2">Dark Web Ops</h4>
-                    <p class="text-intelmuted text-sm font-medium">Penetrating hidden services.</p>
-                </div>
-                <div class="bg-intelpanel p-8 rounded-2xl hover:bg-white tech-border transition-all duration-500 group reveal-blur delay-200">
-                    <div class="bg-white border border-slate-100 w-12 h-12 rounded-xl flex items-center justify-center shadow-sm mb-6 group-hover:bg-intelblue group-hover:border-intelblue transition-colors duration-500">
-                        <i data-lucide="globe" class="w-6 h-6 text-intelblue group-hover:text-white transition-colors duration-500"></i>
-                    </div>
-                    <h4 class="text-lg font-extrabold text-inteldarkblue uppercase tracking-wider mb-2">Deep OSINT</h4>
-                    <p class="text-intelmuted text-sm font-medium">Advanced subject tracking.</p>
-                </div>
-                <div class="bg-intelpanel p-8 rounded-2xl hover:bg-white tech-border transition-all duration-500 group reveal-blur delay-300">
-                    <div class="bg-white border border-slate-100 w-12 h-12 rounded-xl flex items-center justify-center shadow-sm mb-6 group-hover:bg-intelblue group-hover:border-intelblue transition-colors duration-500">
-                        <i data-lucide="lock" class="w-6 h-6 text-intelblue group-hover:text-white transition-colors duration-500"></i>
-                    </div>
-                    <h4 class="text-lg font-extrabold text-inteldarkblue uppercase tracking-wider mb-2">Data Secure</h4>
-                    <p class="text-intelmuted text-sm font-medium">Encrypted intelligence transfer.</p>
-                </div>
-                <div class="bg-intelpanel p-8 rounded-2xl hover:bg-white tech-border transition-all duration-500 group reveal-blur delay-400">
-                    <div class="bg-white border border-slate-100 w-12 h-12 rounded-xl flex items-center justify-center shadow-sm mb-6 group-hover:bg-intelblue group-hover:border-intelblue transition-colors duration-500">
-                        <i data-lucide="shield-alert" class="w-6 h-6 text-intelblue group-hover:text-white transition-colors duration-500"></i>
-                    </div>
-                    <h4 class="text-lg font-extrabold text-inteldarkblue uppercase tracking-wider mb-2">Zero Tolerance</h4>
-                    <p class="text-intelmuted text-sm font-medium">Relentless pursuit of threats.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- QUOTE -->
-    <section class="py-24 bg-slate-50 relative overflow-hidden">
-        <div class="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20"></div>
-        <div class="max-w-4xl mx-auto px-6 text-center relative z-10 reveal-blur">
-            <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center shadow-lg border border-blue-50 mb-8">
-                <i data-lucide="quote" class="w-8 h-8 text-intelblue"></i>
-            </div>
-            <p class="text-2xl md:text-4xl font-semibold italic text-slate-800 leading-snug mb-10">
-                "IntelGuard isn't just a non-profit, we are the ones that speak up for those who can't speak up for themselves. That is the definition of a true IntelGuardian."
-            </p>
-            <div class="flex flex-col items-center justify-center">
-                <span class="text-inteldarkblue font-black uppercase tracking-widest">Boaz Acosta</span>
-                <span class="font-mono text-slate-400 font-bold text-xs mt-2 uppercase tracking-widest">Founder & CEO</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- ARCHITECTURE & TOOLING (Partners) -->
-    <section id="architecture" class="py-24 bg-white relative">
-        <div class="max-w-7xl mx-auto px-6 mb-16">
-            <div class="mb-12 reveal-blur flex flex-col items-center text-center">
-                <div class="inline-flex items-center bg-blue-50 border border-blue-100 px-3 py-1 rounded-full mb-4 shadow-sm">
-                    <span class="text-intelblue font-mono font-bold tracking-widest text-xs uppercase">Cooperative Network</span>
-                </div>
-                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-inteldarkblue">Architecture</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
-                <!-- Agencies (takes up 2 cols) -->
-                <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-12">
-                    <div class="reveal-slide-right delay-100 bg-white p-8 rounded-3xl tech-border shadow-lg shadow-slate-200/40 hover:shadow-glow transition-all duration-500">
-                        <h3 class="font-black text-slate-800 tracking-widest uppercase mb-8 flex items-center pb-4 border-b border-slate-100">
-                            <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mr-4">
-                                <i data-lucide="globe-2" class="w-5 h-5 text-intelblue"></i>
-                            </div>
-                            International
-                        </h3>
-                        <ul class="space-y-5">
-                            <li class="flex justify-between items-center group cursor-default"><span class="font-bold text-slate-600 group-hover:text-intelblue transition-colors duration-300">INTERPOL</span><span class="font-mono text-xs text-slate-400 bg-slate-50 px-2 py-1 rounded group-hover:bg-blue-50 group-hover:text-intelblue transition-colors">interpol.int</span></li>
-                            <li class="flex justify-between items-center group cursor-default"><span class="font-bold text-slate-600 group-hover:text-intelblue transition-colors duration-300">ROMANIAN POLICE</span><span class="font-mono text-xs text-slate-400 bg-slate-50 px-2 py-1 rounded group-hover:bg-blue-50 group-hover:text-intelblue transition-colors">politiaromana.ro</span></li>
-                            <li class="flex justify-between items-center group cursor-default"><span class="font-bold text-slate-600 group-hover:text-intelblue transition-colors duration-300">COLUMBIAN POLICE</span><span class="font-mono text-xs text-slate-400 bg-slate-50 px-2 py-1 rounded group-hover:bg-blue-50 group-hover:text-intelblue transition-colors">policia.gov.co</span></li>
-                            <li class="flex justify-between items-center group cursor-default"><span class="font-bold text-slate-600 group-hover:text-intelblue transition-colors duration-300">CITY OF LONDON POLICE</span><span class="font-mono text-xs text-slate-400 bg-slate-50 px-2 py-1 rounded group-hover:bg-blue-50 group-hover:text-intelblue transition-colors">cityoflondon.police.uk</span></li>
-                            <li class="flex justify-between items-center group cursor-default"><span class="font-bold text-slate-600 group-hover:text-intelblue transition-colors duration-300">DORSET POLICE</span><span class="font-mono text-xs text-slate-400 bg-slate-50 px-2 py-1 rounded group-hover:bg-blue-50 group-hover:text-intelblue transition-colors">dorset.police.uk</span></li>
-                            <li class="flex justify-between items-center group cursor-default"><span class="font-bold text-slate-600 group-hover:text-intelblue transition-colors duration-300">MINISTRY OF INTERIOR</span><span class="font-mono text-xs text-slate-400 bg-slate-50 px-2 py-1 rounded group-hover:bg-blue-50 group-hover:text-intelblue transition-colors">interieur.gouv.fr</span></li>
-                            <li class="flex justify-between items-center group cursor-default"><span class="font-bold text-slate-600 group-hover:text-intelblue transition-colors duration-300">EUROPOL</span><span class="font-mono text-xs text-slate-400 bg-slate-50 px-2 py-1 rounded group-hover:bg-blue-50 group-hover:text-intelblue transition-colors">europol.europa.eu</span></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="reveal-slide-right delay-200 bg-white p-8 rounded-3xl tech-border shadow-lg shadow-slate-200/40 hover:shadow-glow transition-all duration-500">
-                        <h3 class="font-black text-slate-800 tracking-widest uppercase mb-8 flex items-center pb-4 border-b border-slate-100">
-                            <div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center mr-4">
-                                <i data-lucide="building-2" class="w-5 h-5 text-slate-600"></i>
-                            </div>
-                            Domestic
-                        </h3>
-                        <ul class="space-y-5">
-                            <li class="flex justify-between items-center group cursor-default"><span class="font-bold text-slate-600 group-hover:text-slate-900 transition-colors duration-300">FBI</span><span class="font-mono text-xs text-slate-400 bg-slate-50 px-2 py-1 rounded group-hover:bg-slate-100 group-hover:text-slate-600 transition-colors">fbi.gov</span></li>
-                            <li class="flex justify-between items-center group cursor-default"><span class="font-bold text-slate-600 group-hover:text-slate-900 transition-colors duration-300">DALLAS POLICE</span><span class="font-mono text-xs text-slate-400 bg-slate-50 px-2 py-1 rounded group-hover:bg-slate-100 group-hover:text-slate-600 transition-colors">dallaspolice.net</span></li>
-                            <li class="flex justify-between items-center group cursor-default"><span class="font-bold text-slate-600 group-hover:text-slate-900 transition-colors duration-300">SANTA ROSA POLICE</span><span class="font-mono text-xs text-slate-400 bg-slate-50 px-2 py-1 rounded group-hover:bg-slate-100 group-hover:text-slate-600 transition-colors">srcity.org</span></li>
-                            <li class="flex justify-between items-center group cursor-default"><span class="font-bold text-slate-600 group-hover:text-slate-900 transition-colors duration-300">TORRANCE POLICE</span><span class="font-mono text-xs text-slate-400 bg-slate-50 px-2 py-1 rounded group-hover:bg-slate-100 group-hover:text-slate-600 transition-colors">torranceca.gov</span></li>
-                            <li class="flex justify-between items-center group cursor-default"><span class="font-bold text-slate-600 group-hover:text-slate-900 transition-colors duration-300">NCMEC</span><span class="font-mono text-xs text-slate-400 bg-slate-50 px-2 py-1 rounded group-hover:bg-slate-100 group-hover:text-slate-600 transition-colors">missingkids.org</span></li>
-                            <li class="flex justify-between items-center group cursor-default"><span class="font-bold text-slate-600 group-hover:text-slate-900 transition-colors duration-300">IWF</span><span class="font-mono text-xs text-slate-400 bg-slate-50 px-2 py-1 rounded group-hover:bg-slate-100 group-hover:text-slate-600 transition-colors">iwf.org.uk</span></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Tools Ticker -->
-                <div class="reveal-blur delay-300 flex flex-col h-full">
-                    <div class="flex items-center justify-between mb-4 px-2">
-                        <span class="font-bold text-slate-800 tracking-widest uppercase flex items-center text-sm">
-                            <i data-lucide="wrench" class="w-4 h-4 mr-2 text-intelblue"></i> Tooling Partners
-                        </span>
-                        <div class="flex space-x-1">
-                            <div class="w-2 h-2 rounded-full bg-slate-200"></div>
-                            <div class="w-2 h-2 rounded-full bg-slate-300"></div>
-                            <div class="w-2 h-2 rounded-full bg-intelblue animate-pulse"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex-1 min-h-[400px] overflow-hidden fade-mask relative rounded-3xl border border-slate-100 bg-slate-50/50 shadow-inner">
-                        <div class="absolute w-full animate-vertical-scroll pt-4" id="tool-banner">
-                            <!-- JS generates content here -->
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ARCHIVE (Case Studies) -->
-    <section id="archive" class="py-24 px-6 max-w-7xl mx-auto bg-white relative">
-        <div class="mb-12 flex flex-col reveal-blur">
-            <div class="inline-flex items-center bg-slate-100 border border-slate-200 px-3 py-1 rounded-full mb-4 w-fit">
-                <span class="text-slate-600 font-mono font-bold tracking-widest text-xs uppercase">Declassified Intel // Access Records</span>
-            </div>
-            <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-inteldarkblue mb-2">Archive</h2>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white rounded-3xl tech-border p-8 flex flex-col shadow-xl shadow-slate-200/30 hover:shadow-glow-strong transition-all duration-700 transform hover:-translate-y-2 relative overflow-hidden group reveal-blur delay-100">
-                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-blue-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-                <div class="absolute top-0 right-0 bg-slate-50 border-b border-l border-slate-100 px-4 py-2 rounded-bl-2xl font-mono text-xs font-bold text-slate-500 group-hover:bg-intelblue group-hover:border-intelblue group-hover:text-white transition-colors duration-500">FEB 2024</div>
-                <div class="mb-8 mt-2"><span class="text-[10px] md:text-xs uppercase tracking-wider font-bold font-mono px-3 py-1.5 rounded-full bg-intellightblue text-intelblue border border-blue-100 shadow-sm">LAW ENFORCEMENT</span></div>
-                <h3 class="font-mono text-slate-400 text-sm mb-2 uppercase font-bold group-hover:text-intelblue transition-colors duration-500">OP-CRONOS</h3>
-                <h4 class="text-2xl font-black text-inteldarkblue mb-4 leading-tight">Operation Cronos</h4>
-                <p class="text-slate-600 text-sm font-medium leading-relaxed mt-auto relative z-10">An international law enforcement operation that disrupted the LockBit ransomware group, seizing their infrastructure and decryption keys.</p>
-            </div>
-            
-            <div class="bg-white rounded-3xl tech-border p-8 flex flex-col shadow-xl shadow-slate-200/30 hover:shadow-glow-strong transition-all duration-700 transform hover:-translate-y-2 relative overflow-hidden group reveal-blur delay-200">
-                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-purple-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-                <div class="absolute top-0 right-0 bg-slate-50 border-b border-l border-slate-100 px-4 py-2 rounded-bl-2xl font-mono text-xs font-bold text-slate-500 group-hover:bg-purple-600 group-hover:border-purple-600 group-hover:text-white transition-colors duration-500">APR 2023</div>
-                <div class="mb-8 mt-2"><span class="text-[10px] md:text-xs uppercase tracking-wider font-bold font-mono px-3 py-1.5 rounded-full bg-purple-50 text-purple-600 border border-purple-100 shadow-sm">CYBER OP</span></div>
-                <h3 class="font-mono text-slate-400 text-sm mb-2 uppercase font-bold group-hover:text-purple-600 transition-colors duration-500">OP-COOKIE</h3>
-                <h4 class="text-2xl font-black text-inteldarkblue mb-4 leading-tight">Genesis Market Takedown</h4>
-                <p class="text-slate-600 text-sm font-medium leading-relaxed mt-auto relative z-10">FBI-led international takedown of Genesis Market, a massive illicit marketplace selling stolen credentials and device fingerprints.</p>
-            </div>
-
-            <div class="bg-white rounded-3xl tech-border p-8 flex flex-col shadow-xl shadow-slate-200/30 hover:shadow-glow-strong transition-all duration-700 transform hover:-translate-y-2 relative overflow-hidden group reveal-blur delay-300">
-                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-slate-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-                <div class="absolute top-0 right-0 bg-slate-50 border-b border-l border-slate-100 px-4 py-2 rounded-bl-2xl font-mono text-xs font-bold text-slate-500 group-hover:bg-slate-800 group-hover:border-slate-800 group-hover:text-white transition-colors duration-500">JUL 2017</div>
-                <div class="mb-8 mt-2"><span class="text-[10px] md:text-xs uppercase tracking-wider font-bold font-mono px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 shadow-sm">DARK WEB</span></div>
-                <h3 class="font-mono text-slate-400 text-sm mb-2 uppercase font-bold group-hover:text-slate-800 transition-colors duration-500">OP-BAYONET</h3>
-                <h4 class="text-2xl font-black text-inteldarkblue mb-4 leading-tight">AlphaBay Dismantled</h4>
-                <p class="text-slate-600 text-sm font-medium leading-relaxed mt-auto relative z-10">Coordinated multinational operation leading to the shutdown of AlphaBay, the largest darknet market in history, disrupting global illicit trade.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- PERSONNEL (Team) -->
-    <section id="team" class="py-24 bg-slate-50 border-y border-slate-200 px-6 relative">
-        <div class="max-w-7xl mx-auto">
-            <div class="mb-12 reveal-blur flex flex-col items-center text-center">
-                <div class="inline-flex items-center bg-white border border-slate-200 px-3 py-1 rounded-full mb-4 shadow-sm">
-                    <span class="text-intelblue font-mono font-bold tracking-widest text-xs uppercase">Core Operatives</span>
-                </div>
-                <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-inteldarkblue mb-2">Personnel</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Boaz Card -->
-                <div class="lg:col-span-3 bg-white rounded-3xl tech-border p-8 md:p-12 shadow-xl shadow-slate-200/50 relative overflow-hidden group reveal-blur delay-100 hover:shadow-glow-strong transition-all duration-700 transform hover:-translate-y-1">
-                    <div class="absolute -right-20 -bottom-20 opacity-[0.02] pointer-events-none group-hover:opacity-[0.05] group-hover:text-intelblue transition-all duration-1000 group-hover:scale-110">
-                        <i data-lucide="shield" class="w-[400px] h-[400px]"></i>
-                    </div>
-                    
-                    <div class="relative z-10 flex flex-col md:flex-row gap-10 items-center md:items-start">
-                        <!-- Abstract Tech Avatar -->
-                        <div class="w-32 h-32 rounded-[2rem] bg-gradient-to-br from-intelblue to-inteldarkblue flex items-center justify-center shadow-glow shrink-0 relative overflow-hidden group-hover:shadow-glow-strong transition-all duration-500 transform group-hover:-rotate-3">
-                            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvc3ZnPg==')] opacity-50"></div>
-                            <i data-lucide="scan-face" class="w-16 h-16 text-white/80 group-hover:scale-110 transition-transform duration-500"></i>
-                        </div>
-
-                        <div class="flex-1 text-center md:text-left">
-                            <div class="flex flex-col md:flex-row items-center space-x-0 md:space-x-4 mb-2">
-                                <h3 class="text-4xl font-black text-inteldarkblue uppercase tracking-tight">Boaz Acosta</h3>
-                                <div class="bg-blue-50 text-intelblue px-3 py-1 rounded-full flex items-center mt-2 md:mt-0 shadow-sm border border-blue-100">
-                                    <i data-lucide="check-circle-2" class="w-4 h-4 mr-1"></i>
-                                    <span class="text-xs font-bold tracking-widest uppercase font-mono">Verified</span>
-                                </div>
-                            </div>
-                            <p class="font-mono text-slate-500 font-bold tracking-widest uppercase mb-6 flex items-center justify-center md:justify-start">
-                                <i data-lucide="terminal-square" class="w-4 h-4 mr-2"></i> Founder & CEO
-                            </p>
-                            
-                            <!-- Tech Badges -->
-                            <div class="flex flex-wrap justify-center md:justify-start gap-2 mb-8">
-                                <span class="text-xs font-bold uppercase tracking-wider font-mono px-3 py-1.5 rounded-lg bg-inteldarkblue text-white shadow-sm flex items-center"><i data-lucide="lock" class="w-3 h-3 mr-1"></i> Lvl 5 Clearance</span>
-                                <span class="text-xs font-bold uppercase tracking-wider font-mono px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 shadow-sm">Global Specialist</span>
-                                <span class="text-xs font-bold uppercase tracking-wider font-mono px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 shadow-sm">OG Operator</span>
-                                <span class="text-xs font-bold uppercase tracking-wider font-mono px-3 py-1.5 rounded-lg bg-blue-50 border border-blue-100 text-intelblue shadow-sm">Official IntelGuardian</span>
-                            </div>
-                        </div>
-
-                        <div class="flex flex-col justify-center space-y-4 font-mono text-sm border-t md:border-t-0 md:border-l border-slate-100 pt-6 md:pt-0 md:pl-8 w-full md:w-auto">
-                            <a href="#" class="text-slate-600 hover:text-intelblue font-bold transition-all duration-300 flex items-center justify-center md:justify-start bg-slate-50 p-4 rounded-2xl border border-slate-100 hover:bg-white hover:shadow-glow hover:-translate-y-1"><i data-lucide="activity" class="w-4 h-4 mr-3 text-intelblue"></i> @bo_sint</a>
-                            <a href="mailto:boaz@intelguard.org" class="text-slate-600 hover:text-intelblue font-bold transition-all duration-300 flex items-center justify-center md:justify-start bg-slate-50 p-4 rounded-2xl border border-slate-100 hover:bg-white hover:shadow-glow hover:-translate-y-1"><i data-lucide="mail" class="w-4 h-4 mr-3 text-intelblue"></i> Direct Comm</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Team Cards -->
-                <div class="bg-white rounded-3xl tech-border p-8 hover:border-intelblue hover:shadow-glow transition-all duration-500 transform hover:-translate-y-2 reveal-blur delay-200 flex flex-col items-center text-center group">
-                    <div class="w-20 h-20 rounded-[1.5rem] bg-slate-50 border border-slate-100 flex items-center justify-center mb-6 group-hover:bg-blue-50 group-hover:border-blue-100 transition-colors duration-500 shadow-inner">
-                        <i data-lucide="cpu" class="w-8 h-8 text-slate-400 group-hover:text-intelblue transition-colors duration-500"></i>
-                    </div>
-                    <p class="font-mono font-bold text-intelblue bg-intellightblue px-3 py-1 rounded-full text-xs mb-4 shadow-sm border border-blue-50">ID: 01</p>
-                    <h4 class="text-2xl font-black text-inteldarkblue mb-1 uppercase tracking-tight">Monroe Wright</h4>
-                    <p class="font-mono font-semibold text-slate-500 text-xs tracking-widest uppercase mb-6 pb-6 border-b border-slate-100 w-full flex justify-center items-center"><i data-lucide="search" class="w-3 h-3 mr-1"></i> OP-01 // OSINT</p>
-                    <div class="flex flex-wrap justify-center gap-2 mt-auto">
-                        <span class="text-[10px] font-bold uppercase tracking-wider font-mono px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-600">Global Specialist</span>
-                        <span class="text-[10px] font-bold uppercase tracking-wider font-mono px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-600">OG Operator</span>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-3xl tech-border p-8 hover:border-intelblue hover:shadow-glow transition-all duration-500 transform hover:-translate-y-2 reveal-blur delay-300 flex flex-col items-center text-center group">
-                    <div class="w-20 h-20 rounded-[1.5rem] bg-slate-50 border border-slate-100 flex items-center justify-center mb-6 group-hover:bg-blue-50 group-hover:border-blue-100 transition-colors duration-500 shadow-inner">
-                        <i data-lucide="network" class="w-8 h-8 text-slate-400 group-hover:text-intelblue transition-colors duration-500"></i>
-                    </div>
-                    <p class="font-mono font-bold text-intelblue bg-intellightblue px-3 py-1 rounded-full text-xs mb-4 shadow-sm border border-blue-50">ID: 02</p>
-                    <h4 class="text-2xl font-black text-inteldarkblue mb-1 uppercase tracking-tight">John Davis</h4>
-                    <p class="font-mono font-semibold text-slate-500 text-xs tracking-widest uppercase mb-6 pb-6 border-b border-slate-100 w-full flex justify-center items-center"><i data-lucide="globe" class="w-3 h-3 mr-1"></i> OP-02 // Darknet</p>
-                    <div class="flex flex-wrap justify-center gap-2 mt-auto">
-                        <span class="text-[10px] font-bold uppercase tracking-wider font-mono px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-600">Global Specialist</span>
-                        <span class="text-[10px] font-bold uppercase tracking-wider font-mono px-2.5 py-1.5 rounded-lg bg-blue-50 border border-blue-100 text-intelblue">Verified</span>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-3xl tech-border p-8 hover:border-intelblue hover:shadow-glow transition-all duration-500 transform hover:-translate-y-2 reveal-blur delay-400 flex flex-col items-center text-center group">
-                    <div class="w-20 h-20 rounded-[1.5rem] bg-slate-50 border border-slate-100 flex items-center justify-center mb-6 group-hover:bg-blue-50 group-hover:border-blue-100 transition-colors duration-500 shadow-inner">
-                        <i data-lucide="fingerprint" class="w-8 h-8 text-slate-400 group-hover:text-intelblue transition-colors duration-500"></i>
-                    </div>
-                    <p class="font-mono font-bold text-intelblue bg-intellightblue px-3 py-1 rounded-full text-xs mb-4 shadow-sm border border-blue-50">ID: 03</p>
-                    <h4 class="text-2xl font-black text-inteldarkblue mb-1 uppercase tracking-tight">Vinnie Castro</h4>
-                    <p class="font-mono font-semibold text-slate-500 text-xs tracking-widest uppercase mb-6 pb-6 border-b border-slate-100 w-full flex justify-center items-center"><i data-lucide="binary" class="w-3 h-3 mr-1"></i> OP-03 // Forensics</p>
-                    <div class="flex flex-wrap justify-center gap-2 mt-auto">
-                        <span class="text-[10px] font-bold uppercase tracking-wider font-mono px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-600">Global Specialist</span>
-                        <span class="text-[10px] font-bold uppercase tracking-wider font-mono px-2.5 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-slate-500">In Training</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- COMMUNICATIONS (Connect) & FOOTER -->
-    <footer id="connect" class="pt-24 pb-12 px-6 max-w-7xl mx-auto relative z-10">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 mb-24">
-            <div class="reveal-slide-right">
-                <div class="mb-8 flex flex-col">
-                    <div class="inline-flex items-center bg-blue-50 border border-blue-100 px-3 py-1 rounded-full mb-4 w-fit shadow-sm">
-                        <i data-lucide="radio" class="w-3 h-3 mr-2 text-intelblue animate-pulse"></i>
-                        <span class="text-intelblue font-mono font-bold tracking-widest text-xs uppercase">Secure Channels</span>
-                    </div>
-                    <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tight text-inteldarkblue">Communications</h2>
-                </div>
-                <p class="text-slate-600 font-medium mb-8 max-w-md">Direct, encrypted pathways for intelligence handoffs and official agency liaisons.</p>
-                
-                <div class="space-y-4">
-                    <a href="mailto:boaz@intelguard.org" class="flex items-center justify-between p-6 bg-white rounded-3xl tech-border hover:shadow-glow-strong transition-all duration-500 group transform hover:-translate-y-1">
-                        <div class="flex items-center">
-                            <div class="bg-slate-50 border border-slate-100 w-14 h-14 rounded-2xl flex items-center justify-center mr-5 group-hover:bg-intelblue group-hover:border-intelblue transition-all duration-500 shadow-inner">
-                                <i data-lucide="mail" class="w-6 h-6 text-slate-400 group-hover:text-white transition-colors duration-500"></i>
-                            </div>
-                            <div>
-                                <p class="text-inteldarkblue font-black uppercase tracking-wider text-sm mb-1">Official Direct Email</p>
-                                <p class="font-mono font-semibold text-xs text-slate-500 group-hover:text-intelblue transition-colors duration-300">boaz@intelguard.org</p>
-                            </div>
-                        </div>
-                        <i data-lucide="arrow-up-right" class="w-6 h-6 text-slate-300 group-hover:text-intelblue group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-500"></i>
-                    </a>
-                    
-                    <a href="#" class="flex items-center justify-between p-6 bg-white rounded-3xl tech-border hover:shadow-glow-strong transition-all duration-500 group transform hover:-translate-y-1">
-                        <div class="flex items-center">
-                            <div class="bg-slate-50 border border-slate-100 w-14 h-14 rounded-2xl flex items-center justify-center mr-5 group-hover:bg-intelblue group-hover:border-intelblue transition-all duration-500 shadow-inner">
-                                <i data-lucide="send" class="w-6 h-6 text-slate-400 group-hover:text-white transition-colors duration-500"></i>
-                            </div>
-                            <div>
-                                <p class="text-inteldarkblue font-black uppercase tracking-wider text-sm mb-1">Intel Dispatch Network</p>
-                                <p class="font-mono font-semibold text-xs text-slate-500 group-hover:text-intelblue transition-colors duration-300">t.me/intelguardian</p>
-                            </div>
-                        </div>
-                        <i data-lucide="arrow-up-right" class="w-6 h-6 text-slate-300 group-hover:text-intelblue group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-500"></i>
-                    </a>
-                </div>
-            </div>
-            
-            <div class="flex flex-col justify-center items-start md:items-end text-left md:text-right reveal-blur delay-200">
-                <div class="w-20 h-20 bg-inteldarkblue rounded-[1.5rem] flex items-center justify-center shadow-2xl mb-8 relative group">
-                    <div class="absolute inset-0 bg-intelblue rounded-[1.5rem] blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
-                    <i data-lucide="shield" class="w-10 h-10 text-white relative z-10 group-hover:scale-110 transition-transform duration-500"></i>
-                </div>
-                <h3 class="text-4xl font-black text-inteldarkblue uppercase tracking-widest mb-4">INTELGUARD</h3>
-                <p class="text-slate-500 text-sm font-medium leading-relaxed max-w-sm">
-                    Advanced Open Source Intelligence and Digital Enforcement. A registered non-profit organization dedicated to the eradication of illicit digital materials and extreme cyber threats.
+                <p class="text-base text-ig-muted max-w-md relative z-10 border-t border-white/10 pt-4 mt-4">
+                    Cases initiated internally or via vetted tips, directly targeting hidden infrastructures.
                 </p>
             </div>
-        </div>
-
-        <div class="border-t border-slate-200 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 font-mono font-bold text-xs text-slate-400 uppercase tracking-widest reveal-blur delay-300">
-            <p>&copy; 2026 INTELGUARD ORG. ALL RIGHTS RESERVED.</p>
-            <div class="flex space-x-6">
-                <span class="flex items-center"><span class="w-2 h-2 rounded-full bg-intelblue mr-2 animate-pulse shadow-glow"></span> SYSTEMS NOMINAL</span>
-                <span>DIR: B. ACOSTA // EST. 2025</span>
+            
+            <!-- Stat 2 (Stacked Small) -->
+            <div class="md:col-span-4 flex flex-col gap-6">
+                <div class="stat-item glass-panel rounded-2xl p-8 flex-1 group relative overflow-hidden">
+                    <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl"></div>
+                    <p class="text-xs uppercase tracking-widest text-ig-muted mb-2 font-medium">CSAM Takedowns</p>
+                    <div class="text-5xl font-serif font-bold text-white mb-2" id="stat-takedowns">0</div>
+                    <p class="text-sm text-ig-muted">Materials successfully removed from open/dark web.</p>
+                </div>
+                
+                <div class="stat-item glass-panel rounded-2xl p-8 flex-1 group relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-blue-400/10 rounded-full blur-2xl"></div>
+                    <p class="text-xs uppercase tracking-widest text-ig-muted mb-2 font-medium">Identifications Assisted</p>
+                    <div class="text-5xl font-serif font-bold text-white mb-2" id="stat-rescues">0</div>
+                    <p class="text-sm text-ig-muted">Aiding LE in victim & perpetrator identification.</p>
+                </div>
             </div>
         </div>
-    </footer>
+    </div>
+</section>
 
-    <!-- Interactive Scripts -->
-    <script>
-        // 1. Initialize Lucide Icons
-        lucide.createIcons();
+<!-- Ecosystem / About Section (Complex Layout) -->
+<section id="about" class="py-24 relative z-10 border-t border-white/5 bg-gradient-to-b from-transparent to-[#050a15]/50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+            
+            <!-- Left Side: Dense Text Cards -->
+            <div class="flex flex-col gap-6">
+                <div class="glass-panel p-8 rounded-2xl reveal-up border-l-4 border-l-ig-accent">
+                    <h2 class="text-sm uppercase tracking-widest text-ig-accent mb-3 font-semibold">The Organization</h2>
+                    <h3 class="text-4xl md:text-5xl font-serif mb-6 text-white leading-tight">Shadow Operations, Public Good.</h3>
+                    <p class="text-ig-muted leading-relaxed text-lg">
+                        IntelGuard utilizes advanced OSINT to track and expose threat actors.
+                    </p>
+                </div>
 
-        // 2. Initialize Lenis Smooth Scrolling
-        const lenis = new Lenis({
-            duration: 1.4, // Slightly longer duration for that 'Horus' glide
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
-            direction: 'vertical',
-            gestureDirection: 'vertical',
-            smooth: true,
-            mouseMultiplier: 0.8,
-            smoothTouch: false,
-            touchMultiplier: 2,
-            infinite: false,
-        });
-
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-
-        // Smooth anchoring
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if(target) {
-                    lenis.scrollTo(target, { offset: -80, duration: 1.5 });
-                }
-            });
-        });
-
-        // 3. Navbar Reveal & Scroll Effect
-        const navbar = document.getElementById('navbar');
-        
-        // Initial Navbar Slide In
-        setTimeout(() => {
-            navbar.classList.remove('-translate-y-full');
-            navbar.classList.add('translate-y-0');
-        }, 100);
-
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 20) {
-                navbar.classList.remove('bg-white/70', 'py-4', 'border-transparent');
-                navbar.classList.add('bg-white/90', 'py-3', 'border-slate-200', 'shadow-sm');
-            } else {
-                navbar.classList.add('bg-white/70', 'py-4', 'border-transparent');
-                navbar.classList.remove('bg-white/90', 'py-3', 'border-slate-200', 'shadow-sm');
-            }
-        });
-
-        // 4. Mouse Glow Tracking (OSINT feature)
-        const glow = document.getElementById('mouse-glow');
-        window.addEventListener('mousemove', (e) => {
-            glow.style.left = e.clientX + 'px';
-            glow.style.top = e.clientY + 'px';
-            if(glow.style.opacity === '0' || glow.style.opacity === '') {
-                glow.style.opacity = '1';
-            }
-        });
-        window.addEventListener('mouseout', () => { glow.style.opacity = '0'; });
-
-        // 5. Mobile Menu Toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        const toggleMenu = () => {
-            const isOpen = mobileMenu.classList.contains('opacity-100');
-            if(isOpen) {
-                mobileMenu.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
-                mobileMenu.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
-                mobileMenuBtn.innerHTML = '<i data-lucide="menu"></i>';
-            } else {
-                mobileMenu.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
-                mobileMenu.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
-                mobileMenuBtn.innerHTML = '<i data-lucide="x"></i>';
-            }
-            lucide.createIcons();
-        };
-
-        mobileMenuBtn.addEventListener('click', toggleMenu);
-
-        document.querySelectorAll('.mobile-link').forEach(link => {
-            link.addEventListener('click', () => {
-                if (mobileMenu.classList.contains('opacity-100')) toggleMenu();
-            });
-        });
-
-        // 6. Generate Vertical Scrolling Tooling Banner
-        const tools = [
-            { name: "ProximityOSINT", url: "proximityosint.com", icon: "hexagon", color: "text-blue-500" },
-            { name: "EnformionGO", url: "enformion.com", icon: "box", color: "text-indigo-500" },
-            { name: "OSINT Industries", url: "osint.industries", icon: "triangle", color: "text-sky-500" },
-            { name: "NoSINT", url: "nosint.org", icon: "circle-dashed", color: "text-slate-600" },
-            { name: "VeritasOSINT", url: "veritasosint.net", icon: "eye", color: "text-emerald-500" },
-            { name: "HudsonRock", url: "hudsonrock.com", icon: "mountain", color: "text-slate-800" },
-            { name: "Cypher Dynamics", url: "cypherdynamics.com", icon: "cpu", color: "text-blue-600" },
-            { name: "BreachHub", url: "breachhub.org", icon: "network", color: "text-orange-500" },
-            { name: "Crowsint", url: "crowsint.cc", icon: "bird", color: "text-inteldarkblue" },
-            { name: "Inquerely", url: "app.inquerely.com", icon: "search", color: "text-blue-400" }
-        ];
-
-        const toolBanner = document.getElementById('tool-banner');
-        let toolsHTML = '';
-        
-        tools.forEach(tool => {
-            toolsHTML += `
-                <div class="flex items-center p-4 bg-white rounded-2xl shadow-sm border border-slate-100 mb-4 mx-4 hover:border-intelblue hover:shadow-glow transition-all duration-300 transform hover:scale-[1.02] cursor-default">
-                    <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0 mr-4 shadow-inner">
-                        <i data-lucide="${tool.icon}" class="w-6 h-6 ${tool.color}"></i>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 h-full">
+                    <div class="glass-panel p-6 rounded-2xl reveal-up delay-100 flex flex-col justify-center relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-ig-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <svg class="w-8 h-8 text-white/50 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                        <h4 class="text-lg font-semibold text-white mb-2">Law Enforcement</h4>
+                        <p class="text-sm text-ig-muted">Direct liaisons with local, state, federal, and international agencies ensuring data admissibility.</p>
                     </div>
-                    <div>
-                        <p class="font-extrabold text-inteldarkblue tracking-wide">${tool.name}</p>
-                        <p class="font-mono font-bold text-[10px] uppercase text-slate-400 mt-0.5">${tool.url}</p>
+                    
+                    <div class="glass-panel p-6 rounded-2xl reveal-up delay-200 flex flex-col justify-center relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <svg class="w-8 h-8 text-white/50 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        <h4 class="text-lg font-semibold text-white mb-2">Non-Profit Partners</h4>
+                        <p class="text-sm text-ig-muted">Collaborating with NGOs to share methodologies, tech resources, and victim support pipelines.</p>
                     </div>
                 </div>
-            `;
-        });
+            </div>
 
-        toolBanner.innerHTML = `<div>${toolsHTML}</div><div>${toolsHTML}</div>`;
-        lucide.createIcons();
+            <!-- Right Side: 3D Visualization integrated into a card -->
+            <div class="glass-panel rounded-2xl p-1 relative min-h-[400px] lg:min-h-full overflow-hidden reveal-fade flex flex-col">
+                <div class="absolute top-6 left-6 z-20">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                        <span class="text-xs uppercase tracking-widest text-white/50 font-medium">Live Intel Grid</span>
+                    </div>
+                </div>
+                <!-- 3D Canvas Container -->
+                <div id="canvas-container" class="absolute inset-0 bg-[#02040a] rounded-xl z-10 cursor-crosshair"></div>
+                
+                <!-- Overlay UI on top of 3D -->
+                <div class="absolute bottom-6 right-6 left-6 z-20 flex justify-between items-end pointer-events-none">
+                    <div class="glass-panel px-4 py-2 rounded-lg text-xs font-mono text-ig-accent/80">
+                        SYS.STATUS: <span class="text-white">NOMINAL</span>
+                    </div>
+                    <div class="glass-panel px-4 py-2 rounded-lg text-xs font-mono text-white/50 text-right">
+                        NODES: ACTIVE<br>
+                        LATENCY: 12ms
+                    </div>
+                </div>
+            </div>
 
-        // 7. Advanced Intersection Observer (Horus-style triggers)
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px 0px -10% 0px', // Trigger slightly before it hits the bottom
-            threshold: 0.1
-        };
+        </div>
+    </div>
+</section>
 
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target);
+<!-- Team Section -->
+<section id="team" class="py-24 relative z-10">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 reveal-up gap-6">
+            <div>
+                <h2 class="text-base uppercase tracking-widest text-ig-accent mb-3 font-semibold">Leadership Core</h2>
+                <h3 class="text-4xl md:text-6xl font-serif text-white">Meet the Team</h3>
+            </div>
+            <p class="text-base text-ig-muted max-w-sm text-left md:text-right">
+                A syndicate of former law enforcement, cyber security experts, and specialized OSINT analysts.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            
+            <!-- Boaz J. Acosta -->
+            <div class="glass-panel p-1 rounded-2xl reveal-up group">
+                <div class="bg-black/40 rounded-xl p-6 h-full relative overflow-hidden transition-all duration-500 group-hover:bg-black/60 flex flex-col">
+                    <!-- Badges Row -->
+                    <div class="flex flex-wrap gap-2 mb-6 min-h-[32px]">
+                        <div class="relative group/badge flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-help">
+                            <svg class="w-4 h-4 text-yellow-400 drop-shadow-[0_0_5px_rgba(250,204,21,0.6)]" fill="currentColor" viewBox="0 0 24 24"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-[10px] text-white rounded opacity-0 group-hover/badge:opacity-100 transition-opacity border border-white/10 whitespace-nowrap pointer-events-none z-20">Founder</div>
+                        </div>
+                        <div class="relative group/badge flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-help">
+                            <svg class="w-4 h-4 text-purple-400 drop-shadow-[0_0_5px_rgba(192,132,252,0.6)]" fill="currentColor" viewBox="0 0 24 24"><path d="M14 3l-1.4 1.4 2.1 2.1-7.7 7.7-2.1-2.1L3.5 13.5l4 4L19 6.5 21 8.5V3h-7z"/></svg>
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-[10px] text-white rounded opacity-0 group-hover/badge:opacity-100 transition-opacity border border-white/10 whitespace-nowrap pointer-events-none z-20">Early Adopter</div>
+                        </div>
+                        <div class="relative group/badge flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-help">
+                            <svg class="w-4 h-4 text-emerald-400 drop-shadow-[0_0_5px_rgba(52,211,153,0.6)]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-[10px] text-white rounded opacity-0 group-hover/badge:opacity-100 transition-opacity border border-white/10 whitespace-nowrap pointer-events-none z-20">Developer</div>
+                        </div>
+                        <div class="relative group/badge flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-help">
+                            <svg class="w-4 h-4 text-blue-400 drop-shadow-[0_0_5px_rgba(96,165,250,0.6)]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-[10px] text-white rounded opacity-0 group-hover/badge:opacity-100 transition-opacity border border-white/10 whitespace-nowrap pointer-events-none z-20">IntelGuard Core</div>
+                        </div>
+                        <div class="relative group/badge flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-help">
+                            <svg class="w-4 h-4 text-gray-300 drop-shadow-[0_0_5px_rgba(209,213,219,0.6)]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-[10px] text-white rounded opacity-0 group-hover/badge:opacity-100 transition-opacity border border-white/10 whitespace-nowrap pointer-events-none z-20">Linked</div>
+                        </div>
+                        <div class="relative group/badge flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-help">
+                            <svg class="w-4 h-4 text-sky-400 drop-shadow-[0_0_5px_rgba(56,189,248,0.6)]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.7L6 12.6l1.5-1.5 2.6 2.6 6.4-6.4 1.5 1.5-7.9 7.9z"/></svg>
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-[10px] text-white rounded opacity-0 group-hover/badge:opacity-100 transition-opacity border border-white/10 whitespace-nowrap pointer-events-none z-20">Verified</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-auto">
+                        <h4 class="text-2xl font-bold text-white mb-1">Boaz J. Acosta</h4>
+                        <p class="text-xs text-ig-accent uppercase tracking-wider mb-4 font-mono">Founder & CEO</p>
+                        
+                        <div class="flex flex-col gap-3 mt-6 pt-6 border-t border-white/10">
+                            <a href="mailto:boaz@intelguard.org" class="text-sm text-ig-muted hover:text-white transition-colors flex items-center gap-3">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> boaz@intelguard.org
+                            </a>
+                            <a href="https://t.me/lexisnexis" target="_blank" class="text-sm text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-3">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.96-.65-.34-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.98 1.26-5.59 3.7-.53.36-1.01.54-1.44.53-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.41-1.43-.87.03-.24.36-.49 1-.76 3.91-1.7 6.52-2.83 7.82-3.37 3.73-1.56 4.5-1.83 5.01-1.84.11 0 .36.03.49.14.11.09.15.22.16.33-.01.05-.01.12-.02.2z"/></svg> @lexisnexis
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monroe Wright -->
+            <div class="glass-panel p-1 rounded-2xl reveal-up group">
+                <div class="bg-black/40 rounded-xl p-6 h-full relative overflow-hidden transition-all duration-500 group-hover:bg-black/60 flex flex-col">
+                    <!-- Badges Row -->
+                    <div class="flex flex-wrap gap-2 mb-6 min-h-[32px]">
+                        <div class="relative group/badge flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-help">
+                            <svg class="w-4 h-4 text-blue-400 drop-shadow-[0_0_5px_rgba(96,165,250,0.6)]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-[10px] text-white rounded opacity-0 group-hover/badge:opacity-100 transition-opacity border border-white/10 whitespace-nowrap pointer-events-none z-20">IntelGuard Core</div>
+                        </div>
+                        <div class="relative group/badge flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-help">
+                            <svg class="w-4 h-4 text-sky-400 drop-shadow-[0_0_5px_rgba(56,189,248,0.6)]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.7L6 12.6l1.5-1.5 2.6 2.6 6.4-6.4 1.5 1.5-7.9 7.9z"/></svg>
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-[10px] text-white rounded opacity-0 group-hover/badge:opacity-100 transition-opacity border border-white/10 whitespace-nowrap pointer-events-none z-20">Verified</div>
+                        </div>
+                        <div class="relative group/badge flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-help">
+                            <svg class="w-4 h-4 text-purple-400 drop-shadow-[0_0_5px_rgba(192,132,252,0.6)]" fill="currentColor" viewBox="0 0 24 24"><path d="M14 3l-1.4 1.4 2.1 2.1-7.7 7.7-2.1-2.1L3.5 13.5l4 4L19 6.5 21 8.5V3h-7z"/></svg>
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-[10px] text-white rounded opacity-0 group-hover/badge:opacity-100 transition-opacity border border-white/10 whitespace-nowrap pointer-events-none z-20">Early Adopter</div>
+                        </div>
+                        <div class="relative group/badge flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-help">
+                            <svg class="w-4 h-4 text-gray-300 drop-shadow-[0_0_5px_rgba(209,213,219,0.6)]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-[10px] text-white rounded opacity-0 group-hover/badge:opacity-100 transition-opacity border border-white/10 whitespace-nowrap pointer-events-none z-20">Linked</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-auto">
+                        <h4 class="text-2xl font-bold text-white mb-1">Monroe Wright</h4>
+                        <p class="text-xs text-ig-accent uppercase tracking-wider mb-4 font-mono">Chief Operations Officer</p>
+                        
+                        <div class="flex flex-col gap-3 mt-6 pt-6 border-t border-white/10">
+                            <a href="mailto:monroe@intelguard.org" class="text-sm text-ig-muted hover:text-white transition-colors flex items-center gap-3">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> monroe@intelguard.org
+                            </a>
+                            <a href="https://t.me/SomeKitty" target="_blank" class="text-sm text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-3">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.96-.65-.34-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.98 1.26-5.59 3.7-.53.36-1.01.54-1.44.53-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.41-1.43-.87.03-.24.36-.49 1-.76 3.91-1.7 6.52-2.83 7.82-3.37 3.73-1.56 4.5-1.83 5.01-1.84.11 0 .36.03.49.14.11.09.15.22.16.33-.01.05-.01.12-.02.2z"/></svg> @SomeKitty
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- John Davis -->
+            <div class="glass-panel p-1 rounded-2xl reveal-up group">
+                <div class="bg-black/40 rounded-xl p-6 h-full relative overflow-hidden transition-all duration-500 group-hover:bg-black/60 flex flex-col">
+                    <!-- Badges Row -->
+                    <div class="flex flex-wrap gap-2 mb-6 min-h-[32px]">
+                        <div class="relative group/badge flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-help">
+                            <svg class="w-4 h-4 text-blue-400 drop-shadow-[0_0_5px_rgba(96,165,250,0.6)]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-[10px] text-white rounded opacity-0 group-hover/badge:opacity-100 transition-opacity border border-white/10 whitespace-nowrap pointer-events-none z-20">IntelGuard Core</div>
+                        </div>
+                        <div class="relative group/badge flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-help">
+                            <svg class="w-4 h-4 text-sky-400 drop-shadow-[0_0_5px_rgba(56,189,248,0.6)]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.7L6 12.6l1.5-1.5 2.6 2.6 6.4-6.4 1.5 1.5-7.9 7.9z"/></svg>
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-[10px] text-white rounded opacity-0 group-hover/badge:opacity-100 transition-opacity border border-white/10 whitespace-nowrap pointer-events-none z-20">Verified</div>
+                        </div>
+                        <div class="relative group/badge flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-help">
+                            <svg class="w-4 h-4 text-purple-400 drop-shadow-[0_0_5px_rgba(192,132,252,0.6)]" fill="currentColor" viewBox="0 0 24 24"><path d="M14 3l-1.4 1.4 2.1 2.1-7.7 7.7-2.1-2.1L3.5 13.5l4 4L19 6.5 21 8.5V3h-7z"/></svg>
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-[10px] text-white rounded opacity-0 group-hover/badge:opacity-100 transition-opacity border border-white/10 whitespace-nowrap pointer-events-none z-20">Early Adopter</div>
+                        </div>
+                        <div class="relative group/badge flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-help">
+                            <svg class="w-4 h-4 text-gray-300 drop-shadow-[0_0_5px_rgba(209,213,219,0.6)]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-[10px] text-white rounded opacity-0 group-hover/badge:opacity-100 transition-opacity border border-white/10 whitespace-nowrap pointer-events-none z-20">Linked</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-auto">
+                        <h4 class="text-2xl font-bold text-white mb-1">John Davis</h4>
+                        <p class="text-xs text-ig-accent uppercase tracking-wider mb-4 font-mono">Head of Investigative Sol.</p>
+                        
+                        <div class="flex flex-col gap-3 mt-6 pt-6 border-t border-white/10">
+                            <a href="mailto:john@intelguard.org" class="text-sm text-ig-muted hover:text-white transition-colors flex items-center gap-3">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> john@intelguard.org
+                            </a>
+                            <a href="https://t.me/fisperboy" target="_blank" class="text-sm text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-3">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.96-.65-.34-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.98 1.26-5.59 3.7-.53.36-1.01.54-1.44.53-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.41-1.43-.87.03-.24.36-.49 1-.76 3.91-1.7 6.52-2.83 7.82-3.37 3.73-1.56 4.5-1.83 5.01-1.84.11 0 .36.03.49.14.11.09.15.22.16.33-.01.05-.01.12-.02.2z"/></svg> @fisperboy
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Oliver Dudas -->
+            <div class="glass-panel p-1 rounded-2xl reveal-up group">
+                <div class="bg-black/40 rounded-xl p-6 h-full relative overflow-hidden transition-all duration-500 group-hover:bg-black/60 flex flex-col">
+                    <!-- Badges Row -->
+                    <div class="flex flex-wrap gap-2 mb-6 min-h-[32px]">
+                        <div class="relative group/badge flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-help">
+                            <svg class="w-4 h-4 text-blue-400 drop-shadow-[0_0_5px_rgba(96,165,250,0.6)]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-[10px] text-white rounded opacity-0 group-hover/badge:opacity-100 transition-opacity border border-white/10 whitespace-nowrap pointer-events-none z-20">IntelGuard Core</div>
+                        </div>
+                        <div class="relative group/badge flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-help">
+                            <svg class="w-4 h-4 text-purple-400 drop-shadow-[0_0_5px_rgba(192,132,252,0.6)]" fill="currentColor" viewBox="0 0 24 24"><path d="M14 3l-1.4 1.4 2.1 2.1-7.7 7.7-2.1-2.1L3.5 13.5l4 4L19 6.5 21 8.5V3h-7z"/></svg>
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-black text-[10px] text-white rounded opacity-0 group-hover/badge:opacity-100 transition-opacity border border-white/10 whitespace-nowrap pointer-events-none z-20">Early Adopter</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-auto">
+                        <h4 class="text-2xl font-bold text-white mb-1">Oliver Dudas</h4>
+                        <p class="text-xs text-ig-accent uppercase tracking-wider mb-4 font-mono">Cyber Investigator</p>
+                        
+                        <div class="flex flex-col gap-3 mt-6 pt-6 border-t border-white/10">
+                            <a href="mailto:oliver@intelguard.org" class="text-sm text-ig-muted hover:text-white transition-colors flex items-center gap-3">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> oliver@intelguard.org
+                            </a>
+                            <a href="https://t.me/osintpimp" target="_blank" class="text-sm text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-3">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.96-.65-.34-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.98 1.26-5.59 3.7-.53.36-1.01.54-1.44.53-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.41-1.43-.87.03-.24.36-.49 1-.76 3.91-1.7 6.52-2.83 7.82-3.37 3.73-1.56 4.5-1.83 5.01-1.84.11 0 .36.03.49.14.11.09.15.22.16.33-.01.05-.01.12-.02.2z"/></svg> @osintpimp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Liaison Partners Marquee Section -->
+<section id="partners" class="py-20 relative z-10 border-t border-white/5 bg-gradient-to-b from-transparent to-[#050a15]/30">
+    <div class="max-w-7xl mx-auto px-6 mb-12 text-center reveal-up">
+        <h2 class="text-sm uppercase tracking-widest text-ig-accent mb-3 font-semibold">Intelligence Ecosystem</h2>
+        <h3 class="text-3xl md:text-4xl font-serif text-white">Our Liaison Partners</h3>
+        <p class="text-ig-muted mt-4 max-w-2xl mx-auto">Collaborating with industry-leading OSINT/CSINT tools and databases to streamline our investigative pipeline.</p>
+    </div>
+
+    <!-- Infinite Scroll Marquee -->
+    <div class="relative w-full overflow-hidden marquee-mask py-4 flex group">
+        <!-- First Set -->
+        <div class="flex shrink-0 min-w-full items-center justify-around gap-8 px-4 animate-scroll-x group-hover:[animation-play-state:paused]">
+            <a href="https://osint.industries" target="_blank" class="glass-panel px-8 py-5 rounded-2xl flex items-center justify-center min-w-[220px] hover:bg-white/10 transition-colors border-white/10">
+                <span class="text-lg font-bold text-white tracking-wide">OSINT<span class="text-ig-accent font-light">Industries</span></span>
+            </a>
+            <a href="https://seon.io" target="_blank" class="glass-panel px-8 py-5 rounded-2xl flex items-center justify-center min-w-[220px] hover:bg-white/10 transition-colors border-white/10">
+                <span class="text-lg font-black text-white tracking-widest uppercase">SEON</span>
+            </a>
+            <a href="https://transunion.com" target="_blank" class="glass-panel px-8 py-5 rounded-2xl flex items-center justify-center min-w-[220px] hover:bg-white/10 transition-colors border-white/10">
+                <span class="text-lg font-semibold text-white tracking-wider flex items-center gap-2"><svg class="w-5 h-5 text-ig-accent" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 4.5l6.5 13h-13L12 6.5z"/></svg> TransUnion</span>
+            </a>
+            <a href="https://datavoid.sh" target="_blank" class="glass-panel px-8 py-5 rounded-2xl flex items-center justify-center min-w-[220px] hover:bg-white/10 transition-colors border-white/10">
+                <span class="text-lg font-bold text-white font-mono">datavoid<span class="text-ig-muted">.sh</span></span>
+            </a>
+            <a href="https://breachhub.org" target="_blank" class="glass-panel px-8 py-5 rounded-2xl flex items-center justify-center min-w-[220px] hover:bg-white/10 transition-colors border-white/10">
+                <span class="text-lg font-bold text-white flex items-center gap-2"><svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg> Breachhub</span>
+            </a>
+            <a href="https://nosint.org" target="_blank" class="glass-panel px-8 py-5 rounded-2xl flex items-center justify-center min-w-[220px] hover:bg-white/10 transition-colors border-white/10">
+                <span class="text-lg font-black italic text-white tracking-tighter">No<span class="text-ig-accent">SINT</span></span>
+            </a>
+            <a href="https://lexisnexis.com" target="_blank" class="glass-panel px-8 py-5 rounded-2xl flex items-center justify-center min-w-[220px] hover:bg-white/10 transition-colors border-white/10">
+                <span class="text-lg font-serif font-bold text-white tracking-wide">LexisNexis</span>
+            </a>
+            <a href="https://osintleak.com" target="_blank" class="glass-panel px-8 py-5 rounded-2xl flex items-center justify-center min-w-[220px] hover:bg-white/10 transition-colors border-white/10">
+                <span class="text-lg font-bold text-white tracking-tight flex items-center gap-2"><svg class="w-5 h-5 text-ig-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg> OSINTLeak</span>
+            </a>
+        </div>
+        <!-- Second Set (Duplicate for seamless loop) -->
+        <div class="flex shrink-0 min-w-full items-center justify-around gap-8 px-4 animate-scroll-x group-hover:[animation-play-state:paused]" aria-hidden="true">
+            <a href="https://osint.industries" target="_blank" class="glass-panel px-8 py-5 rounded-2xl flex items-center justify-center min-w-[220px] hover:bg-white/10 transition-colors border-white/10">
+                <span class="text-lg font-bold text-white tracking-wide">OSINT<span class="text-ig-accent font-light">Industries</span></span>
+            </a>
+            <a href="https://seon.io" target="_blank" class="glass-panel px-8 py-5 rounded-2xl flex items-center justify-center min-w-[220px] hover:bg-white/10 transition-colors border-white/10">
+                <span class="text-lg font-black text-white tracking-widest uppercase">SEON</span>
+            </a>
+            <a href="https://transunion.com" target="_blank" class="glass-panel px-8 py-5 rounded-2xl flex items-center justify-center min-w-[220px] hover:bg-white/10 transition-colors border-white/10">
+                <span class="text-lg font-semibold text-white tracking-wider flex items-center gap-2"><svg class="w-5 h-5 text-ig-accent" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 4.5l6.5 13h-13L12 6.5z"/></svg> TransUnion</span>
+            </a>
+            <a href="https://datavoid.sh" target="_blank" class="glass-panel px-8 py-5 rounded-2xl flex items-center justify-center min-w-[220px] hover:bg-white/10 transition-colors border-white/10">
+                <span class="text-lg font-bold text-white font-mono">datavoid<span class="text-ig-muted">.sh</span></span>
+            </a>
+            <a href="https://breachhub.org" target="_blank" class="glass-panel px-8 py-5 rounded-2xl flex items-center justify-center min-w-[220px] hover:bg-white/10 transition-colors border-white/10">
+                <span class="text-lg font-bold text-white flex items-center gap-2"><svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg> Breachhub</span>
+            </a>
+            <a href="https://nosint.org" target="_blank" class="glass-panel px-8 py-5 rounded-2xl flex items-center justify-center min-w-[220px] hover:bg-white/10 transition-colors border-white/10">
+                <span class="text-lg font-black italic text-white tracking-tighter">No<span class="text-ig-accent">SINT</span></span>
+            </a>
+            <a href="https://lexisnexis.com" target="_blank" class="glass-panel px-8 py-5 rounded-2xl flex items-center justify-center min-w-[220px] hover:bg-white/10 transition-colors border-white/10">
+                <span class="text-lg font-serif font-bold text-white tracking-wide">LexisNexis</span>
+            </a>
+            <a href="https://osintleak.com" target="_blank" class="glass-panel px-8 py-5 rounded-2xl flex items-center justify-center min-w-[220px] hover:bg-white/10 transition-colors border-white/10">
+                <span class="text-lg font-bold text-white tracking-tight flex items-center gap-2"><svg class="w-5 h-5 text-ig-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg> OSINTLeak</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section id="faq" class="py-24 relative z-10 border-t border-white/5">
+    <div class="max-w-4xl mx-auto px-6">
+        <div class="text-center mb-16 reveal-up">
+            <h2 class="text-base uppercase tracking-widest text-ig-accent mb-3 font-semibold">Information</h2>
+            <h3 class="text-4xl md:text-5xl font-serif text-white">Frequently Asked Questions</h3>
+        </div>
+
+        <div class="space-y-4">
+            <!-- FAQ Items with sleek glass styling & grid animation -->
+            <div class="glass-panel rounded-xl overflow-hidden reveal-up">
+                <button class="faq-btn w-full px-8 py-5 text-left flex justify-between items-center focus:outline-none hover:bg-white/5 transition-colors">
+                    <span class="font-medium text-white text-lg">How does IntelGuard gather information legally?</span>
+                    <svg class="w-5 h-5 text-ig-muted transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                </button>
+                <div class="faq-grid bg-black/20">
+                    <div class="faq-inner">
+                        <div class="px-8 pb-6 pt-2 text-base text-ig-muted leading-relaxed">
+                            We rely exclusively on Open Source Intelligence (OSINT). This means we analyze data that is publicly available on the internet, including forums, social media, and open deep-web indexes that do not require breaching secure systems. We do not hack, entrap, or engage in illegal data acquisition.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-xl overflow-hidden reveal-up delay-100">
+                <button class="faq-btn w-full px-8 py-5 text-left flex justify-between items-center focus:outline-none hover:bg-white/5 transition-colors">
+                    <span class="font-medium text-white text-lg">Are you a law enforcement agency?</span>
+                    <svg class="w-5 h-5 text-ig-muted transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                </button>
+                <div class="faq-grid bg-black/20">
+                    <div class="faq-inner">
+                        <div class="px-8 pb-6 pt-2 text-base text-ig-muted leading-relaxed">
+                            No. We are a registered non-profit organization. We do not have arrest powers. We act as an intelligence gathering and triage unit, processing vast amounts of data to provide law enforcement with packaged, actionable leads that they can use to obtain warrants and execute arrests.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <div class="glass-panel rounded-xl overflow-hidden reveal-up delay-200">
+                <button class="faq-btn w-full px-8 py-5 text-left flex justify-between items-center focus:outline-none hover:bg-white/5 transition-colors">
+                    <span class="font-medium text-white text-lg">How can I report a tip to IntelGuard?</span>
+                    <svg class="w-5 h-5 text-ig-muted transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                </button>
+                <div class="faq-grid bg-black/20">
+                    <div class="faq-inner">
+                        <div class="px-8 pb-6 pt-2 text-base text-ig-muted leading-relaxed">
+                            If you believe a child is in immediate danger, please contact local emergency services or the National Center for Missing and Exploited Children (NCMEC) immediately. For non-emergency tips regarding online materials, please use our secure intake portal.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-24 relative z-10 border-t border-white/5 bg-gradient-to-b from-transparent to-[#050a15]/50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16 reveal-up">
+            <h2 class="text-base uppercase tracking-widest text-ig-accent mb-3 font-semibold">Secure Communications</h2>
+            <h3 class="text-4xl md:text-5xl font-serif text-white">Contact IntelGuard</h3>
+            <p class="text-ig-muted mt-4 max-w-2xl mx-auto">Select the appropriate channel for your inquiry. All communications are handled with strict confidentiality.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- General Inquiries -->
+            <div class="glass-panel p-8 rounded-2xl reveal-up group hover:-translate-y-1 transition-transform duration-300">
+                <div class="w-14 h-14 bg-white/5 rounded-xl flex items-center justify-center mb-6 group-hover:bg-white/10 transition-colors border border-white/10">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                </div>
+                <h4 class="text-xl font-bold text-white mb-2">General Inquiries</h4>
+                <p class="text-sm text-ig-muted mb-6">For press, non-profit partnerships, administrative questions, and general information about our mission.</p>
+                <div class="mt-auto pt-4 border-t border-white/10">
+                    <a href="mailto:contact@intelguard.org" class="inline-flex items-center gap-2 text-white hover:text-ig-glow transition-colors font-mono text-sm">
+                        contact@intelguard.org
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Law Enforcement -->
+            <div class="glass-panel p-8 rounded-2xl reveal-up delay-100 group hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden">
+                <div class="absolute -right-10 -top-10 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-colors"></div>
+                <div class="relative z-10 flex flex-col h-full">
+                    <div class="w-14 h-14 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 border border-blue-500/20 group-hover:border-blue-500/40 transition-colors">
+                        <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2">Gov & Law Enforcement</h4>
+                    <p class="text-sm text-ig-muted mb-6">Direct liaison channel for verified local, state, federal, and international agencies requiring intel support.</p>
+                    <div class="mt-auto pt-4 border-t border-white/10">
+                        <a href="mailto:leer@intelguard.org" class="inline-flex items-center gap-2 text-blue-400 hover:text-white transition-colors font-mono text-sm">
+                            leer@intelguard.org
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report Tips -->
+            <div class="glass-panel p-8 rounded-2xl reveal-up delay-200 group hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-ig-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-ig-accent/10 rounded-full blur-2xl group-hover:bg-ig-accent/20 transition-colors"></div>
+                <div class="relative z-10 flex flex-col h-full">
+                    <div class="w-14 h-14 bg-ig-accent/20 rounded-xl flex items-center justify-center mb-6 border border-ig-accent/30 group-hover:border-ig-accent/50 transition-colors">
+                        <svg class="w-6 h-6 text-ig-accent drop-shadow-[0_0_8px_rgba(74,144,226,0.5)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-2">Report Tips</h4>
+                    <p class="text-sm text-ig-muted mb-6">Secure, confidential channel to report suspected online exploitation materials or actionable intelligence.</p>
+                    <div class="mt-auto pt-4 border-t border-white/10">
+                        <a href="mailto:tipline@intelguard.org" class="inline-flex items-center gap-2 text-ig-accent hover:text-white transition-colors font-mono text-sm font-bold">
+                            tipline@intelguard.org
+                            <svg class="w-4 h-4 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-black/80 py-12 border-t border-white/10 relative z-10 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="flex items-center gap-3">
+             <svg class="w-6 h-6 text-white/50" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2L3 6v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V6l-9-4z"/>
+            </svg>
+            <span class="font-bold text-white/50 tracking-widest text-sm uppercase">IntelGuard</span>
+        </div>
+        
+        <div class="text-white/40 text-xs text-center md:text-left font-mono">
+            <p>OPERATIONAL &copy; <span id="year"></span> | INTELGUARD ORG</p>
+            <p class="mt-1 text-ig-muted">Protecting the unnoticed.</p>
+        </div>
+        
+        <div class="flex gap-6">
+             <a href="#" class="text-white/30 hover:text-white transition-colors text-xs uppercase tracking-wider">Privacy Policy</a>
+             <a href="#" class="text-white/30 hover:text-white transition-colors text-xs uppercase tracking-wider">Secure Contact</a>
+        </div>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+    // Set Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // 1. Initialize Lenis (Smooth Scroll)
+    const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        direction: 'vertical',
+        smooth: true,
+        smoothTouch: false,
+    });
+
+    function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Sync GSAP with Lenis
+    gsap.registerPlugin(ScrollTrigger);
+
+    // 2. Navigation Interaction
+    const navbar = document.getElementById('navbar');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    lenis.on('scroll', (e) => {
+        if (e.scrollY > 50) {
+            navbar.querySelector('.glass-panel').classList.add('bg-black/80', 'border-b', 'border-white/10');
+            navbar.classList.remove('md:mt-6');
+            navbar.classList.add('md:mt-2');
+        } else {
+            navbar.querySelector('.glass-panel').classList.remove('bg-black/80', 'border-b', 'border-white/10');
+            navbar.classList.add('md:mt-6');
+            navbar.classList.remove('md:mt-2');
+        }
+    });
+
+    mobileMenuBtn.addEventListener('click', () => {
+        if (mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.remove('hidden');
+            mobileMenu.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+            gsap.fromTo(mobileLinks, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, stagger: 0.1 });
+        } else {
+            closeMobileMenu();
+        }
+    });
+
+    function closeMobileMenu() {
+        mobileMenu.classList.add('hidden');
+        mobileMenu.classList.remove('flex');
+        document.body.style.overflow = '';
+    }
+    mobileLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
+
+    // 3. FAQ Accordion Logic (With ScrollTrigger Refresh fix for choppiness)
+    const faqBtns = document.querySelectorAll('.faq-btn');
+    faqBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const contentGrid = this.nextElementSibling;
+            const icon = this.querySelector('svg');
+            
+            // Close others
+            faqBtns.forEach(otherBtn => {
+                if (otherBtn !== this) {
+                    otherBtn.nextElementSibling.classList.remove('is-open');
+                    otherBtn.querySelector('svg').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>';
                 }
             });
-        }, observerOptions);
 
-        document.querySelectorAll('.reveal-blur, .reveal-slide-right').forEach((el) => {
-            observer.observe(el);
+            // Toggle current
+            if (contentGrid.classList.contains('is-open')) {
+                contentGrid.classList.remove('is-open');
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>';
+            } else {
+                contentGrid.classList.add('is-open');
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>';
+            }
+
+            // Fix for choppiness: Refresh ScrollTrigger after the CSS transition completes (400ms)
+            // This tells Lenis and GSAP that the document height has changed so scrolling remains smooth.
+            setTimeout(() => {
+                ScrollTrigger.refresh();
+            }, 400); 
+        });
+    });
+
+    // 4. GSAP Animations (Optimized for smoothness using Batching)
+    window.addEventListener('load', () => {
+        // Hero Image Entrance
+        gsap.to(".reveal-scale", {
+            opacity: 1, visibility: 'visible', scale: 1, 
+            duration: 1.5, ease: "power3.out"
         });
         
-        // Trigger top-level reveals immediately on load
-        setTimeout(() => {
-            document.querySelectorAll('section:first-of-type .reveal-blur').forEach(el => el.classList.add('active'));
-        }, 100);
-    </script>
+        gsap.to("#hero .reveal-up", {
+            y: 0, opacity: 1, visibility: 'visible', 
+            duration: 1, delay: 0.5, ease: "power3.out"
+        });
+
+        // Scroll Reveals with Batching (This fixes the choppy Team section)
+        ScrollTrigger.batch(".reveal-up:not(#hero .reveal-up)", {
+            onEnter: (elements) => {
+                gsap.fromTo(elements, 
+                    { y: 40, opacity: 0, visibility: 'visible' },
+                    { y: 0, opacity: 1, duration: 0.8, ease: "power2.out", stagger: 0.15 }
+                );
+            },
+            start: "top 85%",
+            once: true
+        });
+
+        const fadeElements = document.querySelectorAll('.reveal-fade');
+        fadeElements.forEach((el) => {
+            gsap.fromTo(el, 
+                { opacity: 0, visibility: 'visible' },
+                {
+                    scrollTrigger: { trigger: el, start: "top 80%" },
+                    opacity: 1, duration: 1.5, ease: "power2.inOut"
+                }
+            );
+        });
+
+        // 5. Stat Counters
+        const statElements = document.querySelectorAll('.stat-item');
+        statElements.forEach((item, index) => {
+            const counterDiv = item.querySelector('div[id^="stat-"]');
+            if(!counterDiv) return;
+            
+            const targetId = counterDiv.id;
+            let targetValue = targetId === 'stat-cases' ? 14502 : targetId === 'stat-takedowns' ? 8934 : 427;
+            const obj = { val: 0 };
+
+            ScrollTrigger.create({
+                trigger: "#stats", start: "top 75%",
+                onEnter: () => {
+                    gsap.to(obj, {
+                        val: targetValue, duration: 2.5, ease: "power2.out", delay: index * 0.2,
+                        onUpdate: () => {
+                            counterDiv.innerHTML = Math.floor(obj.val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "+";
+                        }
+                    });
+                }, once: true
+            });
+        });
+    });
+
+    // 6. Enhanced Three.js Grid System for "Ecosystem" Card
+    function initThreeJS() {
+        const container = document.getElementById('canvas-container');
+        if (!container) return;
+
+        const scene = new THREE.Scene();
+        // Camera slightly angled down
+        const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.set(0, -10, 40); 
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // optimize
+        container.appendChild(renderer.domElement);
+
+        // Create a tech-looking grid plane
+        const gridHelper = new THREE.GridHelper(100, 40, 0x1e3a8a, 0x0f172a);
+        gridHelper.rotation.x = Math.PI / 2;
+        scene.add(gridHelper);
+
+        // Particles representing data nodes
+        const particlesCount = 150;
+        const posArray = new Float32Array(particlesCount * 3);
+        const sizesArray = new Float32Array(particlesCount);
+
+        for(let i = 0; i < particlesCount * 3; i+=3) {
+            posArray[i] = (Math.random() - 0.5) * 80;   // x
+            posArray[i+1] = (Math.random() - 0.5) * 80; // y
+            posArray[i+2] = (Math.random() - 0.5) * 20; // z (depth)
+            sizesArray[i/3] = Math.random() * 2;
+        }
+
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        geometry.setAttribute('size', new THREE.BufferAttribute(sizesArray, 1));
+
+        // Custom shader for glowing particles
+        const material = new THREE.ShaderMaterial({
+            uniforms: {
+                time: { value: 0 },
+                color: { value: new THREE.Color(0x4a90e2) }
+            },
+            vertexShader: `
+                attribute float size;
+                uniform float time;
+                varying float vOpacity;
+                void main() {
+                    // Pulsing effect based on position and time
+                    vOpacity = 0.5 + 0.5 * sin(position.x * 0.1 + time);
+                    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+                    gl_PointSize = size * (300.0 / -mvPosition.z);
+                    gl_Position = projectionMatrix * mvPosition;
+                }
+            `,
+            fragmentShader: `
+                uniform vec3 color;
+                varying float vOpacity;
+                void main() {
+                    // Make it circular with soft edge
+                    float d = distance(gl_PointCoord, vec2(0.5));
+                    if (d > 0.5) discard;
+                    gl_FragColor = vec4(color, vOpacity * (1.0 - (d * 2.0)));
+                }
+            `,
+            transparent: true,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+
+        const particlesMesh = new THREE.Points(geometry, material);
+        scene.add(particlesMesh);
+
+        // Connecting lines for a few active nodes
+        const lineMat = new THREE.LineBasicMaterial({ color: 0x4a90e2, transparent: true, opacity: 0.15 });
+        const lineGeo = new THREE.BufferGeometry();
+        const linePos = new Float32Array(30 * 6); // 30 lines
+        lineGeo.setAttribute('position', new THREE.BufferAttribute(linePos, 3));
+        const linesMesh = new THREE.LineSegments(lineGeo, lineMat);
+        scene.add(linesMesh);
+
+        // Mouse interaction
+        let mouseX = 0; let mouseY = 0;
+        container.addEventListener('mousemove', (e) => {
+            const rect = container.getBoundingClientRect();
+            mouseX = ((e.clientX - rect.left) / container.clientWidth) * 2 - 1;
+            mouseY = -((e.clientY - rect.top) / container.clientHeight) * 2 + 1;
+        });
+
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+
+            // Update shader uniform
+            material.uniforms.time.value = time;
+
+            // Slowly rotate scene
+            scene.rotation.y = time * 0.05;
+            scene.rotation.x = Math.sin(time * 0.1) * 0.1;
+
+            // Interactive camera tilt
+            camera.position.x += (mouseX * 5 - camera.position.x) * 0.05;
+            camera.position.y += (mouseY * 5 - 10 - camera.position.y) * 0.05;
+            camera.lookAt(0,0,0);
+
+            // Update dynamic lines (simulating network pings)
+            if (Math.floor(time * 10) % 5 === 0) {
+                const positions = particlesMesh.geometry.attributes.position.array;
+                for(let i=0; i<30*6; i+=6) {
+                    const idx1 = Math.floor(Math.random() * particlesCount) * 3;
+                    const idx2 = Math.floor(Math.random() * particlesCount) * 3;
+                    // Only connect close nodes
+                    if (Math.abs(positions[idx1] - positions[idx2]) < 30) {
+                        linePos[i] = positions[idx1]; linePos[i+1] = positions[idx1+1]; linePos[i+2] = positions[idx1+2];
+                        linePos[i+3] = positions[idx2]; linePos[i+4] = positions[idx2+1]; linePos[i+5] = positions[idx2+2];
+                    } else {
+                        linePos[i] = 0; linePos[i+1] = 0; linePos[i+2] = 0;
+                        linePos[i+3] = 0; linePos[i+4] = 0; linePos[i+5] = 0;
+                    }
+                }
+                linesMesh.geometry.attributes.position.needsUpdate = true;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            if(!container) return;
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+
+        animate();
+    }
+
+    // Trigger 3D init
+    window.addEventListener('load', initThreeJS);
+
+</script>
+
 </body>
 </html>
