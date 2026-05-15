@@ -317,7 +317,7 @@
                 <div class="relative z-10">
                     <svg class="w-8 h-8 text-ig-muted mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     <p class="text-sm uppercase tracking-widest text-ig-muted mb-2 font-medium">Proactive Investigations</p>
-                    <div class="text-6xl md:text-8xl font-serif font-bold text-white mb-4 accent-glow tracking-tighter" id="stat-cases">0</div>
+                    <div class="text-6xl md:text-8xl font-serif font-bold text-white mb-4 accent-glow tracking-tighter" id="stat-cases">120</div>
                 </div>
                 <p class="text-base text-ig-muted max-w-md relative z-10 border-t border-white/10 pt-4 mt-4">
                     Cases initiated internally or via vetted tips, directly targeting hidden infrastructures.
@@ -329,14 +329,14 @@
                 <div class="stat-item glass-panel rounded-2xl p-8 flex-1 group relative overflow-hidden">
                     <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl"></div>
                     <p class="text-xs uppercase tracking-widest text-ig-muted mb-2 font-medium">CSAM Takedowns</p>
-                    <div class="text-5xl font-serif font-bold text-white mb-2" id="stat-takedowns">0</div>
-                    <p class="text-sm text-ig-muted">Materials successfully removed from open/dark web.</p>
+                    <div class="text-5xl font-serif font-bold text-white mb-2" id="stat-takedowns">20</div>
+                    <p class="text-sm text-ig-muted">Terabytes successfully removed from open/dark web.</p>
                 </div>
                 
                 <div class="stat-item glass-panel rounded-2xl p-8 flex-1 group relative overflow-hidden">
                     <div class="absolute -right-10 -top-10 w-32 h-32 bg-blue-400/10 rounded-full blur-2xl"></div>
                     <p class="text-xs uppercase tracking-widest text-ig-muted mb-2 font-medium">Identifications Assisted</p>
-                    <div class="text-5xl font-serif font-bold text-white mb-2" id="stat-rescues">0</div>
+                    <div class="text-5xl font-serif font-bold text-white mb-2" id="stat-rescues">243</div>
                     <p class="text-sm text-ig-muted">Aiding LE in victim & perpetrator identification.</p>
                 </div>
             </div>
@@ -388,8 +388,8 @@
                         NGO.STATUS: <span class="text-white">VERIFIED</span>
                     </div>
                     <div class="glass-panel px-4 py-2 rounded-lg text-xs font-mono text-white/50 text-right">
-                        NODES: ACTIVE<br>
-                        LATENCY: 12ms
+                        STATUS: OPEN<br>
+                        ACTIVE 24/7
                     </div>
                 </div>
             </div>
@@ -512,7 +512,7 @@
                 <p class="text-sm text-ig-muted mb-6">Secure, confidential channel to report suspected online exploitation materials or intelligence.</p>
                 <div class="mt-auto pt-4 border-t border-white/10">
                     <span class="inline-flex items-center gap-2 text-red-500 group-hover:text-red-400 transition-colors font-mono text-sm font-bold">
-                        OPEN SECURE INTAKE
+                        OPEN TIPLINE SYSTEM
                         <svg class="w-4 h-4 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </span>
                 </div>
@@ -558,7 +558,7 @@
         <div class="flex justify-between items-center px-8 py-5 border-b border-white/5 bg-white/[0.02]">
             <div class="flex items-center gap-3">
                 <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.8)]"></div>
-                <h3 class="text-white font-serif text-xl tracking-wide">Secure Intake Portal</h3>
+                <h3 class="text-white font-serif text-xl tracking-wide">Tipline System</h3>
             </div>
             <button onclick="closeTipModal()" class="text-white/40 hover:text-white transition-colors focus:outline-none p-2 rounded-full hover:bg-white/5">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -580,7 +580,7 @@
                 <!-- Step 2 -->
                 <div class="stepper-item flex flex-col items-center gap-2 z-10 relative cursor-default" data-step="2">
                     <div class="stepper-circle w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-[2px] border-white/10 bg-[#0a0f1c] text-white/40">2</div>
-                    <span class="text-[9px] uppercase tracking-widest font-semibold text-white/40 absolute -bottom-6 w-20 text-center transition-colors duration-500">Threat</span>
+                    <span class="text-[9px] uppercase tracking-widest font-semibold text-white/40 absolute -bottom-6 w-20 text-center transition-colors duration-500">Classification</span>
                 </div>
                 <!-- Step 3 -->
                 <div class="stepper-item flex flex-col items-center gap-2 z-10 relative cursor-default" data-step="3">
@@ -653,7 +653,7 @@
                 <!-- STEP 2: Incident Details -->
                 <div class="form-step hidden" id="step-2">
                     <h4 class="text-xl font-medium text-white mb-2">Threat Classification</h4>
-                    <p class="text-sm text-ig-muted mb-6">Select the category that best describes the activity. <span class="text-red-400">Note: IntelGuard exclusively handles child exploitation and sextortion.</span></p>
+                    <p class="text-sm text-ig-muted mb-6">Select the category that best describes the activity. <span class="text-red-400">Note: IntelGuard mainly handles Crimes Against Children or Child Exploitation. If you are trying to report a different crime, please email tipline@intelguard.org.</span></p>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                         <label class="relative cursor-pointer group">
@@ -669,7 +669,7 @@
                             <div class="radio-card-label rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition-all h-full">
                                 <svg class="w-6 h-6 radio-icon text-white/50 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                                 <h5 class="text-white font-medium mb-1">Sextortion</h5>
-                                <p class="text-xs text-ig-muted">Financial demands over media</p>
+                                <p class="text-xs text-ig-muted">Forceful demands for items or images</p>
                             </div>
                         </label>
                     </div>
@@ -680,7 +680,7 @@
                     <!-- Dynamic Extortion Field -->
                     <div id="extortion-fields" class="mt-4 hidden bg-red-500/5 border border-red-500/20 rounded-xl p-4 relative overflow-hidden">
                         <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-500/50"></div>
-                        <label class="block text-sm font-medium text-white/70 mb-2 text-red-200">Demanded Amount / Asset</label>
+                        <label class="block text-sm font-medium text-white/70 mb-2 text-red-200">Demanded Asset / Amount</label>
                         <input type="text" name="demand_amount" class="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-red-400 transition-colors placeholder-white/20" placeholder="e.g. $500 via CashApp, or Bitcoin Address">
                     </div>
 
@@ -739,7 +739,7 @@
 
                 <!-- STEP 4: Subjects -->
                 <div class="form-step hidden" id="step-4">
-                    <h4 class="text-xl font-medium text-white mb-2">Suspect Identifiers</h4>
+                    <h4 class="text-xl font-medium text-white mb-2">Suspect Information</h4>
                     <p class="text-sm text-ig-muted mb-6">Provide any known identifiers for the individual(s) involved. Leave blank if unknown.</p>
                     
                     <div class="space-y-4">
@@ -752,7 +752,7 @@
                             <input type="text" name="subject_url" class="w-full bg-black/40 border border-white/10 rounded-xl p-3.5 text-white focus:outline-none focus:border-ig-accent focus:bg-white/5 transition-colors placeholder-white/20" placeholder="https://instagram.com/...">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-white/50 mb-1 uppercase tracking-wider">Digital Artifacts</label>
+                            <label class="block text-xs font-medium text-white/50 mb-1 uppercase tracking-wider">Identifiable Information</label>
                             <input type="text" name="subject_artifacts" class="w-full bg-black/40 border border-white/10 rounded-xl p-3.5 text-white focus:outline-none focus:border-ig-accent focus:bg-white/5 transition-colors placeholder-white/20" placeholder="Email addresses, phone numbers, crypto addresses, IP addresses...">
                         </div>
                     </div>
@@ -767,7 +767,7 @@
 
                 <!-- STEP 5: Urgency -->
                 <div class="form-step hidden" id="step-5">
-                    <h4 class="text-xl font-medium text-white mb-2">Victim Safety & Urgency</h4>
+                    <h4 class="text-xl font-medium text-white mb-2">Victim Status</h4>
                     <p class="text-sm text-ig-muted mb-6">Assessing the immediate risk allows us to triage intelligence appropriately to Law Enforcement.</p>
                     
                     <div class="bg-red-500/5 border border-red-500/20 rounded-xl p-5 mb-6">
@@ -795,7 +795,7 @@
                             <option value="Under 13">Under 13</option>
                             <option value="13 - 15">13 - 15</option>
                             <option value="16 - 17">16 - 17</option>
-                            <option value="18+ (Adult)">18+ (Adult / Vulnerable)</option>
+                            <option value="18+ (Adult)">18+</option>
                         </select>
                     </div>
 
@@ -823,7 +823,7 @@
                         <svg class="w-6 h-6 text-ig-accent shrink-0 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                         <div class="relative z-10">
                             <p class="text-sm font-medium text-white mb-1">PGP Encryption Active</p>
-                            <p class="text-xs text-white/50 leading-relaxed">This transmission is sent securely to the Hushline API. Your IP is completely hidden and metadata is stripped.</p>
+                            <p class="text-xs text-white/50 leading-relaxed">Your IP is completely hidden and metadata is stripped.</p>
                         </div>
                     </div>
 
@@ -831,7 +831,7 @@
                         <button type="button" onclick="goToStep(5)" class="px-4 py-2 text-white/50 hover:text-white transition-colors">Back</button>
                         <div class="gooey-btn-container">
                             <button type="submit" id="submit-tip-btn" class="gooey-btn px-8 py-3 bg-ig-accent text-white font-semibold rounded-xl shadow-[0_0_20px_rgba(74,144,226,0.5)] flex items-center gap-2">
-                                <span>Encrypt & Submit</span>
+                                <span>Submit</span>
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                             </button>
                         </div>
@@ -843,7 +843,7 @@
                     <div class="w-24 h-24 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-500/20 shadow-[0_0_30px_rgba(34,197,94,0.2)]">
                         <svg class="w-12 h-12 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </div>
-                    <h4 class="text-3xl font-serif text-white mb-3">Transmission Secure</h4>
+                    <h4 class="text-3xl font-serif text-white mb-3">Report Received</h4>
                     <p class="text-ig-muted mb-10 max-w-sm mx-auto text-lg">Your intelligence has been encrypted and securely routed to our analytical division.</p>
                     <button type="button" onclick="closeTipModal()" class="px-10 py-4 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors border border-white/20 shadow-glow-white">Close Secure Portal</button>
                 </div>
