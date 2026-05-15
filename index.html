@@ -317,7 +317,7 @@
                 <div class="relative z-10">
                     <svg class="w-8 h-8 text-ig-muted mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     <p class="text-sm uppercase tracking-widest text-ig-muted mb-2 font-medium">Proactive Investigations</p>
-                    <div class="text-6xl md:text-8xl font-serif font-bold text-white mb-4 accent-glow tracking-tighter" id="stat-cases">120</div>
+                    <div class="text-6xl md:text-8xl font-serif font-bold text-white mb-4 accent-glow tracking-tighter" id="stat-cases">0</div>
                 </div>
                 <p class="text-base text-ig-muted max-w-md relative z-10 border-t border-white/10 pt-4 mt-4">
                     Cases initiated internally or via vetted tips, directly targeting hidden infrastructures.
@@ -329,14 +329,14 @@
                 <div class="stat-item glass-panel rounded-2xl p-8 flex-1 group relative overflow-hidden">
                     <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl"></div>
                     <p class="text-xs uppercase tracking-widest text-ig-muted mb-2 font-medium">CSAM Takedowns</p>
-                    <div class="text-5xl font-serif font-bold text-white mb-2" id="stat-takedowns">20</div>
+                    <div class="text-5xl font-serif font-bold text-white mb-2" id="stat-takedowns">0</div>
                     <p class="text-sm text-ig-muted">Terabytes successfully removed from open/dark web.</p>
                 </div>
                 
                 <div class="stat-item glass-panel rounded-2xl p-8 flex-1 group relative overflow-hidden">
                     <div class="absolute -right-10 -top-10 w-32 h-32 bg-blue-400/10 rounded-full blur-2xl"></div>
                     <p class="text-xs uppercase tracking-widest text-ig-muted mb-2 font-medium">Identifications Assisted</p>
-                    <div class="text-5xl font-serif font-bold text-white mb-2" id="stat-rescues">243</div>
+                    <div class="text-5xl font-serif font-bold text-white mb-2" id="stat-rescues">0</div>
                     <p class="text-sm text-ig-muted">Aiding LE in victim & perpetrator identification.</p>
                 </div>
             </div>
@@ -1209,7 +1209,7 @@
             if(!counterDiv) return;
             
             const targetId = counterDiv.id;
-            let targetValue = targetId === 'stat-cases' ? 85 : targetId === 'stat-takedowns' ? 23568 : 243;
+            let targetValue = targetId === 'stat-cases' ? 85 : targetId === 'stat-takedowns' ? 20 : 243;
             const obj = { val: 0 };
 
             ScrollTrigger.create({
