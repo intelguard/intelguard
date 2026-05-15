@@ -228,7 +228,7 @@
 <div class="ambient-light bg-blue-600/20 w-[500px] h-[500px] bottom-[10%] right-[-100px]"></div>
 
 <!-- Navigation -->
-<nav class="fixed w-full top-0 z-40 transition-all duration-300" id="navbar">
+<nav class="fixed w-full top-0 z-50 transition-all duration-300" id="navbar">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center glass-panel md:rounded-full mt-0 md:mt-6 md:mx-6">
         <div class="flex items-center gap-3 z-50">
             <!-- Shield Logo based on the image -->
@@ -270,20 +270,30 @@
 <section id="hero" class="relative min-h-[100svh] flex flex-col items-center justify-center pt-32 pb-20 px-4 overflow-hidden z-10">
     <div class="max-w-6xl mx-auto w-full flex flex-col items-center relative">
         
-        <!-- Centerpiece -->
+        <!-- Centerpiece: The provided image styled with Depth of Field & Shaders -->
         <div class="relative w-full max-w-4xl mx-auto reveal-scale z-20 group perspective-1000">
+            <!-- Deep blurred shadow framing -->
             <div class="absolute -inset-6 bg-gradient-to-r from-ig-accent/30 via-[#0a1128] to-ig-accent/30 rounded-[2rem] blur-2xl opacity-80 group-hover:opacity-100 transition duration-1000"></div>
             
             <div class="relative rounded-2xl overflow-hidden glass-panel border border-white/10 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8)] bg-[#02040a] p-1 md:p-2 transform transition-transform duration-700">
+                
+                <!-- The actual image with contrast/brightness adjustments -->
                 <img src="https://i.postimg.cc/63WwNn2r/intelguardmotto.png" alt="Many kids go unnoticed. We make sure that doesn't happen." 
                      class="w-full h-auto rounded-xl object-cover relative z-10 transition-transform duration-[3s] group-hover:scale-[1.03] filter contrast-125 brightness-90">
+                
+                <!-- Shader: Inner Vignette directly over the image -->
                 <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(2,4,10,0.8)_100%)] pointer-events-none z-20 rounded-xl mix-blend-multiply"></div>
+                
+                <!-- Shader: Inner Glare -->
                 <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none z-20 rounded-xl"></div>
+
+                <!-- Depth of Field: Out-of-focus foreground elements overlapping the image -->
                 <div class="absolute -bottom-16 -left-16 w-56 h-56 bg-ig-accent/20 rounded-full blur-[50px] z-30 pointer-events-none mix-blend-screen"></div>
                 <div class="absolute -top-12 -right-12 w-40 h-40 bg-white/10 rounded-full blur-[40px] z-30 pointer-events-none mix-blend-screen"></div>
             </div>
         </div>
 
+        <!-- Supporting UI Below the Image -->
         <div class="mt-12 flex flex-col items-center text-center reveal-up z-20 max-w-2xl">
             <h1 class="text-2xl md:text-3xl font-serif text-ig-muted mb-8 tracking-wide leading-relaxed">
                 Bridging the gap between <span class="text-white">intelligence</span> and <span class="text-white">enforcement.</span>
@@ -302,7 +312,7 @@
     </div>
 </section>
 
-<!-- Statistics / Impact Section -->
+<!-- Statistics / Impact Section (Bento Box Style to fill space) -->
 <section id="stats" class="py-24 relative z-10">
     <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-16 reveal-up">
@@ -311,7 +321,7 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-fr">
-            <!-- Stat 1 -->
+            <!-- Stat 1 (Large) -->
             <div class="stat-item md:col-span-8 glass-panel rounded-2xl p-8 flex flex-col justify-between group overflow-hidden relative">
                 <div class="absolute -right-20 -top-20 w-64 h-64 bg-ig-accent/10 rounded-full blur-3xl group-hover:bg-ig-accent/20 transition-all duration-700"></div>
                 <div class="relative z-10">
@@ -324,7 +334,7 @@
                 </p>
             </div>
             
-            <!-- Stat 2 Stacked -->
+            <!-- Stat 2 (Stacked Small) -->
             <div class="md:col-span-4 flex flex-col gap-6">
                 <div class="stat-item glass-panel rounded-2xl p-8 flex-1 group relative overflow-hidden">
                     <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl"></div>
@@ -344,10 +354,12 @@
     </div>
 </section>
 
-<!-- Ecosystem / About Section -->
+<!-- Ecosystem / About Section (Complex Layout) -->
 <section id="about" class="py-24 relative z-10 border-t border-white/5 bg-gradient-to-b from-transparent to-[#050a15]/50">
     <div class="max-w-7xl mx-auto px-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+            
+            <!-- Left Side: Dense Text Cards -->
             <div class="flex flex-col gap-6">
                 <div class="glass-panel p-8 rounded-2xl reveal-up border-l-4 border-l-ig-accent">
                     <h2 class="text-sm uppercase tracking-widest text-ig-accent mb-3 font-semibold">The Organization</h2>
@@ -374,7 +386,7 @@
                 </div>
             </div>
 
-            <!-- Right Side: 3D Visualization -->
+            <!-- Right Side: 3D Visualization integrated into a card -->
             <div class="glass-panel rounded-2xl p-1 relative min-h-[400px] lg:min-h-full overflow-hidden reveal-fade flex flex-col">
                 <div class="absolute top-6 left-6 z-20">
                     <div class="flex items-center gap-2">
@@ -382,7 +394,10 @@
                         <span class="text-xs uppercase tracking-widest text-white/50 font-medium">Global Network</span>
                     </div>
                 </div>
+                <!-- 3D Canvas Container -->
                 <div id="canvas-container" class="absolute inset-0 bg-[#02040a] rounded-xl z-10 cursor-crosshair"></div>
+                
+                <!-- Overlay UI on top of 3D -->
                 <div class="absolute bottom-6 right-6 left-6 z-20 flex justify-between items-end pointer-events-none">
                     <div class="glass-panel px-4 py-2 rounded-lg text-xs font-mono text-ig-accent/80">
                         Status: <span class="text-white">Verified 501(c)(3) NGO</span>
@@ -393,6 +408,162 @@
                     </div>
                 </div>
             </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section id="team" class="py-24 relative z-10 border-t border-white/5 bg-[#02040a]/30">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 reveal-up gap-6">
+            <div>
+                <h2 class="text-sm uppercase tracking-widest text-ig-accent mb-3 font-semibold">Leadership Core</h2>
+                <h3 class="text-4xl md:text-5xl font-serif text-white tracking-wide">Meet the Team</h3>
+            </div>
+            <p class="text-base text-ig-muted max-w-sm text-left md:text-right">
+                A syndicate of former law enforcement, cyber security experts, and specialized OSINT analysts.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            
+            <!-- Boaz J. Acosta -->
+            <div class="glass-panel rounded-2xl reveal-up group">
+                <div class="bg-black/40 rounded-xl p-6 h-full relative overflow-hidden transition-all duration-500 hover:bg-white/[0.02] flex flex-col">
+                    <!-- Badges Row -->
+                    <div class="flex flex-wrap gap-2 mb-8 min-h-[32px]">
+                        <div class="flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 text-yellow-500 drop-shadow-[0_0_8px_rgba(234,179,8,0.8)]">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/></svg>
+                        </div>
+                        <div class="flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 text-purple-400 drop-shadow-[0_0_8px_rgba(192,132,252,0.8)]">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
+                        </div>
+                        <div class="flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.8)]">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" /></svg>
+                        </div>
+                        <div class="flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 text-blue-400 drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <div class="flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 text-gray-400 drop-shadow-[0_0_8px_rgba(156,163,175,0.8)]">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" /></svg>
+                        </div>
+                        <div class="flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.7L6 12.6l1.5-1.5 2.6 2.6 6.4-6.4 1.5 1.5-7.9 7.9z"/></svg>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-auto">
+                        <h4 class="text-2xl font-bold text-white mb-1">Boaz J. Acosta</h4>
+                        <p class="text-xs text-blue-500 uppercase tracking-widest mb-6 font-mono font-medium">Founder & CEO</p>
+                        
+                        <div class="flex flex-col gap-4 mt-6 pt-6 border-t border-white/10">
+                            <a href="mailto:boaz@intelguard.org" class="text-sm text-ig-muted hover:text-white transition-colors flex items-center gap-3">
+                                <svg class="w-4 h-4 text-white/50" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                boaz@intelguard.org
+                            </a>
+                            <a href="https://t.me/lexisnexis" target="_blank" class="text-sm text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-3">
+                                <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.96-.65-.34-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.98 1.26-5.59 3.7-.53.36-1.01.54-1.44.53-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.41-1.43-.87.03-.24.36-.49 1-.76 3.91-1.7 6.52-2.83 7.82-3.37 3.73-1.56 4.5-1.83 5.01-1.84.11 0 .36.03.49.14.11.09.15.22.16.33-.01.05-.01.12-.02.2z"/></svg>
+                                @lexisnexis
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monroe Wright -->
+            <div class="glass-panel rounded-2xl reveal-up group delay-100">
+                <div class="bg-black/40 rounded-xl p-6 h-full relative overflow-hidden transition-all duration-500 hover:bg-white/[0.02] flex flex-col">
+                    <!-- Badges Row -->
+                    <div class="flex flex-wrap gap-2 mb-8 min-h-[32px]">
+                        <div class="flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 text-blue-400 drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <div class="flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.7L6 12.6l1.5-1.5 2.6 2.6 6.4-6.4 1.5 1.5-7.9 7.9z"/></svg>
+                        </div>
+                        <div class="flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 text-purple-400 drop-shadow-[0_0_8px_rgba(192,132,252,0.8)]">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
+                        </div>
+                        <div class="flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 text-gray-400 drop-shadow-[0_0_8px_rgba(156,163,175,0.8)]">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" /></svg>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-auto">
+                        <h4 class="text-2xl font-bold text-white mb-1">Monroe Wright</h4>
+                        <p class="text-xs text-blue-500 uppercase tracking-widest mb-6 font-mono font-medium">Chief Operations Officer</p>
+                        
+                        <div class="flex flex-col gap-4 mt-6 pt-6 border-t border-white/10">
+                            <a href="mailto:monroe@intelguard.org" class="text-sm text-ig-muted hover:text-white transition-colors flex items-center gap-3">
+                                <svg class="w-4 h-4 text-white/50" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                monroe@intelguard.org
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- John Davis -->
+            <div class="glass-panel rounded-2xl reveal-up group delay-200">
+                <div class="bg-black/40 rounded-xl p-6 h-full relative overflow-hidden transition-all duration-500 hover:bg-white/[0.02] flex flex-col">
+                    <!-- Badges Row -->
+                    <div class="flex flex-wrap gap-2 mb-8 min-h-[32px]">
+                        <div class="flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 text-blue-400 drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <div class="flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.7L6 12.6l1.5-1.5 2.6 2.6 6.4-6.4 1.5 1.5-7.9 7.9z"/></svg>
+                        </div>
+                        <div class="flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 text-purple-400 drop-shadow-[0_0_8px_rgba(192,132,252,0.8)]">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
+                        </div>
+                        <div class="flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 text-gray-400 drop-shadow-[0_0_8px_rgba(156,163,175,0.8)]">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" /></svg>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-auto">
+                        <h4 class="text-2xl font-bold text-white mb-1">John Davis</h4>
+                        <p class="text-xs text-blue-500 uppercase tracking-widest mb-6 font-mono font-medium">Head of Investigative Sol.</p>
+                        
+                        <div class="flex flex-col gap-4 mt-6 pt-6 border-t border-white/10">
+                            <a href="mailto:john@intelguard.org" class="text-sm text-ig-muted hover:text-white transition-colors flex items-center gap-3">
+                                <svg class="w-4 h-4 text-white/50" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                john@intelguard.org
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Oliver Dudas -->
+            <div class="glass-panel rounded-2xl reveal-up group delay-300">
+                <div class="bg-black/40 rounded-xl p-6 h-full relative overflow-hidden transition-all duration-500 hover:bg-white/[0.02] flex flex-col">
+                    <!-- Badges Row -->
+                    <div class="flex flex-wrap gap-2 mb-8 min-h-[32px]">
+                        <div class="flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 text-blue-400 drop-shadow-[0_0_8px_rgba(96,165,250,0.8)]">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <div class="flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 text-purple-400 drop-shadow-[0_0_8px_rgba(192,132,252,0.8)]">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-auto">
+                        <h4 class="text-2xl font-bold text-white mb-1">Oliver Dudas</h4>
+                        <p class="text-xs text-blue-500 uppercase tracking-widest mb-6 font-mono font-medium">Cyber Investigator</p>
+                        
+                        <div class="flex flex-col gap-4 mt-6 pt-6 border-t border-white/10">
+                            <a href="mailto:oliver@intelguard.org" class="text-sm text-ig-muted hover:text-white transition-colors flex items-center gap-3">
+                                <svg class="w-4 h-4 text-white/50" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                oliver@intelguard.org
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </section>
@@ -536,7 +707,11 @@
             <p class="mt-1 text-ig-muted">Protecting the unnoticed.</p>
         </div>
         
-        <div class="flex gap-6">
+        <div class="flex gap-6 items-center">
+             <a href="https://t.me/intelguardian" target="_blank" class="text-white/30 hover:text-white transition-colors text-xs uppercase tracking-wider flex items-center gap-1.5">
+                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.96-.65-.34-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.98 1.26-5.59 3.7-.53.36-1.01.54-1.44.53-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.41-1.43-.87.03-.24.36-.49 1-.76 3.91-1.7 6.52-2.83 7.82-3.37 3.73-1.56 4.5-1.83 5.01-1.84.11 0 .36.03.49.14.11.09.15.22.16.33-.01.05-.01.12-.02.2z"/></svg>
+                 Telegram
+             </a>
              <a href="#" class="text-white/30 hover:text-white transition-colors text-xs uppercase tracking-wider">Privacy Policy</a>
              <a href="#" class="text-white/30 hover:text-white transition-colors text-xs uppercase tracking-wider">Contact</a>
         </div>
@@ -544,7 +719,7 @@
 </footer>
 
 <!-- ==========================================
-     SECURE TIPLINE MODAL (HUSH LINE INTEGRATED)
+     SECURE TIPLINE MODAL (FORMSPREE INTEGRATED)
      ========================================== -->
 <div id="tip-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/50 backdrop-blur-[24px] transition-opacity duration-500 opacity-0 px-2 md:px-4 py-6">
     
