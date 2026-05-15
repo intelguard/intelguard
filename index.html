@@ -50,11 +50,11 @@
             background-color: #020612;
             color: #ffffff;
             font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
+            overflow-x: clip; /* Fixed iOS Bounce Issue */
         }
 
         /* Lenis Smooth Scroll */
-        html.lenis, html.lenis body { height: auto; }
+        html.lenis, html.lenis body { height: auto; overscroll-behavior: none; }
         .lenis.lenis-smooth { scroll-behavior: auto !important; }
         .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
         .lenis.lenis-stopped { overflow: hidden; }
@@ -328,7 +328,7 @@
             <div class="md:col-span-4 flex flex-col gap-6">
                 <div class="stat-item glass-panel rounded-2xl p-8 flex-1 group relative overflow-hidden">
                     <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl"></div>
-                    <p class="text-xs uppercase tracking-widest text-ig-muted mb-2 font-medium">CSAM Takedowns</p>
+                    <p class="text-xs uppercase tracking-widest text-ig-muted mb-2 font-medium">CSAM/CP Takedowns</p>
                     <div class="text-5xl font-serif font-bold text-white mb-2" id="stat-takedowns">0</div>
                     <p class="text-sm text-ig-muted">Terabytes successfully removed from the internet.</p>
                 </div>
@@ -617,7 +617,7 @@
                         <h4 class="text-xl font-medium text-white mb-2">Who is reporting this?</h4>
                         <p class="text-sm text-ig-muted mb-6">Select your relationship to the incident. All reports are kept completely private.</p>
                         
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <label class="relative cursor-pointer group">
                                 <input type="radio" name="filer_type" value="Victim" class="peer sr-only radio-card-input">
                                 <div class="radio-card-label rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition-all h-full">
@@ -637,13 +637,6 @@
                                 <div class="radio-card-label rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition-all h-full">
                                     <h5 class="text-white font-medium mb-1">Third-Party / Witness</h5>
                                     <p class="text-xs text-ig-muted">I saw or found something concerning.</p>
-                                </div>
-                            </label>
-                            <label class="relative cursor-pointer group">
-                                <input type="radio" name="filer_type" value="Law Enforcement" class="peer sr-only radio-card-input">
-                                <div class="radio-card-label rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition-all h-full">
-                                    <h5 class="text-white font-medium mb-1">Law Enforcement</h5>
-                                    <p class="text-xs text-ig-muted">Official request from police/authorities.</p>
                                 </div>
                             </label>
                         </div>
@@ -672,7 +665,7 @@
                                 <div class="radio-card-label rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition-all h-full">
                                     <svg class="w-6 h-6 radio-icon text-white/50 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                                     <h5 class="text-white font-medium mb-1">Sextortion</h5>
-                                    <p class="text-xs text-ig-muted">Threatening to share private photos for money.</p>
+                                    <p class="text-xs text-ig-muted">Threatening to share private photos for money or more explicit images.</p>
                                 </div>
                             </label>
                         </div>
@@ -683,8 +676,8 @@
                         <!-- Dynamic Extortion Field -->
                         <div id="extortion-fields" class="mt-4 hidden bg-red-500/5 border border-red-500/20 rounded-xl p-4 relative overflow-hidden">
                             <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-500/50"></div>
-                            <label class="block text-sm font-medium text-white/70 mb-2 text-red-200">How much money/gift cards are they asking for?</label>
-                            <input type="text" name="demand_amount" class="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-red-400 transition-colors placeholder-white/20" placeholder="e.g. $500 via CashApp, or Bitcoin Address">
+                            <label class="block text-sm font-medium text-white/70 mb-2 text-red-200">What are they demanding?</label>
+                            <input type="text" name="demand_amount" class="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-red-400 transition-colors placeholder-white/20" placeholder="e.g. $500, gift cards, or more photos/videos">
                         </div>
 
                         <div class="mt-8 flex justify-between items-center">
@@ -911,6 +904,12 @@
 
     // Sync GSAP with Lenis
     gsap.registerPlugin(ScrollTrigger);
+
+    // FIX FOR IOS SAFARI: Ignore resize events caused by the address bar hiding on mobile
+    // This stops the page from automatically and forcefully scrolling back up.
+    ScrollTrigger.config({
+        ignoreMobileResize: true
+    });
 
     // ==========================================
     // TIPLINE MODAL LOGIC (HUSH LINE)
