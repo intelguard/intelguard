@@ -11,114 +11,165 @@
         body { font-family: 'Inter', sans-serif; background-color: #000000; color: #e4e4e7; }
         .font-mono { font-family: 'Fira Code', monospace; }
         .hover-glow-blue:hover { box-shadow: 0 0 20px rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); }
+        
+        /* Bootloader Styles */
+        #bootloader { background-image: radial-gradient(circle at 50% 0%, #0d1627 0%, #000000 70%); }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
 </head>
-<body class="overflow-x-hidden antialiased pt-20">
+<body class="overflow-x-hidden antialiased selection:bg-zinc-800 selection:text-white">
 
-    <!-- Fixed Header -->
-    <header class="fixed top-0 left-0 w-full p-6 flex items-center gap-3 z-50 bg-black/50 backdrop-blur-sm border-b border-white/5">
-        <!-- Logo Icon -->
-        <img src="https://i.postimg.cc/GB8b0h9j/intelguard-logo.png" alt="IntelGuard Logo" class="w-8 h-8 object-contain">
-        <span class="text-white font-medium text-lg tracking-wider">IntelGuard</span>
-    </header>
+    <!-- Startup Sequence -->
+    <div id="startup-screen" class="fixed inset-0 bg-[#05050c] z-50 flex flex-col p-6 transition-opacity duration-700 pointer-events-none">
+        <div id="startup-text" class="text-zinc-500 font-mono text-sm flex flex-col space-y-1"></div>
+    </div>
 
-    <!-- Hero / Motto -->
-    <section class="min-h-[60vh] flex flex-col justify-center items-center text-center px-6 pt-20">
-    </section>
-
-    <!-- About Us -->
-    <section class="py-20 px-6 max-w-4xl mx-auto border-t border-white/5">
-        <h2 class="text-3xl font-medium text-white mb-8 tracking-tight">About Us</h2>
-        <p class="text-zinc-400 text-lg leading-relaxed">
-            IntelGuard is an organization dedicated to the investigation of crimes against children and the unyielding advocacy for victim safety. We operate quietly but effectively, utilizing digital analysis and open-source information to identify threats and assist relevant authorities in neutralizing them.
-        </p>
-    </section>
-
-    <!-- Our Mission -->
-    <section class="py-20 px-6 max-w-4xl mx-auto border-t border-white/5">
-        <h2 class="text-3xl font-medium text-white mb-8 tracking-tight">Our Mission</h2>
-        <p class="text-zinc-400 text-lg leading-relaxed">
-            Our mission is to dismantle exploitation networks and provide a silent shield for those who cannot protect themselves. We believe in action, accountability, and the absolute right to safety for every child.
-        </p>
-    </section>
-
-    <!-- Statistics -->
-    <section class="py-20 border-y border-white/10 bg-zinc-900/20">
-        <div class="max-w-5xl mx-auto px-6 grid md:grid-cols-3 gap-12 text-center">
-            <div>
-                <div class="text-4xl font-light text-white mb-2">130+</div>
-                <div class="text-zinc-500 text-xs uppercase tracking-widest font-mono">Forwarded Cases</div>
-            </div>
-            <div>
-                <div class="text-4xl font-light text-white mb-2">175+</div>
-                <div class="text-zinc-500 text-xs uppercase tracking-widest font-mono">Terabytes CSAM Takedowns</div>
-            </div>
-            <div>
-                <div class="text-4xl font-light text-white mb-2">275+</div>
-                <div class="text-zinc-500 text-xs uppercase tracking-widest font-mono">Victims Assisted</div>
-            </div>
+    <!-- Limine Bootloader Section -->
+    <section id="bootloader" class="relative w-full min-h-[100svh] bg-[#05050c] text-[#8a939f] font-mono text-sm sm:text-base flex flex-col pt-12 pb-8 px-4 sm:px-12 select-none z-10">
+        <div class="absolute top-0 left-0 w-full p-6 flex justify-between items-start">
+            <div class="hidden sm:block text-zinc-300">ARROWS <span class="text-zinc-600">Select</span> &nbsp;&nbsp; ENTER <span class="text-zinc-600">Boot</span></div>
         </div>
-    </section>
 
-    <!-- Meet the Team -->
-    <section class="py-32 px-6 max-w-6xl mx-auto">
-        <h2 class="text-3xl font-medium text-white mb-16 tracking-tight">Staff Hierarchy</h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
-            <!-- Boaz -->
-            <div class="bg-white/5 border border-white/10 p-8 rounded-xl hover-glow-blue transition-all">
-                <h3 class="text-xl font-medium text-white mb-1">Boaz Acosta</h3>
-                <p class="text-blue-500 text-xs font-mono uppercase tracking-widest mb-6">Founder & CEO</p>
-                <div class="border-t border-white/10 pt-6">
-                    <p class="text-zinc-400 text-sm flex items-center gap-2 font-mono"><i data-lucide="mail" class="w-4 h-4"></i> boaz@intelguard.org</p>
-                </div>
-            </div>
-            <!-- Monroe -->
-            <div class="bg-white/5 border border-white/10 p-8 rounded-xl hover-glow-blue transition-all">
-                <h3 class="text-xl font-medium text-white mb-1">Monroe Wright</h3>
-                <p class="text-blue-500 text-xs font-mono uppercase tracking-widest mb-6">COO</p>
-                <div class="border-t border-white/10 pt-6">
-                    <p class="text-zinc-400 text-sm flex items-center gap-2 font-mono"><i data-lucide="mail" class="w-4 h-4"></i> monroe@intelguard.org</p>
-                </div>
-            </div>
-            <!-- John -->
-            <div class="bg-white/5 border border-white/10 p-8 rounded-xl hover-glow-blue transition-all">
-                <h3 class="text-xl font-medium text-white mb-1">John Davis</h3>
-                <p class="text-blue-500 text-xs font-mono uppercase tracking-widest mb-6">Head of Investigative Solutions</p>
-                <div class="border-t border-white/10 pt-6">
-                    <p class="text-zinc-400 text-sm flex items-center gap-2 font-mono"><i data-lucide="mail" class="w-4 h-4"></i> john@intelguard.org</p>
-                </div>
-            </div>
-            <!-- Oliver -->
-            <div class="bg-white/5 border border-white/10 p-8 rounded-xl hover-glow-blue transition-all">
-                <h3 class="text-xl font-medium text-white mb-1">Oliver Dudas</h3>
-                <p class="text-blue-500 text-xs font-mono uppercase tracking-widest mb-6">Senior Investigations Tech</p>
-                <div class="border-t border-white/10 pt-6">
-                    <p class="text-zinc-400 text-sm flex items-center gap-2 font-mono"><i data-lucide="mail" class="w-4 h-4"></i> oliver@intelguard.org</p>
+        <div class="flex-grow flex items-center justify-start sm:ml-[10%] max-w-2xl w-full">
+            <div class="w-full">
+                <div class="mb-3 text-zinc-300 font-medium">[-] IntelGuard Web Interface</div>
+                <div class="pl-4 flex flex-col text-[15px]">
+                    <div id="opt-about" class="px-2 py-1 cursor-pointer flex whitespace-pre bg-white text-black transition-colors"> -&gt; About Us</div>
+                    <div id="opt-mission" class="px-2 py-1 cursor-pointer flex whitespace-pre transition-colors"> -&gt; Our Mission</div>
+                    <div id="opt-statistics" class="px-2 py-1 cursor-pointer flex whitespace-pre transition-colors"> -&gt; Statistics</div>
+                    <div id="opt-team" class="px-2 py-1 cursor-pointer flex whitespace-pre transition-colors"> -&gt; Meet the Team</div>
+                    <div id="opt-contact" class="px-2 py-1 cursor-pointer flex whitespace-pre transition-colors"> -&gt; Contact &amp; Reporting</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section class="py-20 border-t border-white/5">
-        <div class="max-w-4xl mx-auto px-6">
-            <h2 class="text-3xl font-medium text-white mb-8 tracking-tight">Contact</h2>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-white/5 border border-white/10 p-6 rounded-lg">
-                    <h4 class="text-white font-medium mb-2">General Inquiries</h4>
-                    <p class="text-zinc-400 text-sm font-mono">contact@intelguard.org</p>
-                </div>
-                <div class="bg-white/5 border border-white/10 p-6 rounded-lg">
-                    <h4 class="text-white font-medium mb-2">Report a Crime</h4>
-                    <p class="text-zinc-400 text-sm font-mono">tipline@intelguard.org</p>
-                </div>
+    <!-- Navigation -->
+    <nav id="sticky-nav" class="fixed top-0 w-full bg-black/80 backdrop-blur-md border-b border-white/10 z-40 hidden opacity-0 transition-opacity duration-500">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer group">
+                <img src="https://i.postimg.cc/GB8b0h9j/intelguard-logo.png" alt="Logo" class="w-8 h-8 object-contain">
+                <span class="text-white font-medium tracking-wider">IntelGuard</span>
             </div>
         </div>
-    </section>
+    </nav>
+
+    <main class="relative z-20">
+        <!-- About Us -->
+        <section id="about" class="py-32 px-6 max-w-4xl mx-auto min-h-[60vh] flex flex-col justify-center reveal">
+            <h2 class="text-3xl font-medium text-white mb-8 tracking-tight">About Us</h2>
+            <p class="text-zinc-400 text-lg leading-relaxed">
+                IntelGuard is an organization dedicated to the investigation of crimes against children and the unyielding advocacy for victim safety. We operate quietly but effectively, utilizing digital analysis and open-source information to identify threats and assist relevant authorities in neutralizing them.
+            </p>
+        </section>
+
+        <!-- Our Mission -->
+        <section id="mission" class="py-20 px-6 max-w-4xl mx-auto border-t border-white/5 reveal">
+            <h2 class="text-3xl font-medium text-white mb-8 tracking-tight">Our Mission</h2>
+            <p class="text-zinc-400 text-lg leading-relaxed">
+                Our mission is to dismantle exploitation networks and provide a silent shield for those who cannot protect themselves. We believe in action, accountability, and the absolute right to safety for every child.
+            </p>
+        </section>
+
+        <!-- Statistics -->
+        <section id="statistics" class="py-20 border-y border-white/10 bg-zinc-900/20 reveal">
+            <div class="max-w-5xl mx-auto px-6 grid md:grid-cols-3 gap-12 text-center">
+                <div><div class="text-4xl font-light text-white mb-2">130+</div><div class="text-zinc-500 text-xs uppercase tracking-widest font-mono">Forwarded Cases</div></div>
+                <div><div class="text-4xl font-light text-white mb-2">175+</div><div class="text-zinc-500 text-xs uppercase tracking-widest font-mono">Terabytes CSAM Takedowns</div></div>
+                <div><div class="text-4xl font-light text-white mb-2">275+</div><div class="text-zinc-500 text-xs uppercase tracking-widest font-mono">Victims Assisted</div></div>
+            </div>
+        </section>
+
+        <!-- Meet the Team -->
+        <section id="team" class="py-32 px-6 max-w-6xl mx-auto reveal">
+            <h2 class="text-3xl font-medium text-white mb-16 tracking-tight">Staff Hierarchy</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
+                <!-- Boaz -->
+                <div class="bg-white/5 border border-white/10 p-8 rounded-xl hover-glow-blue transition-all">
+                    <h3 class="text-xl font-medium text-white mb-1">Boaz Acosta</h3>
+                    <p class="text-blue-500 text-xs font-mono uppercase tracking-widest mb-6">Founder & CEO</p>
+                    <div class="border-t border-white/10 pt-6"><p class="text-zinc-400 text-sm flex items-center gap-2 font-mono"><i data-lucide="mail" class="w-4 h-4"></i> boaz@intelguard.org</p></div>
+                </div>
+                <!-- Monroe -->
+                <div class="bg-white/5 border border-white/10 p-8 rounded-xl hover-glow-blue transition-all">
+                    <h3 class="text-xl font-medium text-white mb-1">Monroe Wright</h3>
+                    <p class="text-blue-500 text-xs font-mono uppercase tracking-widest mb-6">COO</p>
+                    <div class="border-t border-white/10 pt-6"><p class="text-zinc-400 text-sm flex items-center gap-2 font-mono"><i data-lucide="mail" class="w-4 h-4"></i> monroe@intelguard.org</p></div>
+                </div>
+                <!-- John -->
+                <div class="bg-white/5 border border-white/10 p-8 rounded-xl hover-glow-blue transition-all">
+                    <h3 class="text-xl font-medium text-white mb-1">John Davis</h3>
+                    <p class="text-blue-500 text-xs font-mono uppercase tracking-widest mb-6">Head of Investigative Solutions</p>
+                    <div class="border-t border-white/10 pt-6"><p class="text-zinc-400 text-sm flex items-center gap-2 font-mono"><i data-lucide="mail" class="w-4 h-4"></i> john@intelguard.org</p></div>
+                </div>
+                <!-- Oliver -->
+                <div class="bg-white/5 border border-white/10 p-8 rounded-xl hover-glow-blue transition-all">
+                    <h3 class="text-xl font-medium text-white mb-1">Oliver Dudas</h3>
+                    <p class="text-blue-500 text-xs font-mono uppercase tracking-widest mb-6">Senior Investigations Tech</p>
+                    <div class="border-t border-white/10 pt-6"><p class="text-zinc-400 text-sm flex items-center gap-2 font-mono"><i data-lucide="mail" class="w-4 h-4"></i> oliver@intelguard.org</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact" class="py-20 border-t border-white/5 reveal">
+            <div class="max-w-4xl mx-auto px-6">
+                <h2 class="text-3xl font-medium text-white mb-8 tracking-tight">Contact</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white/5 border border-white/10 p-6 rounded-lg"><h4 class="text-white font-medium mb-2">General Inquiries</h4><p class="text-zinc-400 text-sm font-mono">contact@intelguard.org</p></div>
+                    <div class="bg-white/5 border border-white/10 p-6 rounded-lg"><h4 class="text-white font-medium mb-2">Report a Crime</h4><p class="text-zinc-400 text-sm font-mono">tipline@intelguard.org</p></div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             lucide.createIcons();
+            
+            // Boot sequence
+            const startupScreen = document.getElementById('startup-screen');
+            const startupText = document.getElementById('startup-text');
+            const bootLines = ["Booting environment...", "Mounting filesystems...", "Starting services...", "Done."];
+            
+            async function runBoot() {
+                for (let line of bootLines) {
+                    const el = document.createElement('div');
+                    el.textContent = line;
+                    startupText.appendChild(el);
+                    await new Promise(r => setTimeout(r, 100));
+                }
+                setTimeout(() => startupScreen.classList.add('hidden'), 500);
+            }
+            runBoot();
+
+            // Navigation
+            const options = ['about', 'mission', 'statistics', 'team', 'contact'];
+            let cur = 0;
+            document.addEventListener('keydown', (e) => {
+                if (window.scrollY > 100) return;
+                if (e.key === 'ArrowUp') cur = (cur > 0) ? cur - 1 : options.length - 1;
+                else if (e.key === 'ArrowDown') cur = (cur < options.length - 1) ? cur + 1 : 0;
+                else if (e.key === 'Enter') document.getElementById(options[cur]).scrollIntoView({ behavior: 'smooth' });
+                
+                options.forEach((opt, i) => {
+                    const el = document.getElementById(`opt-${opt}`);
+                    if(i === cur) el.classList.add('bg-white', 'text-black');
+                    else el.classList.remove('bg-white', 'text-black');
+                });
+            });
+
+            // Sticky Nav logic
+            window.addEventListener('scroll', () => {
+                const nav = document.getElementById('sticky-nav');
+                if (window.scrollY > window.innerHeight - 100) nav.classList.remove('hidden', 'opacity-0');
+                else nav.classList.add('hidden', 'opacity-0');
+            });
+            
+            // Observer
+            const obs = new IntersectionObserver((entries) => entries.forEach(e => e.isIntersecting && e.target.classList.add('active')), { threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(e => obs.observe(e));
         });
     </script>
 </body>
