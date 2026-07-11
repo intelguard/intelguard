@@ -13,17 +13,33 @@
         .hover-glow-blue:hover { box-shadow: 0 0 20px rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); }
     </style>
 </head>
-<body class="overflow-x-hidden antialiased">
+<body class="overflow-x-hidden antialiased pt-20">
 
-    <!-- Header -->
-    <header class="fixed top-0 left-0 w-full p-6 flex items-center gap-3 z-50">
+    <!-- Fixed Header -->
+    <header class="fixed top-0 left-0 w-full p-6 flex items-center gap-3 z-50 bg-black/50 backdrop-blur-sm border-b border-white/5">
         <img src="https://i.postimg.cc/GB8b0h9j/intelguard-logo.png" alt="IntelGuard Logo" class="w-8 h-8 object-contain">
         <span class="text-white font-medium text-lg tracking-wider">IntelGuard</span>
     </header>
 
-    <!-- Hero / Header -->
+    <!-- Hero / Motto -->
     <section class="min-h-[60vh] flex flex-col justify-center items-center text-center px-6 pt-20">
         <img src="https://i.postimg.cc/B8LJWQtg/motto.png" alt="Many kids go unnoticed. We make sure that doesn't happen." class="w-full max-w-2xl mb-12">
+    </section>
+
+    <!-- About Us -->
+    <section class="py-20 px-6 max-w-4xl mx-auto border-t border-white/5">
+        <h2 class="text-3xl font-medium text-white mb-8 tracking-tight">About Us</h2>
+        <p class="text-zinc-400 text-lg leading-relaxed">
+            IntelGuard is an organization dedicated to the investigation of crimes against children and the unyielding advocacy for victim safety. We operate quietly but effectively, utilizing digital analysis and open-source information to identify threats and assist relevant authorities in neutralizing them.
+        </p>
+    </section>
+
+    <!-- Our Mission -->
+    <section class="py-20 px-6 max-w-4xl mx-auto border-t border-white/5">
+        <h2 class="text-3xl font-medium text-white mb-8 tracking-tight">Our Mission</h2>
+        <p class="text-zinc-400 text-lg leading-relaxed">
+            Our mission is to dismantle exploitation networks and provide a silent shield for those who cannot protect themselves. We believe in action, accountability, and the absolute right to safety for every child.
+        </p>
     </section>
 
     <!-- Statistics -->
@@ -78,6 +94,23 @@
                 <p class="text-blue-500 text-xs font-mono uppercase tracking-widest mb-6">Senior Investigations Tech</p>
                 <div class="border-t border-white/10 pt-6">
                     <p class="text-zinc-400 text-sm flex items-center gap-2 font-mono"><i data-lucide="mail" class="w-4 h-4"></i> oliver@intelguard.org</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-20 border-t border-white/5">
+        <div class="max-w-4xl mx-auto px-6">
+            <h2 class="text-3xl font-medium text-white mb-8 tracking-tight">Contact</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white/5 border border-white/10 p-6 rounded-lg">
+                    <h4 class="text-white font-medium mb-2">General Inquiries</h4>
+                    <p class="text-zinc-400 text-sm font-mono">contact@intelguard.org</p>
+                </div>
+                <div class="bg-white/5 border border-white/10 p-6 rounded-lg">
+                    <h4 class="text-white font-medium mb-2">Report a Crime</h4>
+                    <p class="text-zinc-400 text-sm font-mono">tipline@intelguard.org</p>
                 </div>
             </div>
         </div>
