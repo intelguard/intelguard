@@ -70,8 +70,13 @@ header.site-header.scrolled nav.navbar{background:rgba(255,255,255,.92);box-shad
 .mobile-menu a.active{color:var(--navy);}
 @media (max-width:920px){.navlinks{display:none;}.navtoggle{display:block;}}
 
-.trust-strip{background:var(--bg-soft);border-bottom:1px solid var(--line);padding:26px 0;}
-.trust-strip .wrap{display:flex;align-items:center;gap:34px;flex-wrap:wrap;}
+.trust-strip{background:var(--bg-soft);border-bottom:1px solid var(--line);padding:26px 0;position:relative;overflow:hidden;}
+.trust-strip .wrap{display:flex;align-items:center;gap:34px;flex-wrap:wrap;position:relative;z-index:1;}
+.net-pulse{position:absolute;inset:0;pointer-events:none;opacity:.35;}
+.net-pulse circle{fill:var(--navy);}
+.net-pulse line{stroke:var(--navy);stroke-width:1;}
+.net-pulse .beam{stroke-dasharray:6 220;stroke-dashoffset:0;animation:beam-travel 4.5s linear infinite;}
+@keyframes beam-travel{to{stroke-dashoffset:-226;}}
 .trust-strip .ts-label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;flex-shrink:0;}
 .trust-strip .ts-names{display:flex;gap:34px;flex-wrap:wrap;}
 .trust-strip .ts-names span{font-family:var(--display);font-weight:700;font-size:15px;color:#8B96A5;letter-spacing:-.01em;transition:color .2s;}
@@ -81,15 +86,23 @@ header.site-header.scrolled nav.navbar{background:rgba(255,255,255,.92);box-shad
 .value .vicon path,.value .vicon circle,.value .vicon rect{stroke:var(--navy);}
 
 .hero-photo{position:absolute;inset:0;overflow:hidden;z-index:0;}
-.hero-photo img{width:100%;height:100%;object-fit:cover;filter:saturate(.85) contrast(1.05) brightness(.62);animation:kenburns 26s ease-in-out infinite alternate;}
-.hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,14,24,.35) 0%,rgba(8,14,24,.55) 55%,rgba(8,14,24,.92) 100%);}
+.hero-photo img{width:100%;height:100%;object-fit:cover;filter:saturate(1) contrast(1.05) brightness(.95);animation:kenburns 26s ease-in-out infinite alternate;}
+.hero-photo::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);
+  background-size:46px 46px;mix-blend-mode:overlay;}
+.hero-photo::after{content:"";position:absolute;inset:0;z-index:1;
+  background:
+    radial-gradient(ellipse 1000px 640px at 50% 46%, rgba(8,14,24,.5), transparent 68%),
+    linear-gradient(180deg,rgba(8,14,24,.2) 0%,rgba(8,14,24,.18) 32%,rgba(8,14,24,.5) 78%,rgba(8,14,24,.82) 100%);}
 @keyframes kenburns{from{transform:scale(1) translate(0,0);}to{transform:scale(1.12) translate(-1%,-1%);}}
+
+.hero h1,.hero .lede,.hero .eyebrow.on-dark,.hero-meta-row{text-shadow:0 2px 18px rgba(0,0,0,.45);}
 
 .hero{position:relative;overflow:hidden;}
 .hero>.wrap{position:relative;z-index:2;}
 .hero-full{padding:210px 0 130px;}
 .hero-band{padding:160px 0 70px;}
-.hero h1{font-size:clamp(38px,5.4vw,68px);line-height:1.05;margin:20px 0 22px;color:#fff;}
+.hero h1{font-size:clamp(38px,5.4vw,68px);line-height:1.02;letter-spacing:-.025em;margin:20px 0 22px;color:#fff;}
 .hero .lede{font-size:18.5px;max-width:52ch;color:rgba(255,255,255,.82);}
 .hero-actions{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;}
 .hero-center{max-width:760px;margin:0 auto;text-align:center;position:relative;}
@@ -121,7 +134,7 @@ section.soft{background:var(--bg-soft);}
 
 .quote-block{position:relative;padding:80px 0;background:var(--navy-deep);}
 .quote-inner{max-width:840px;margin:0 auto;text-align:center;padding:0 32px;}
-.quote-mark{font-family:var(--display);font-size:60px;color:rgba(255,255,255,.25);line-height:0;position:relative;top:20px;font-weight:800;}
+.quote-inner::before{content:"\201C";display:block;font-family:var(--display);font-weight:800;font-size:60px;line-height:1;color:rgba(255,255,255,.28);margin-bottom:10px;user-select:none;pointer-events:none;}
 .quote-text{font-family:var(--display);font-size:clamp(22px,3vw,32px);color:#fff;font-weight:600;line-height:1.35;}
 .quote-attr{margin-top:24px;font-family:var(--mono);font-size:13px;color:#9DC0E0;letter-spacing:.03em;}
 .quote-attr span{color:rgba(255,255,255,.55);}
@@ -134,7 +147,7 @@ section.soft{background:var(--bg-soft);}
 .value p{font-size:14.5px;color:var(--muted);}
 
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--panel);}
-.stat{padding:38px 28px;border-right:1px solid var(--line);}
+.stat{padding:34px 28px 30px;border-right:1px solid var(--line);border-top:3px solid var(--navy);}
 .stat:last-child{border-right:none;}
 .stat .num{font-family:var(--display);font-size:40px;color:var(--navy);font-weight:800;letter-spacing:-.02em;}
 .stat .label{font-size:13.5px;color:var(--muted);margin-top:8px;}
@@ -155,6 +168,7 @@ section.soft{background:var(--bg-soft);}
 .partners-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
 .partner{border:1px solid var(--line);border-radius:var(--radius);padding:26px;display:flex;flex-direction:column;gap:8px;background:var(--panel);transition:box-shadow .2s,transform .2s;}
 .partner:hover{box-shadow:0 12px 30px rgba(16,24,39,.08);transform:translateY(-3px);}
+.partner .cat{display:inline-block;width:fit-content;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);background:var(--navy-soft);padding:4px 9px;border-radius:20px;font-weight:600;margin-bottom:2px;}
 .partner .name{font-family:var(--display);font-weight:700;font-size:16px;color:var(--ink);}
 .partner .scope{font-size:13.5px;color:var(--muted);}
 .partner .since{font-family:var(--mono);font-size:11px;color:var(--navy);margin-top:6px;word-break:break-all;}
@@ -245,7 +259,7 @@ footer{padding:48px 0;background:var(--navy-deep);}
 
 <div class="page active" id="page-home">
   <section class="hero hero-full">
-    <div class="hero-photo"><img src="https://picsum.photos/seed/intelguard-skyline-day/1920/1080" alt=""></div>
+    <div class="hero-photo"><img src="https://images.unsplash.com/photo-1543052616-36435c0d87fe?q=80&w=1920&auto=format&fit=crop" alt=""></div>
     <div class="wrap hero-center">
       <div class="eyebrow on-dark">Open-Source Intelligence &amp; Investigations</div>
       <h1>Every tip, followed through.</h1>
@@ -263,6 +277,15 @@ footer{padding:48px 0;background:var(--navy-deep);}
   </section>
 
   <div class="trust-strip">
+    <svg class="net-pulse" viewBox="0 0 1180 90" preserveAspectRatio="none" aria-hidden="true">
+      <line x1="60" y1="45" x2="300" y2="20" /><line x1="300" y1="20" x2="560" y2="60" />
+      <line x1="560" y1="60" x2="820" y2="15" /><line x1="820" y1="15" x2="1080" y2="50" />
+      <line class="beam" x1="60" y1="45" x2="300" y2="20" />
+      <line class="beam" x1="300" y1="20" x2="560" y2="60" style="animation-delay:1.1s;" />
+      <line class="beam" x1="560" y1="60" x2="820" y2="15" style="animation-delay:2.2s;" />
+      <circle cx="60" cy="45" r="3" /><circle cx="300" cy="20" r="3" /><circle cx="560" cy="60" r="3" />
+      <circle cx="820" cy="15" r="3" /><circle cx="1080" cy="50" r="3" />
+    </svg>
     <div class="wrap">
       <div class="ts-label">Working alongside</div>
       <div class="ts-names">
@@ -288,7 +311,6 @@ footer{padding:48px 0;background:var(--navy-deep);}
 
   <div class="quote-block">
     <div class="quote-inner" data-reveal>
-      <div class="quote-mark">“</div>
       <p class="quote-text">Many kids go unnoticed, we make sure that doesn't happen.</p>
       <div class="quote-attr">Boaz J. Acosta <span>— Founder &amp; CEO</span></div>
     </div>
@@ -315,7 +337,7 @@ footer{padding:48px 0;background:var(--navy-deep);}
 
 <div class="page" id="page-company">
   <section class="hero hero-band">
-    <div class="hero-photo"><img src="https://picsum.photos/seed/intelguard-office/1600/900" alt=""></div>
+    <div class="hero-photo"><img src="https://images.unsplash.com/photo-1745015446589-7ee6f702d8c1?q=80&w=1600&auto=format&fit=crop" alt=""></div>
     <div class="wrap page-title">
       <div class="eyebrow on-dark">Our Company</div>
       <h1>What IntelGuard is, and isn't.</h1>
@@ -329,7 +351,7 @@ footer{padding:48px 0;background:var(--navy-deep);}
         <p>We currently operate as <strong>IntelGuard LLC (registration in progress)</strong>. We're not a law enforcement agency, and we don't claim law enforcement authority. Every case we build is forwarded to the appropriate agency for their jurisdiction to take from there.</p>
       </div>
       <div data-reveal data-reveal-delay="1">
-        <div class="photo" style="aspect-ratio:4/3;margin-bottom:16px;"><img src="https://picsum.photos/seed/intelguard-analyst-desk/900/700" alt=""></div>
+        <div class="photo" style="aspect-ratio:4/3;margin-bottom:16px;"><img src="https://images.unsplash.com/photo-1770159116807-9b2a7bb82294?q=80&w=900&auto=format&fit=crop" alt=""></div>
         <div class="case-card"><div class="lbl">What we do</div><p>OSINT-based identification of platforms and infrastructure hosting child exploitation material or facilitating related fraud, built into referral-ready case files.</p></div>
         <div class="case-card"><div class="lbl">What we don't do</div><p>We don't access, download, or store exploitation material, make arrests, or act as a substitute for law enforcement at any stage of a case.</p></div>
         <div class="case-card"><div class="lbl">Where cases go</div><p>Completed case files are forwarded to the law enforcement body with jurisdiction — national, regional, or international — for further action.</p></div>
@@ -338,7 +360,6 @@ footer{padding:48px 0;background:var(--navy-deep);}
   </section>
   <div class="quote-block">
     <div class="quote-inner" data-reveal>
-      <div class="quote-mark">“</div>
       <p class="quote-text">Many kids go unnoticed, we make sure that doesn't happen.</p>
       <div class="quote-attr">Boaz J. Acosta <span>— Founder &amp; CEO</span></div>
     </div>
@@ -347,7 +368,7 @@ footer{padding:48px 0;background:var(--navy-deep);}
 
 <div class="page" id="page-values">
   <section class="hero hero-band">
-    <div class="hero-photo"><img src="https://picsum.photos/seed/intelguard-compass/1600/900" alt=""></div>
+    <div class="hero-photo"><img src="https://images.unsplash.com/photo-1637763723578-79a4ca9225f7?q=80&w=1600&auto=format&fit=crop" alt=""></div>
     <div class="wrap page-title">
       <div class="eyebrow on-dark">What We Stand For</div>
       <h1>Our values.</h1>
@@ -379,7 +400,7 @@ footer{padding:48px 0;background:var(--navy-deep);}
 
 <div class="page" id="page-statistics">
   <section class="hero hero-band">
-    <div class="hero-photo"><img src="https://picsum.photos/seed/intelguard-data/1600/900" alt=""></div>
+    <div class="hero-photo"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1600&auto=format&fit=crop" alt=""></div>
     <div class="wrap page-title">
       <div class="eyebrow on-dark">Our Statistics</div>
       <h1>The work, in numbers.</h1>
@@ -400,7 +421,7 @@ footer{padding:48px 0;background:var(--navy-deep);}
 
 <div class="page" id="page-team">
   <section class="hero hero-band">
-    <div class="hero-photo"><img src="https://picsum.photos/seed/intelguard-desks/1600/900" alt=""></div>
+    <div class="hero-photo"><img src="https://images.unsplash.com/photo-1758873268745-dd2cf0d677b5?q=80&w=1600&auto=format&fit=crop" alt=""></div>
     <div class="wrap page-title">
       <div class="eyebrow on-dark">Meet the Team</div>
       <h1>Who's behind the work.</h1>
@@ -427,7 +448,7 @@ footer{padding:48px 0;background:var(--navy-deep);}
         <div class="team-grid">
           <div class="member" data-reveal data-reveal-delay="1"><div class="avatar">EA</div><div class="info"><h3>Ethan Moore</h3><div class="role">Taskforce Officer</div><div class="mail">ethan@intelguard.org</div></div></div>
           <div class="member" data-reveal data-reveal-delay="2"><div class="avatar">NS</div><div class="info"><h3>Nathan Shire</h3><div class="role">Case Specialist</div><div class="mail">nathan@intelguard.org</div></div></div>
-          <div class="member" data-reveal data-reveal-delay="3"><div class="avatar">AG</div><div class="info"><h3>Alex Greene</h3><div class="role">Case Specialist</div><div class="mail">alex@intelguard</div></div></div>
+          <div class="member" data-reveal data-reveal-delay="3"><div class="avatar">AG</div><div class="info"><h3>Alex Greene</h3><div class="role">Case Specialist</div><div class="mail">alex@intelguard.org</div></div></div>
         </div>
       </div>
     </div>
@@ -436,7 +457,7 @@ footer{padding:48px 0;background:var(--navy-deep);}
 
 <div class="page" id="page-partners">
   <section class="hero hero-band">
-    <div class="hero-photo"><img src="https://picsum.photos/seed/intelguard-globe/1600/900" alt=""></div>
+    <div class="hero-photo"><img src="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?q=80&w=1600&auto=format&fit=crop" alt=""></div>
     <div class="wrap page-title">
       <div class="eyebrow on-dark">Partners &amp; Affiliates</div>
       <h1>Who we work alongside.</h1>
@@ -448,22 +469,22 @@ footer{padding:48px 0;background:var(--navy-deep);}
         <div class="dept-head"><h3>Partners</h3></div>
         <p style="max-width:60ch;margin-bottom:24px;font-size:14.5px;color:var(--muted);">OSINT tooling and investigative infrastructure we rely on directly in casework.</p>
         <div class="partners-grid">
-          <div class="partner"><div class="name">OSINT Industries</div><div class="scope">Nathaniel, the owner of OSINT Industies. He's a great guy, and really works hard every single day to travel around the world to teach law enforcement how to investigate thoroughly and quickly. He's very experienced and knows his stuff. I appreciate all he's done for IntelGuard.</div><div class="Website">https://osint.industries</div></div>
-          <div class="partner"><div class="name">LexisNexis</div><div class="scope">Even though we may not currently have access, I want to say thank you to the Regional Account Manager and the LexisNexis team. They gave us a great lowdown and are actively working with getting us ready for access.</div><div class="Website">https://lexisnexis.com</div></div>
-          <div class="partner"><div class="name">IntelByte</div><div class="scope">Beuty has given us access to his platform and I have to be honest, it's one of the best I've used in some time. It has everything IntelGuard needs for investigations from start to finish. Beuty is a great guy and I wish fortune upon him.</div><div class="Website">https://intelbyte.cc</div></div>
-          <div class="partner"><div class="name">DataVoid</div><div class="scope">Gabe is probably one of the coolest guys I've ever met. Real supportive, always there when we need him. I'd define him as an IntelGuardian in my own standards, and I can't thank him enough.</div><div class="Website">https://datavoid.sh</div></div>
-          <div class="partner"><div class="name">ExposedID</div><div class="scope">The ExposedID Team, just like the previous was always supportive of the work IntelGuard has done, and having access to their amazing live intelligence platform is a big push forward. Thank you.</div><div class="Website">Unavailable</div></div>
-          <div class="partner"><div class="name">BreachHub</div><div class="scope">Kyronix is very cool, and is always there if IntelGuard needs support. They were actually one of our first partners when IntelGuard first started and still are to this day. Thank you for all your support, Kyri.</div><div class="Website">https://breachhub.org</div></div>
-          <div class="partner"><div class="name">Wolfeye</div><div class="scope">Upcoming project, and the leadership team is fabulous. I want to thank them for reaching out to us first and wanting to partner. I wish good things in the future for them!</div><div class="Website">Unavailable</div></div>
+          <div class="partner"><span class="cat">OSINT Tool</span><div class="name">OSINT Industries</div><div class="scope">Nathaniel, the owner of OSINT Industies. He's a great guy, and really works hard every single day to travel around the world to teach law enforcement how to investigate thoroughly and quickly. He's very experienced and knows his stuff. I appreciate all he's done for IntelGuard.</div><div class="since">https://osint.industries</div></div>
+          <div class="partner"><span class="cat">Data Access</span><div class="name">LexisNexis</div><div class="scope">Even though we may not currently have access, I want to say thank you to the Regional Account Manager and the LexisNexis team. They gave us a great lowdown and are actively working with getting us ready for access.</div><div class="since">https://lexisnexis.com</div></div>
+          <div class="partner"><span class="cat">OSINT Platform</span><div class="name">IntelByte</div><div class="scope">Beuty has given us access to his platform and I have to be honest, it's one of the best I've used in some time. It has everything IntelGuard needs for investigations from start to finish. Beuty is a great guy and I wish fortune upon him.</div><div class="since">https://intelbyte.cc</div></div>
+          <div class="partner"><span class="cat">OSINT Platform</span><div class="name">DataVoid</div><div class="scope">Gabe is probably one of the coolest guys I've ever met. Real supportive, always there when we need him. I'd define him as an IntelGuardian in my own standards, and I can't thank him enough.</div><div class="since">https://datavoid.sh</div></div>
+          <div class="partner"><span class="cat">Live Intelligence</span><div class="name">ExposedID</div><div class="scope">The ExposedID Team, just like the previous was always supportive of the work IntelGuard has done, and having access to their amazing live intelligence platform is a big push forward. Thank you.</div><div class="since">Unavailable</div></div>
+          <div class="partner"><span class="cat">Breach Data</span><div class="name">BreachHub</div><div class="scope">Kyronix is very cool, and is always there if IntelGuard needs support. They were actually one of our first partners when IntelGuard first started and still are to this day. Thank you for all your support, Kyri.</div><div class="since">https://breachhub.org</div></div>
+          <div class="partner"><span class="cat">Upcoming</span><div class="name">Wolfeye</div><div class="scope">Upcoming project, and the leadership team is fabulous. I want to thank them for reaching out to us first and wanting to partner. I wish good things in the future for them!</div><div class="since">Unavailable</div></div>
         </div>
       </div>
       <div class="dept-block">
         <div class="dept-head"><h3>Affiliates</h3></div>
         <p style="max-width:60ch;margin-bottom:24px;font-size:14.5px;color:var(--muted);">Organizations that support IntelGuard's reach — through case tips, referrals, or awareness — without being part of the investigative pipeline itself.</p>
         <div class="partners-grid">
-          <div class="partner"><div class="name">Okappiki</div><div class="scope">Okappiki, a Roblox condo scanning tool. Which probably is one of the top ones in the community as of current. They have a database of over 1.8 million users. I can always rely on them to protect my community from illegal condo players, so thank you.</div><div class="Website">https://okappiki.com</div></div>
-          <div class="partner"><div class="name">Alonze. Inc</div><div class="scope">Reginald, the owner of Alonze happily affiliated with us, and we wouldn't have gotten so many people in the community without him, so thank you!</div><div class="Website">Unavailable</div></div>
-          <div class="partner"><div class="name">The All Seeing Eye</div><div class="scope">TASE, similar to Okappiki & Rotector, is one of the biggest bots to date, with having the same goal in mind. Child safety & condo prevention!</div><div class="Website">https://moco-co.org/</div></div>
+          <div class="partner"><span class="cat">Community Tool</span><div class="name">Okappiki</div><div class="scope">Okappiki, a Roblox condo scanning tool. Which probably is one of the top ones in the community as of current. They have a database of over 1.8 million users. I can always rely on them to protect my community from illegal condo players, so thank you.</div><div class="since">https://okappiki.com</div></div>
+          <div class="partner"><span class="cat">Community</span><div class="name">Alonze. Inc</div><div class="scope">Reginald, the owner of Alonze happily affiliated with us, and we wouldn't have gotten so many people in the community without him, so thank you!</div><div class="since">Unavailable</div></div>
+          <div class="partner"><span class="cat">Community Tool</span><div class="name">The All Seeing Eye</div><div class="scope">TASE, similar to Okappiki & Rotector, is one of the biggest bots to date, with having the same goal in mind. Child safety & condo prevention!</div><div class="since">https://moco-co.org/</div></div>
         </div>
       </div>
     </div>
@@ -472,7 +493,7 @@ footer{padding:48px 0;background:var(--navy-deep);}
 
 <div class="page" id="page-contact">
   <section class="hero hero-band">
-    <div class="hero-photo"><img src="https://picsum.photos/seed/intelguard-signal/1600/900" alt=""></div>
+    <div class="hero-photo"><img src="https://images.unsplash.com/photo-1597733336794-12d05021d510?q=80&w=1600&auto=format&fit=crop" alt=""></div>
     <div class="wrap page-title">
       <div class="eyebrow on-dark">Contact</div>
       <h1>Reach the team.</h1>
