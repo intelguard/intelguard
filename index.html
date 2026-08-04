@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IntelGuard — Open-Source Intelligence &amp; Investigations</title>
+<meta name="description" content="IntelGuard investigates crimes against children online — tracing exploitation networks, taking down hosting infrastructure, and handing verified cases to law enforcement.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ================= STATUS BAR ================= -->
+<div class="status-bar">
+  <div class="status-bar__inner">
+    <span class="status-bar__dot" aria-hidden="true"></span>
+    <span>Intake open 24/7 — tips reviewed around the clock</span>
+    <span class="status-bar__sep">/</span>
+    <span>140+ cases forwarded to law enforcement to date</span>
+  </div>
+</div>
+
+<!-- ================= NAV ================= -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="#top" class="nav__brand">
+      <span class="nav__mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 2L28 7.5V15C28 22.5 22.8 27.8 16 30C9.2 27.8 4 22.5 4 15V7.5L16 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M11 15.5L14.3 18.8L21 11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="nav__wordmark">INTELGUARD</span>
+    </a>
+
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#company">Company</a>
+      <a href="#values">Values</a>
+      <a href="#statistics">Statistics</a>
+      <a href="#team">Team</a>
+      <a href="#partners">Partners</a>
+      <a href="#contact">Contact</a>
+      <a href="https://careers.intelguard.org">Careers</a>
+    </nav>
+
+    <div class="nav__actions">
+      <a href="#contact" class="btn btn--ghost">Contact</a>
+      <a href="#report" class="btn btn--alert">Report a Case</a>
+      <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="nav__mobile" id="navMobile">
+    <a href="#company">Company</a>
+    <a href="#values">Values</a>
+    <a href="#statistics">Statistics</a>
+    <a href="#team">Team</a>
+    <a href="#partners">Partners</a>
+    <a href="#contact">Contact</a>
+    <a href="https://careers.intelguard.org">Careers</a>
+    <a href="#report" class="btn btn--alert btn--block">Report a Case</a>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="top">
+  <canvas id="networkCanvas" class="hero__canvas" aria-hidden="true"></canvas>
+  <div class="hero__vignette" aria-hidden="true"></div>
+
+  <div class="hero__inner">
+    <p class="eyebrow" data-reveal>
+      <span class="eyebrow__bar" aria-hidden="true"></span>
+      Open-Source Intelligence &amp; Investigations
+    </p>
+
+    <h1 class="hero__title" data-reveal>
+      Every tip,<br>
+      <span class="text-accent">followed through.</span>
+    </h1>
+
+    <p class="hero__sub" data-reveal>
+      IntelGuard investigates crimes against children online — tracing exploitation
+      networks, taking down hosting infrastructure, and handing verified cases to the
+      law enforcement agencies with jurisdiction to act.
+    </p>
+
+    <div class="hero__cta" data-reveal>
+      <a href="#report" class="btn btn--alert btn--lg">Submit a Tip</a>
+      <a href="#company" class="btn btn--outline btn--lg">How We Work
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero__stats" data-reveal>
+    <div class="hero__stat">
+      <span class="hero__stat-value" data-count="140" data-suffix="+">0</span>
+      <span class="hero__stat-label">Cases forwarded</span>
+    </div>
+    <div class="hero__stat-divider" aria-hidden="true"></div>
+    <div class="hero__stat">
+      <span class="hero__stat-value" data-count="175" data-suffix="+ TB">0</span>
+      <span class="hero__stat-label">Infrastructure taken down</span>
+    </div>
+    <div class="hero__stat-divider" aria-hidden="true"></div>
+    <div class="hero__stat">
+      <span class="hero__stat-value" data-count="160" data-suffix="+">0</span>
+      <span class="hero__stat-label">Tips received</span>
+    </div>
+    <div class="hero__stat-divider" aria-hidden="true"></div>
+    <div class="hero__stat">
+      <span class="hero__stat-value hero__stat-value--static">24/7</span>
+      <span class="hero__stat-label">Intake coverage</span>
+    </div>
+  </div>
+
+  <div class="hero__marquee">
+    <p class="hero__marquee-label">Working alongside</p>
+    <div class="marquee">
+      <div class="marquee__track">
+        <span>OSINT Industries</span><span>LexisNexis</span><span>IntelByte</span><span>DataVoid</span><span>ExposedID</span><span>BreachHub</span><span>Wolfeye</span>
+        <span>OSINT Industries</span><span>LexisNexis</span><span>IntelByte</span><span>DataVoid</span><span>ExposedID</span><span>BreachHub</span><span>Wolfeye</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMPANY ================= -->
+<section class="section" id="company">
+  <div class="section__inner grid-12">
+    <div class="col-4">
+      <p class="eyebrow"><span class="eyebrow__bar" aria-hidden="true"></span>Our Company</p>
+      <h2 class="h2">Investigation,<br>not vigilantism.</h2>
+      <a href="#contact" class="link-arrow">Read more about our process
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <div class="col-8">
+      <p class="lede" data-reveal>
+        IntelGuard is an open-source intelligence outfit built to do one job well:
+        <strong>find what's hiding online and get it in front of the people who can act on it.</strong>
+        We field a high volume of intake reports every day, running the same kind of triage
+        and case-building work seen in cyber units at police departments — without ever
+        standing in for one.
+      </p>
+      <p class="body-text" data-reveal>
+        Our analysts never access or store exploitation material itself. Investigations are
+        built entirely from metadata, infrastructure, network, and open-source signals — enough
+        to identify a host, a domain, or a network, and enough to hand law enforcement a case
+        they can act on immediately.
+      </p>
+      <p class="body-text" data-reveal>
+        We currently operate as <strong>IntelGuard LLC</strong> (registration in progress).
+        We're not a law enforcement agency, and we don't claim law enforcement authority.
+        Every case we build is forwarded to the appropriate agency for their jurisdiction to
+        take from there.
+      </p>
+
+      <div class="scope-grid" data-reveal>
+        <div class="scope-card">
+          <span class="scope-card__index">What we do</span>
+          <p>OSINT-based identification of platforms and infrastructure hosting child
+          exploitation material or facilitating related fraud, built into referral-ready
+          case files.</p>
+        </div>
+        <div class="scope-card">
+          <span class="scope-card__index">What we don't do</span>
+          <p>We don't access, download, or store exploitation material, make arrests, or
+          act as a substitute for law enforcement at any stage of a case.</p>
+        </div>
+        <div class="scope-card">
+          <span class="scope-card__index">Where cases go</span>
+          <p>Completed case files are forwarded to the law enforcement body with
+          jurisdiction — national, regional, or international — for further action.</p>
+        </div>
+      </div>
+
+      <blockquote class="pull-quote" data-reveal>
+        “Many kids go unnoticed. We make sure that doesn't happen.”
+        <cite>Boaz J. Acosta — Founder &amp; CEO</cite>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VALUES ================= -->
+<section class="section section--panel" id="values">
+  <div class="section__inner">
+    <div class="section__head" data-reveal>
+      <p class="eyebrow"><span class="eyebrow__bar" aria-hidden="true"></span>What We Stand For</p>
+      <h2 class="h2">Our values.</h2>
+    </div>
+
+    <div class="values-grid">
+      <div class="value-card" data-reveal>
+        <span class="value-card__tag">Child-First</span>
+        <h3>Safety before speed</h3>
+        <p>Every action is weighed against what actually keeps a child safer — not what
+        closes a case fastest.</p>
+      </div>
+      <div class="value-card" data-reveal>
+        <span class="value-card__tag">Evidence-Bound</span>
+        <h3>Facts, not assumptions</h3>
+        <p>We only refer what we can substantiate. Weak leads stay open, not padded into
+        a case file.</p>
+      </div>
+      <div class="value-card" data-reveal>
+        <span class="value-card__tag">In Our Lane</span>
+        <h3>Investigate, don't intervene</h3>
+        <p>We build cases. Law enforcement makes arrests. We're careful never to blur
+        that line.</p>
+      </div>
+      <div class="value-card" data-reveal>
+        <span class="value-card__tag">Accountable</span>
+        <h3>Answerable to someone</h3>
+        <p>We're building the formal oversight our work deserves, not asking for trust
+        without it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STATISTICS ================= -->
+<section class="section stats-section" id="statistics">
+  <canvas id="statsCanvas" class="stats-section__canvas" aria-hidden="true"></canvas>
+  <div class="section__inner">
+    <div class="section__head" data-reveal>
+      <p class="eyebrow eyebrow--light"><span class="eyebrow__bar" aria-hidden="true"></span>Our Statistics</p>
+      <h2 class="h2 h2--light">The work, in numbers.</h2>
+      <p class="section__sub">IntelGuard works day and night. Our mission is non-stop —
+      here's what we've done so far.</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-block" data-reveal>
+        <span class="stat-block__value" data-count="140" data-suffix="+">0</span>
+        <span class="stat-block__label">Cases forwarded to law enforcement</span>
+      </div>
+      <div class="stat-block" data-reveal>
+        <span class="stat-block__value" data-count="175" data-suffix="+ TB">0</span>
+        <span class="stat-block__label">Platforms / domains taken down</span>
+      </div>
+      <div class="stat-block" data-reveal>
+        <span class="stat-block__value" data-count="160" data-suffix="+">0</span>
+        <span class="stat-block__label">Tips received to date</span>
+      </div>
+      <div class="stat-block" data-reveal>
+        <span class="stat-block__value stat-block__value--static">24/7</span>
+        <span class="stat-block__label">Intake &amp; tipline coverage</span>
+      </div>
+    </div>
+
+    <a href="#report" class="btn btn--alert btn--lg" data-reveal>Report a Case</a>
+  </div>
+</section>
+
+<!-- ================= TEAM ================= -->
+<section class="section" id="team">
+  <div class="section__inner">
+    <div class="section__head" data-reveal>
+      <p class="eyebrow"><span class="eyebrow__bar" aria-hidden="true"></span>Meet the Team</p>
+      <h2 class="h2">Who's behind the work.</h2>
+    </div>
+
+    <p class="section__label" data-reveal>Leadership</p>
+    <div class="team-grid" data-reveal>
+      <article class="team-card team-card--lead">
+        <div class="team-card__avatar" style="--avatar-a:#2451FF;--avatar-b:#0B1220;">BA</div>
+        <h3>Boaz Acosta</h3>
+        <p class="team-card__role">Founder &amp; CEO</p>
+        <a href="mailto:boaz@intelguard.org" class="team-card__email">boaz@intelguard.org</a>
+      </article>
+      <article class="team-card team-card--lead">
+        <div class="team-card__avatar" style="--avatar-a:#2451FF;--avatar-b:#0B1220;">MW</div>
+        <h3>Monroe Wright</h3>
+        <p class="team-card__role">Chief Operations Officer</p>
+        <a href="mailto:monroe@intelguard.org" class="team-card__email">monroe@intelguard.org</a>
+      </article>
+      <article class="team-card team-card--lead">
+        <div class="team-card__avatar" style="--avatar-a:#2451FF;--avatar-b:#0B1220;">OD</div>
+        <h3>Oliver Dudas</h3>
+        <p class="team-card__role">Chief Technical Officer</p>
+        <a href="mailto:oliver@intelguard.org" class="team-card__email">oliver@intelguard.org</a>
+      </article>
+    </div>
+
+    <p class="section__label" data-reveal>Department Heads — Investigative Department</p>
+    <div class="team-grid" data-reveal>
+      <article class="team-card">
+        <div class="team-card__avatar" style="--avatar-a:#3A4A66;--avatar-b:#111722;">EM</div>
+        <h3>Ethan Moore</h3>
+        <p class="team-card__role">Taskforce Officer</p>
+        <a href="mailto:ethan@intelguard.org" class="team-card__email">ethan@intelguard.org</a>
+      </article>
+      <article class="team-card">
+        <div class="team-card__avatar" style="--avatar-a:#3A4A66;--avatar-b:#111722;">NS</div>
+        <h3>Nathan Shire</h3>
+        <p class="team-card__role">Case Specialist</p>
+        <a href="mailto:nathan@intelguard.org" class="team-card__email">nathan@intelguard.org</a>
+      </article>
+      <article class="team-card">
+        <div class="team-card__avatar" style="--avatar-a:#3A4A66;--avatar-b:#111722;">AG</div>
+        <h3>Alex Greene</h3>
+        <p class="team-card__role">Case Specialist</p>
+        <a href="mailto:alex@intelguard.org" class="team-card__email">alex@intelguard.org</a>
+      </article>
+    </div>
+
+    <div class="careers-banner" data-reveal>
+      <div>
+        <h3>Join the taskforce.</h3>
+        <p>We're building out our investigative and technical teams. See open roles on our careers site.</p>
+      </div>
+      <a href="https://careers.intelguard.org" class="btn btn--outline">View Open Roles
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PARTNERS ================= -->
+<section class="section section--panel" id="partners">
+  <div class="section__inner">
+    <div class="section__head" data-reveal>
+      <p class="eyebrow"><span class="eyebrow__bar" aria-hidden="true"></span>Partners &amp; Affiliates</p>
+      <h2 class="h2">Who we work alongside.</h2>
+    </div>
+
+    <p class="section__label" data-reveal>Partners — OSINT tooling and investigative infrastructure we rely on directly in casework</p>
+    <div class="partner-grid" data-reveal>
+      <a href="https://osint.industries" target="_blank" rel="noopener" class="partner-card">
+        <span class="partner-card__tag">OSINT Tool</span>
+        <h3>OSINT Industries</h3>
+        <p>Investigative tooling and training we lean on for fast, thorough identification work.</p>
+      </a>
+      <a href="https://lexisnexis.com" target="_blank" rel="noopener" class="partner-card">
+        <span class="partner-card__tag">Data Access</span>
+        <h3>LexisNexis</h3>
+        <p>Working with their team as we prepare for formal data-access onboarding.</p>
+      </a>
+      <a href="https://intelbyte.cc" target="_blank" rel="noopener" class="partner-card">
+        <span class="partner-card__tag">OSINT Platform</span>
+        <h3>IntelByte</h3>
+        <p>An end-to-end OSINT platform that supports our investigations from intake to case file.</p>
+      </a>
+      <a href="https://datavoid.sh" target="_blank" rel="noopener" class="partner-card">
+        <span class="partner-card__tag">OSINT Platform</span>
+        <h3>DataVoid</h3>
+        <p>A consistently supportive partner in our day-to-day casework.</p>
+      </a>
+      <span class="partner-card partner-card--static">
+        <span class="partner-card__tag">Live Intelligence</span>
+        <h3>ExposedID</h3>
+        <p>Live intelligence access that's meaningfully accelerated our investigative pipeline.</p>
+      </span>
+      <a href="https://breachhub.org" target="_blank" rel="noopener" class="partner-card">
+        <span class="partner-card__tag">Breach Data</span>
+        <h3>BreachHub</h3>
+        <p>One of IntelGuard's earliest partners, and still a reliable source of support today.</p>
+      </a>
+      <span class="partner-card partner-card--static">
+        <span class="partner-card__tag">Upcoming</span>
+        <h3>Wolfeye</h3>
+        <p>A new partnership in the works — glad to be building this one together.</p>
+      </span>
+    </div>
+
+    <p class="section__label" data-reveal>Affiliates — organizations that support our reach without being part of the investigative pipeline itself</p>
+    <div class="partner-grid" data-reveal>
+      <a href="https://okappiki.com" target="_blank" rel="noopener" class="partner-card">
+        <span class="partner-card__tag">Community Tool</span>
+        <h3>Okappiki</h3>
+        <p>A Roblox condo-scanning tool with a database of over 1.8M users — a reliable line of defense for the community.</p>
+      </a>
+      <span class="partner-card partner-card--static">
+        <span class="partner-card__tag">Community</span>
+        <h3>Alonze Inc.</h3>
+        <p>A community partner that's helped extend IntelGuard's reach significantly.</p>
+      </span>
+      <a href="https://moco-co.org" target="_blank" rel="noopener" class="partner-card">
+        <span class="partner-card__tag">Community Tool</span>
+        <h3>The All Seeing Eye</h3>
+        <p>Sharing our focus on child safety and condo prevention across platforms.</p>
+      </a>
+      <a href="https://rotector.com" target="_blank" rel="noopener" class="partner-card">
+        <span class="partner-card__tag">Community Tool</span>
+        <h3>Rotector</h3>
+        <p>Active flagging and a strong review system, with safety built into every layer.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="section" id="contact">
+  <div class="section__inner">
+    <div class="section__head" data-reveal>
+      <p class="eyebrow"><span class="eyebrow__bar" aria-hidden="true"></span>Contact</p>
+      <h2 class="h2">Reach the team.</h2>
+    </div>
+
+    <div class="contact-grid" data-reveal>
+      <a href="mailto:tipline@intelguard.org" id="report" class="contact-card contact-card--alert">
+        <span class="contact-card__icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L21 6.5V12C21 17 17.4 20.7 12 22C6.6 20.7 3 17 3 12V6.5L12 2Z" stroke="currentColor" stroke-width="1.6"/><path d="M12 8V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="16.3" r="1" fill="currentColor"/></svg>
+        </span>
+        <h3>Report a Crime</h3>
+        <p class="contact-card__addr">tipline@intelguard.org</p>
+        <p>For active tips on child exploitation or related fraud. Monitored around the clock.</p>
+      </a>
+
+      <a href="mailto:contact@intelguard.org" class="contact-card">
+        <span class="contact-card__icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 7L12 13L21 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <h3>General Inquiries</h3>
+        <p class="contact-card__addr">contact@intelguard.org</p>
+        <p>Press, partnerships, and everything else.</p>
+      </a>
+
+      <a href="mailto:leer@intelguard.org" class="contact-card">
+        <span class="contact-card__icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3L4 6.5V11C4 16 7.5 20 12 21C16.5 20 20 16 20 11V6.5L12 3Z" stroke="currentColor" stroke-width="1.6"/></svg>
+        </span>
+        <h3>Law Enforcement</h3>
+        <p class="contact-card__addr">leer@intelguard.org</p>
+        <p>Requesting case information or coordinating a referral? Use this address.</p>
+      </a>
+    </div>
+
+    <div class="social-row" data-reveal>
+      <p class="section__label section__label--tight">Our socials</p>
+      <div class="social-links">
+        <a href="https://x.com/intelguardorg" target="_blank" rel="noopener" aria-label="X / Twitter">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-6.9l-5.4-6.7L4.8 22H1.7l8.1-9.3L1 2h7l4.9 6.1L18.9 2Zm-1.2 18h1.9L7.4 4h-2l12.3 16Z"/></svg>
+          <span>X / Twitter</span>
+        </a>
+        <a href="https://t.me/intelguardian" target="_blank" rel="noopener" aria-label="Telegram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.4 18.9 19.8c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8.1c.4-.3-.1-.5-.6-.2L6.6 12.8l-4.8-1.5c-1-.3-1-1 .2-1.5L20.6 3c.9-.3 1.6.2 1.3 1.4Z"/></svg>
+          <span>Telegram</span>
+        </a>
+        <a href="https://discord.gg/intelguard" target="_blank" rel="noopener" aria-label="Discord">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 5.3A18 18 0 0 0 15.7 4l-.3.6c1.8.4 2.8 1 3.8 1.7a12.5 12.5 0 0 0-10.4 0 8 8 0 0 1 3.8-1.7L12.3 4a18 18 0 0 0-4.6 1.3C4.9 9 4.1 12.6 4.4 16.1a18.2 18.2 0 0 0 5.5 2.8l.7-1.2c-.8-.3-1.5-.6-2.2-1.1l.5-.4a13 13 0 0 0 10.2 0l.5.4c-.7.5-1.4.8-2.2 1.1l.7 1.2a18.1 18.1 0 0 0 5.5-2.8c.4-4-.7-7.6-2.6-10.8ZM9.7 14.3c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.7.8 1.6 1.8c0 1-.7 1.8-1.6 1.8Zm5.5 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8Z"/></svg>
+          <span>Discord</span>
+        </a>
+        <a href="https://ko-fi.com/intelguard" target="_blank" rel="noopener" aria-label="Ko-fi / Donate">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 4h14a2 2 0 0 1 2 2v1h1a3 3 0 0 1 0 6h-1.3A8 8 0 0 1 11 20H8a8 8 0 0 1-8-8V6a2 2 0 0 1 2-2Zm14 5v4a2 2 0 0 0 0-4ZM5 6v6a4 4 0 0 0 4 4h2a4 4 0 0 0 4-4V6H5Z"/></svg>
+          <span>Ko-fi / Donate</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__top">
+      <a href="#top" class="nav__brand">
+        <span class="nav__mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 2L28 7.5V15C28 22.5 22.8 27.8 16 30C9.2 27.8 4 22.5 4 15V7.5L16 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M11 15.5L14.3 18.8L21 11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="nav__wordmark">INTELGUARD</span>
+      </a>
+      <nav class="footer__links" aria-label="Footer">
+        <a href="#company">Company</a>
+        <a href="#values">Values</a>
+        <a href="#team">Team</a>
+        <a href="#partners">Partners</a>
+        <a href="#contact">Contact</a>
+        <a href="https://careers.intelguard.org">Careers</a>
+      </nav>
+    </div>
+    <div class="footer__bottom">
+      <p>IntelGuard is not a law enforcement agency. All cases are referred to the
+      appropriate authority for their jurisdiction to act on.</p>
+      <p>© <span id="year"></span> IntelGuard.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
