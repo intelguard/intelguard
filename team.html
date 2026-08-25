@@ -373,14 +373,14 @@ footer .foot-links a:hover{color:var(--warm);}
       </div>
 
       <div class="org-tier">
-        <div class="org-node dept" id="node-adalyn">
+        <div class="org-node dept" id="node-sebastian">
           <span class="tag">Branch Director</span>
           <div class="avatar">SW</div>
           <h3>Sebastian Whitehead</h3>
           <div class="role">Acting Head of Voluntary Aids</div>
           <a class="em" href="mailto:sebastian@intelguard.org">sebastian@intelguard.org</a>
         </div>
-        <div class="org-node dept" id="node-sebastian">
+        <div class="org-node dept" id="node-naomi">
           <span class="tag">Member</span>
           <div class="avatar">NU</div>
           <h3>Naomi Urani</h3>
@@ -394,7 +394,7 @@ footer .foot-links a:hover{color:var(--warm);}
           <div class="role">Field Investigator</div>
           <a class="em" href="mailto:nathan@intelguard.org">nathan@intelguard.org</a>
         </div>
-        <div class="org-node dept" id="node-nathan">
+        <div class="org-node dept" id="node-chase">
           <span class="tag">Member</span>
           <div class="avatar">CC</div>
           <h3>Chase Chambers</h3>
@@ -440,9 +440,10 @@ footer .foot-links a:hover{color:var(--warm);}
     const cofounders = [document.getElementById('node-monroe'), document.getElementById('node-oliver')];
     const voluntaryaids = document.getElementById('node-voluntaryaids');
     const trustsafety = document.getElementById('node-trustsafety');
-    const adalyn = document.getElementById('node-adalyn');
     const sebastian = document.getElementById('node-sebastian');
+    const naomi = document.getElementById('node-naomi');
     const nathan = document.getElementById('node-nathan');
+    const chase = document.getElementById('node-chase');
 
     branch(svg, pt(boaz, cRect, 'bottom'), cofounders.map(el => pt(el, cRect, 'top')), 28);
 
@@ -450,8 +451,8 @@ footer .foot-links a:hover{color:var(--warm);}
     const virtualParent = { x: (cfBottoms[0].x + cfBottoms[cfBottoms.length-1].x) / 2, y: cfBottoms[0].y };
     branch(svg, virtualParent, [pt(voluntaryaids, cRect, 'top'), pt(trustsafety, cRect, 'top')], 28);
 
-    branch(svg, pt(voluntaryaids, cRect, 'bottom'), [pt(adalyn, cRect, 'top'), pt(sebastian, cRect, 'top')], 28);
-    branch(svg, pt(trustsafety, cRect, 'bottom'), [pt(nathan, cRect, 'top')], 28);
+    branch(svg, pt(voluntaryaids, cRect, 'bottom'), [pt(sebastian, cRect, 'top'), pt(naomi, cRect, 'top')], 28);
+    branch(svg, pt(trustsafety, cRect, 'bottom'), [pt(nathan, cRect, 'top'), pt(chase, cRect, 'top')], 28);
   }
   window.addEventListener('load', draw);
   window.addEventListener('resize', draw);
