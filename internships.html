@@ -14,7 +14,7 @@
 }
 *{box-sizing:border-box; margin:0; padding:0;}
 html{scroll-behavior:smooth;}
-body{background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; line-height:1.55; -webkit-font-smoothing:antialiased;}
+body{background-color:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; line-height:1.55; -webkit-font-smoothing:antialiased; background-image:radial-gradient(var(--line) 1px, transparent 1.6px); background-size:26px 26px; background-position:-6px -6px;}
 h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; letter-spacing:-0.01em; color:var(--ink);}
 .mono{font-family:'IBM Plex Mono',monospace;}
 a{color:inherit;}
@@ -72,14 +72,19 @@ nav .wrap{display:flex; align-items:center; justify-content:space-between; heigh
 .btn-lg{padding:15px 26px; font-size:15.5px;}
 
 /* page header (non-home pages) */
-.pagehead{padding:64px 0 48px; border-bottom:1px solid var(--line);}
+.pagehead{padding:64px 0 48px; border-bottom:1px solid var(--line); position:relative; overflow:hidden;}
+.pagehead::after{content:''; position:absolute; top:-40px; right:-80px; width:500px; height:360px; background:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22640%22%20height%3D%22440%22%20viewBox%3D%220%200%20640%20440%22%3E%0A%3Cg%20fill%3D%22none%22%20stroke%3D%22%23B9CEDC%22%20stroke-width%3D%221.3%22%3E%0A%3Cline%20x1%3D%22500%22%20y1%3D%2246%22%20x2%3D%22586%22%20y2%3D%22108%22/%3E%0A%3Cline%20x1%3D%22586%22%20y1%3D%22108%22%20x2%3D%22452%22%20y2%3D%22168%22/%3E%0A%3Cline%20x1%3D%22452%22%20y1%3D%22168%22%20x2%3D%22606%22%20y2%3D%22248%22/%3E%0A%3Cline%20x1%3D%22606%22%20y1%3D%22248%22%20x2%3D%22498%22%20y2%3D%22300%22/%3E%0A%3Cline%20x1%3D%22452%22%20y1%3D%22168%22%20x2%3D%22392%22%20y2%3D%2270%22/%3E%0A%3Cline%20x1%3D%22392%22%20y1%3D%2270%22%20x2%3D%22500%22%20y2%3D%2246%22/%3E%0A%3Cline%20x1%3D%22452%22%20y1%3D%22168%22%20x2%3D%22360%22%20y2%3D%22210%22/%3E%0A%3Cline%20x1%3D%22606%22%20y1%3D%22248%22%20x2%3D%22560%22%20y2%3D%22360%22/%3E%0A%3C/g%3E%0A%3Cg%20fill%3D%22%238FAFC5%22%3E%0A%3Ccircle%20cx%3D%22500%22%20cy%3D%2246%22%20r%3D%224.5%22/%3E%0A%3Ccircle%20cx%3D%22586%22%20cy%3D%22108%22%20r%3D%223.5%22/%3E%0A%3Ccircle%20cx%3D%22452%22%20cy%3D%22168%22%20r%3D%225.5%22/%3E%0A%3Ccircle%20cx%3D%22606%22%20cy%3D%22248%22%20r%3D%223.5%22/%3E%0A%3Ccircle%20cx%3D%22498%22%20cy%3D%22300%22%20r%3D%224.5%22/%3E%0A%3Ccircle%20cx%3D%22392%22%20cy%3D%2270%22%20r%3D%223.5%22/%3E%0A%3Ccircle%20cx%3D%22360%22%20cy%3D%22210%22%20r%3D%223%22/%3E%0A%3Ccircle%20cx%3D%22560%22%20cy%3D%22360%22%20r%3D%224%22/%3E%0A%3C/g%3E%0A%3C/svg%3E') no-repeat top right / contain; opacity:.5; z-index:-1; pointer-events:none;}
+@media (max-width:720px){.pagehead::after{width:280px; height:210px; opacity:.35;}}
 .pagehead .crumb{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text-dim); margin-bottom:14px;}
 .pagehead h1{font-size:clamp(30px,3.6vw,44px); margin-bottom:14px;}
 .pagehead p{font-size:16.5px; color:var(--text-dim); max-width:600px;}
 .page-photo{width:100%; height:260px; object-fit:cover; border-radius:var(--radius-lg); margin-top:32px; box-shadow:0 20px 50px -30px rgba(30,42,59,.3);}
 
 /* hero */
-.hero{padding-top:64px; padding-bottom:40px;}
+.hero{padding-top:64px; padding-bottom:40px; position:relative; overflow:hidden;}
+.hero::after{content:''; position:absolute; top:-30px; right:-70px; width:560px; height:400px; background:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22640%22%20height%3D%22440%22%20viewBox%3D%220%200%20640%20440%22%3E%0A%3Cg%20fill%3D%22none%22%20stroke%3D%22%23B9CEDC%22%20stroke-width%3D%221.3%22%3E%0A%3Cline%20x1%3D%22500%22%20y1%3D%2246%22%20x2%3D%22586%22%20y2%3D%22108%22/%3E%0A%3Cline%20x1%3D%22586%22%20y1%3D%22108%22%20x2%3D%22452%22%20y2%3D%22168%22/%3E%0A%3Cline%20x1%3D%22452%22%20y1%3D%22168%22%20x2%3D%22606%22%20y2%3D%22248%22/%3E%0A%3Cline%20x1%3D%22606%22%20y1%3D%22248%22%20x2%3D%22498%22%20y2%3D%22300%22/%3E%0A%3Cline%20x1%3D%22452%22%20y1%3D%22168%22%20x2%3D%22392%22%20y2%3D%2270%22/%3E%0A%3Cline%20x1%3D%22392%22%20y1%3D%2270%22%20x2%3D%22500%22%20y2%3D%2246%22/%3E%0A%3Cline%20x1%3D%22452%22%20y1%3D%22168%22%20x2%3D%22360%22%20y2%3D%22210%22/%3E%0A%3Cline%20x1%3D%22606%22%20y1%3D%22248%22%20x2%3D%22560%22%20y2%3D%22360%22/%3E%0A%3C/g%3E%0A%3Cg%20fill%3D%22%238FAFC5%22%3E%0A%3Ccircle%20cx%3D%22500%22%20cy%3D%2246%22%20r%3D%224.5%22/%3E%0A%3Ccircle%20cx%3D%22586%22%20cy%3D%22108%22%20r%3D%223.5%22/%3E%0A%3Ccircle%20cx%3D%22452%22%20cy%3D%22168%22%20r%3D%225.5%22/%3E%0A%3Ccircle%20cx%3D%22606%22%20cy%3D%22248%22%20r%3D%223.5%22/%3E%0A%3Ccircle%20cx%3D%22498%22%20cy%3D%22300%22%20r%3D%224.5%22/%3E%0A%3Ccircle%20cx%3D%22392%22%20cy%3D%2270%22%20r%3D%223.5%22/%3E%0A%3Ccircle%20cx%3D%22360%22%20cy%3D%22210%22%20r%3D%223%22/%3E%0A%3Ccircle%20cx%3D%22560%22%20cy%3D%22360%22%20r%3D%224%22/%3E%0A%3C/g%3E%0A%3C/svg%3E') no-repeat top right / contain; opacity:.6; z-index:-1; pointer-events:none;}
+.hero::before{content:''; position:absolute; top:-120px; left:-160px; width:520px; height:520px; border-radius:50%; background:radial-gradient(circle, var(--trust-soft) 0%, transparent 68%); opacity:.8; z-index:-1; pointer-events:none;}
+@media (max-width:720px){.hero::after{width:320px; height:240px; opacity:.4;} .hero::before{width:340px; height:340px; top:-90px; left:-140px;}}
 .hero .wrap{display:grid; grid-template-columns:1.05fr .95fr; gap:56px; align-items:center;}
 @media (max-width:900px){ .hero .wrap{grid-template-columns:1fr;} }
 .hero h1{font-size:clamp(34px,4.4vw,54px); line-height:1.1; margin-bottom:20px;}
@@ -114,7 +119,7 @@ nav .wrap{display:flex; align-items:center; justify-content:space-between; heigh
 .stat .cap{font-size:13px; color:var(--text-dim); margin-top:8px;}
 
 /* Thorn-style impact split: headline+tooltip copy left, stat list right */
-.impact{background:var(--card); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+.impact{background:linear-gradient(155deg, var(--card) 0%, var(--card) 55%, var(--trust-soft) 145%); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
 .impact-split{display:grid; grid-template-columns:1.1fr 0.9fr; gap:64px; align-items:start;}
 @media (max-width:900px){ .impact-split{grid-template-columns:1fr; gap:40px;} }
 .impact-copy h2{font-size:clamp(28px,3.4vw,40px); margin-bottom:20px; line-height:1.15;}
@@ -323,7 +328,7 @@ footer .foot-links a:hover{color:var(--warm);}
     <div class="eyebrow">More</div>
     <h1>Internship program.</h1>
     <p>Hands-on intelligence training course that lasts from 4-12 weeks, with in-depth learning in common investigative techniques. 16 and older only &mdash; see why, below.</p>
-    <img class="page-photo" src="https://images.unsplash.com/photo-1758873269276-9518d0cb4a0b?auto=format&fit=crop&w=1600&q=80" alt="Team members collaborating in an office">
+    <img class="page-photo" src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=1600&q=80" alt="A laptop and notepad ready on a desk">
   </div>
 </div>
 
