@@ -428,8 +428,6 @@ footer .foot-links a:hover{color:var(--warm);}
 
     const monroe = document.getElementById('node-monroe');
     const cofounders = document.getElementById('node-oliver');
-    const voluntaryaids = document.getElementById('node-voluntaryaids');
-    const trustsafety = document.getElementById('node-trustsafety');
     const sebastian = document.getElementById('node-sebastian');
     const naomi = document.getElementById('node-naomi');
     const nathan = document.getElementById('node-nathan');
@@ -438,10 +436,6 @@ footer .foot-links a:hover{color:var(--warm);}
 
     const cfBottoms = cofounders.map(el => pt(el, cRect, 'bottom'));
     const virtualParent = { x: (cfBottoms[0].x + cfBottoms[cfBottoms.length-1].x) / 2, y: cfBottoms[0].y };
-    branch(svg, virtualParent, [pt(voluntaryaids, cRect, 'top'), pt(trustsafety, cRect, 'top')], 28);
-
-    branch(svg, pt(voluntaryaids, cRect, 'bottom'), [pt(sebastian, cRect, 'top'), pt(naomi, cRect, 'top')], 28);
-    branch(svg, pt(trustsafety, cRect, 'bottom'), pt(nathan, cRect, 'top'), 28);
   }
   window.addEventListener('load', draw);
   window.addEventListener('resize', draw);
